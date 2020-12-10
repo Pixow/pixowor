@@ -1,0 +1,9 @@
+{
+  "name": "qing",
+  "version": "0.0.1",
+  "description": "图轻新版编辑器, 插件化架构设计",
+  "main": "index.js",
+  "repository": "git@code.apowo.com:PixelPai/qing.git",
+  "author": "<mojixiang@apowo.com>",
+  "license": "MIT"
+}
