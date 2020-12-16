@@ -9,15 +9,19 @@
   "scripts": {
     "electron:local": "npm run electron:serve-tsc && npm run copyhtml && npx electron .",
     "electron:serve-tsc": "tsc -p tsconfig.json",
-    "copyhtml": "copyfiles -f src/qing/code/electron-browser/workbench/**.html dist/qing/code/electron-browser/workbench"
+    "copyhtml": "copyfiles -f src/qing/code/electron-browser/workbench/**.html dist/qing/code/electron-browser/workbench",
+    "build:auth": "ng build auth --prod"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1100.4",
     "@angular/cli": "^11.0.4",
     "@angular/common": "^11.0.4",
+    "@angular/compiler": "^11.0.4",
     "@angular/compiler-cli": "~11.0.4",
     "@angular/core": "^11.0.4",
+    "@angular/platform-browser": "^11.0.4",
     "@angular/platform-browser-dynamic": "^11.0.4",
+    "@angular/router": "^11.0.4",
     "@types/lodash-es": "^4.17.3",
     "@types/node": "^14.14.13",
     "copyfiles": "^2.4.1",
@@ -25,9 +29,13 @@
     "lodash-es": "^4.17.15",
     "module-alias": "^2.2.2",
     "npm-run-all": "^4.1.5",
-    "typescript": "~4.0.2"
+    "typescript": "~4.0.2",
+    "zone.js": "^0.11.3"
   },
   "_moduleAliases": {
     "@qing": "dist/qing"
+  },
+  "dependencies": {
+    "ngx-build-plus": "^10.1.1"
   }
 }

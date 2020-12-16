@@ -24,7 +24,7 @@
               "projects/auth/src/assets"
             ],
             "styles": [
-              "projects/auth/src/styles.css"
+              "projects/auth/src/styles.scss"
             ],
             "scripts": [],
             "extraWebpackConfig": "projects/auth/webpack.config.js"
@@ -92,7 +92,7 @@
               "projects/auth/src/assets"
             ],
             "styles": [
-              "projects/auth/src/styles.css"
+              "projects/auth/src/styles.scss"
             ],
             "scripts": [],
             "extraWebpackConfig": "projects/auth/webpack.config.js"
@@ -146,7 +146,7 @@
               "projects/resmanager/src/assets"
             ],
             "styles": [
-              "projects/resmanager/src/styles.css"
+              "projects/resmanager/src/styles.scss"
             ],
             "scripts": [],
             "extraWebpackConfig": "projects/resmanager/webpack.config.js"
@@ -214,7 +214,7 @@
               "projects/resmanager/src/assets"
             ],
             "styles": [
-              "projects/resmanager/src/styles.css"
+              "projects/resmanager/src/styles.scss"
             ],
             "scripts": [],
             "extraWebpackConfig": "projects/resmanager/webpack.config.js"
@@ -288,5 +288,5 @@
       }
     }
   },
-  "defaultProject": "angular-plugin-architecture-module-federation"
+  "defaultProject": ""
 }

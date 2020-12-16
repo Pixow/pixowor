@@ -116,6 +116,17 @@
     rxjs "6.6.3"
     source-map "0.7.3"
 
+"@angular-devkit/core@8.0.0":
+  version "8.0.0"
+  resolved "https://registry.npm.taobao.org/@angular-devkit/core/download/@angular-devkit/core-8.0.0.tgz#a0ca65d8d0f928db9288316b1f3346d21f722213"
+  integrity sha1-oMpl2ND5KNuSiDFrHzNG0h9yIhM=
+  dependencies:
+    ajv "6.10.0"
+    fast-json-stable-stringify "2.0.0"
+    magic-string "0.25.2"
+    rxjs "6.4.0"
+    source-map "0.7.3"
+
 "@angular-devkit/schematics@11.0.4":
   version "11.0.4"
   resolved "https://registry.npm.taobao.org/@angular-devkit/schematics/download/@angular-devkit/schematics-11.0.4.tgz#0680fe038c66f2ecc3c69a293505fb02b694ce80"
@@ -124,6 +135,14 @@
     "@angular-devkit/core" "11.0.4"
     ora "5.1.0"
     rxjs "6.6.3"
+
+"@angular-devkit/schematics@8.0.0":
+  version "8.0.0"
+  resolved "https://registry.npm.taobao.org/@angular-devkit/schematics/download/@angular-devkit/schematics-8.0.0.tgz#53d14646c6286b0397417990fc83e3e9a6ecf233"
+  integrity sha1-U9FGRsYoawOXQXmQ/IPj6abs8jM=
+  dependencies:
+    "@angular-devkit/core" "8.0.0"
+    rxjs "6.4.0"
 
 "@angular/cli@^11.0.4":
   version "11.0.4"
@@ -179,6 +198,13 @@
     tslib "^2.0.0"
     yargs "^16.1.1"
 
+"@angular/compiler@^11.0.4":
+  version "11.0.4"
+  resolved "https://registry.npm.taobao.org/@angular/compiler/download/@angular/compiler-11.0.4.tgz#8cc4e92ac9734d707828c02c487eff2cd1a69d02"
+  integrity sha1-jMTpKslzTXB4KMAsSH7/LNGmnQI=
+  dependencies:
+    tslib "^2.0.0"
+
 "@angular/core@^11.0.4":
   version "11.0.4"
   resolved "https://registry.npm.taobao.org/@angular/core/download/@angular/core-11.0.4.tgz#8eebb6a550dc24e4d53f642c8a78a0da2830cd5b"
@@ -190,6 +216,20 @@
   version "11.0.4"
   resolved "https://registry.npm.taobao.org/@angular/platform-browser-dynamic/download/@angular/platform-browser-dynamic-11.0.4.tgz#d775f12954db689507ef98a51d8d7ed5763becd4"
   integrity sha1-13XxKVTbaJUH75ilHY1+1XY77NQ=
+  dependencies:
+    tslib "^2.0.0"
+
+"@angular/platform-browser@^11.0.4":
+  version "11.0.4"
+  resolved "https://registry.npm.taobao.org/@angular/platform-browser/download/@angular/platform-browser-11.0.4.tgz#131db1115943eb9c0191080e200c1e9dbd214d4c"
+  integrity sha1-Ex2xEVlD65wBkQgOIAwenb0hTUw=
+  dependencies:
+    tslib "^2.0.0"
+
+"@angular/router@^11.0.4":
+  version "11.0.4"
+  resolved "https://registry.npm.taobao.org/@angular/router/download/@angular/router-11.0.4.tgz#324507346c508649135f56e5f2b57c60e0ba7b16"
+  integrity sha1-MkUHNGxQhkkTX1bl8rV8YOC6exY=
   dependencies:
     tslib "^2.0.0"
 
@@ -1140,6 +1180,14 @@
     "@angular-devkit/schematics" "11.0.4"
     jsonc-parser "2.3.1"
 
+"@schematics/angular@8.0.0":
+  version "8.0.0"
+  resolved "https://registry.npm.taobao.org/@schematics/angular/download/@schematics/angular-8.0.0.tgz#47954888fb8acbc3600235db7a46229c47fe5d9c"
+  integrity sha1-R5VIiPuKy8NgAjXbekYinEf+XZw=
+  dependencies:
+    "@angular-devkit/core" "8.0.0"
+    "@angular-devkit/schematics" "8.0.0"
+
 "@schematics/update@0.1100.4":
   version "0.1100.4"
   resolved "https://registry.npm.taobao.org/@schematics/update/download/@schematics/update-0.1100.4.tgz#b67efdb39396ddcacef97de008100944af3d1556"
@@ -1467,6 +1515,16 @@ ajv-keywords@^3.1.0, ajv-keywords@^3.4.1, ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.npm.taobao.org/ajv-keywords/download/ajv-keywords-3.5.2.tgz?cache=0&sync_timestamp=1608059810829&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fajv-keywords%2Fdownload%2Fajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
   integrity sha1-MfKdpatuANHC0yms97WSlhTVAU0=
+
+ajv@6.10.0:
+  version "6.10.0"
+  resolved "https://registry.npm.taobao.org/ajv/download/ajv-6.10.0.tgz?cache=0&sync_timestamp=1608057736713&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fajv%2Fdownload%2Fajv-6.10.0.tgz#90d0d54439da587cd7e843bfb7045f50bd22bdf1"
+  integrity sha1-kNDVRDnaWHzX6EO/twRfUL0ivfE=
+  dependencies:
+    fast-deep-equal "^2.0.1"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.4.1"
+    uri-js "^4.2.2"
 
 ajv@6.12.6, ajv@^6.1.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
   version "6.12.6"
@@ -3474,6 +3532,11 @@ extsprintf@^1.2.0:
   resolved "https://registry.npm.taobao.org/extsprintf/download/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
+fast-deep-equal@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npm.taobao.org/fast-deep-equal/download/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
+  integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
+
 fast-deep-equal@^3.1.1:
   version "3.1.3"
   resolved "https://registry.npm.taobao.org/fast-deep-equal/download/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
@@ -3490,6 +3553,11 @@ fast-glob@^3.1.1, fast-glob@^3.2.4:
     merge2 "^1.3.0"
     micromatch "^4.0.2"
     picomatch "^2.2.1"
+
+fast-json-stable-stringify@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/fast-json-stable-stringify/download/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
+  integrity sha1-1RQsDK7msRifh9OnYREGT4bIu/I=
 
 fast-json-stable-stringify@2.1.0, fast-json-stable-stringify@^2.0.0:
   version "2.1.0"
@@ -4914,7 +4982,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npm.taobao.org/lodash.uniq/download/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.19:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19:
   version "4.17.20"
   resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha1-tEqbYpe8tpjxxRo1RaKzs2jVnFI=
@@ -4954,6 +5022,13 @@ lru-cache@^6.0.0:
   integrity sha1-bW/mVw69lqr5D8rR2vo7JWbbOpQ=
   dependencies:
     yallist "^4.0.0"
+
+magic-string@0.25.2:
+  version "0.25.2"
+  resolved "https://registry.npm.taobao.org/magic-string/download/magic-string-0.25.2.tgz#139c3a729515ec55e96e69e82a11fe890a293ad9"
+  integrity sha1-E5w6cpUV7FXpbmnoKhH+iQopOtk=
+  dependencies:
+    sourcemap-codec "^1.4.4"
 
 magic-string@0.25.7, magic-string@^0.25.0:
   version "0.25.7"
@@ -5371,6 +5446,17 @@ next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/next-tick/download/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
+
+ngx-build-plus@^10.1.1:
+  version "10.1.1"
+  resolved "https://registry.npm.taobao.org/ngx-build-plus/download/ngx-build-plus-10.1.1.tgz#4d02c2a04c4f22681a007a421afd45f0893c1134"
+  integrity sha1-TQLCoExPImgaAHpCGv1F8Ik8ETQ=
+  dependencies:
+    "@schematics/angular" "8.0.0"
+    cross-spawn "^6.0.5"
+    rxjs "6.4.0"
+    webpack-dev-server "^3.1.14"
+    webpack-merge "^4.2.1"
 
 nice-try@^1.0.4:
   version "1.0.5"
@@ -6992,6 +7078,13 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
+rxjs@6.4.0:
+  version "6.4.0"
+  resolved "https://registry.npm.taobao.org/rxjs/download/rxjs-6.4.0.tgz?cache=0&sync_timestamp=1607305563098&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frxjs%2Fdownload%2Frxjs-6.4.0.tgz#f3bb0fe7bda7fb69deac0c16f17b50b0b8790504"
+  integrity sha1-87sP572n+2nerAwW8XtQsLh5BQQ=
+  dependencies:
+    tslib "^1.9.0"
+
 rxjs@6.6.3, rxjs@^6.6.0:
   version "6.6.3"
   resolved "https://registry.npm.taobao.org/rxjs/download/rxjs-6.6.3.tgz?cache=0&sync_timestamp=1607305563098&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frxjs%2Fdownload%2Frxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
@@ -8305,7 +8398,7 @@ webpack-dev-middleware@^3.7.2:
     range-parser "^1.2.1"
     webpack-log "^2.0.0"
 
-webpack-dev-server@3.11.0:
+webpack-dev-server@3.11.0, webpack-dev-server@^3.1.14:
   version "3.11.0"
   resolved "https://registry.npm.taobao.org/webpack-dev-server/download/webpack-dev-server-3.11.0.tgz#8f154a3bce1bcfd1cc618ef4e703278855e7ff8c"
   integrity sha1-jxVKO84bz9HMYY705wMniFXn/4w=
@@ -8359,6 +8452,13 @@ webpack-merge@5.2.0:
   dependencies:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
+
+webpack-merge@^4.2.1:
+  version "4.2.2"
+  resolved "https://registry.npm.taobao.org/webpack-merge/download/webpack-merge-4.2.2.tgz#a27c52ea783d1398afd2087f547d7b9d2f43634d"
+  integrity sha1-onxS6ng9E5iv0gh/VH17nS9DY00=
+  dependencies:
+    lodash "^4.17.15"
 
 webpack-sources@2.0.1:
   version "2.0.1"
@@ -8583,3 +8683,10 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npm.taobao.org/yocto-queue/download/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha1-ApTrPe4FAo0x7hpfosVWpqrxChs=
+
+zone.js@^0.11.3:
+  version "0.11.3"
+  resolved "https://registry.npm.taobao.org/zone.js/download/zone.js-0.11.3.tgz#255a6313174731cc014d63233ef04fd9858da375"
+  integrity sha1-JVpjExdHMcwBTWMjPvBP2YWNo3U=
+  dependencies:
+    tslib "^2.0.0"

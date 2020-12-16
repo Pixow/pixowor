@@ -34,7 +34,7 @@ export class CodeWindow extends Disposable implements ICodeWindow {
     this._win = new BrowserWindow(options);
     this._win.loadURL(
       url.format({
-        pathname: path.join(__dirname, "../electron-browser/workbench/workbench.html"),
+        pathname: path.join(__dirname, "../../../auth/index.html"),
         protocol: "file:",
         slashes: true,
       })
