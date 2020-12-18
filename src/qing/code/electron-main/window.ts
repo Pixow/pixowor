@@ -11,6 +11,7 @@ export interface IWindowCreationOptions {
   height: number;
   x: number;
   y: number;
+  url: string;
 }
 
 export class CodeWindow extends Disposable implements ICodeWindow {
@@ -32,13 +33,7 @@ export class CodeWindow extends Disposable implements ICodeWindow {
     };
 
     this._win = new BrowserWindow(options);
-    this._win.loadURL(
-      url.format({
-        pathname: path.join(__dirname, "../../../auth/index.html"),
-        protocol: "file:",
-        slashes: true,
-      })
-    );
+    this._win.loadURL(config.url);
   }
 
   private _win: BrowserWindow;

@@ -7,12 +7,14 @@
   "author": "<mojixiang@apowo.com>",
   "license": "MIT",
   "scripts": {
-    "electron:local": "npm run electron:serve-tsc && npm run copyhtml && npx electron .",
-    "electron:serve-tsc": "tsc -p tsconfig.json",
-    "copyhtml": "copyfiles -f src/qing/code/electron-browser/workbench/**.html dist/qing/code/electron-browser/workbench",
-    "build:auth": "ng build auth --prod"
+    "build:workbench": "ng build workbench --base-href ./",
+    "build:workbench:dev": "npm run build:workbench -- -c dev",
+    "build:code": "tsc -p tsconfig.json",
+    "build:extensions:element-editor": "ng build element-editor --base-href ./",
+    "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron ."
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^10.0.1",
     "@angular-devkit/build-angular": "~0.1100.4",
     "@angular/cli": "^11.0.4",
     "@angular/common": "^11.0.4",
