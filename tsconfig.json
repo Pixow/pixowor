@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -13,7 +13,9 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@qing/*": ["src/qing/*"],
+      "src/*": ["src/*"],
+      "@workbench/*": ["src/workbench/*"],
+      "@environment/*": ["src/workbench/environments/*"]
     },
     "lib": [
       "ES2017",
@@ -23,11 +25,14 @@
       "DOM.Iterable"
     ]
   },
+  "files": [
+    "src/main.ts"
+  ],
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
   "exclude": [
-    "node_modules",
-    "src/qing/workbench/**/*"
+    "src/workbench",
+    "node_modules"
   ]
 }

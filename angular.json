@@ -5,23 +5,31 @@
   "projects": {
     "workbench": {
       "root": "",
-      "sourceRoot": "src/qing/workbench",
+      "sourceRoot": "src/workbench",
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "outputPath": "dist/qing/workbench",
-            "index": "src/qing/workbench/index.html",
-            "main": "src/qing/workbench/main.ts",
-            "tsConfig": "src/qing/workbench/tsconfig.app.json",
-            "polyfills": "src/qing/workbench/polyfills.ts",
+            "outputPath": "dist/workbench",
+            "index": "src/workbench/index.html",
+            "main": "src/workbench/main.ts",
+            "tsConfig": "src/workbench/tsconfig.app.json",
+            "polyfills": "src/workbench/polyfills.ts",
             "assets": [
-              "src/qing/workbench/assets"
+              "src/workbench/assets"
             ],
             "styles": [
+              "src/workbench/styles/reset.scss",
+              "src/workbench/styles/styles.scss",
               "node_modules/primeng/resources/themes/arya-blue/theme.css",
-              "node_modules/primeng/resources/primeng.min.css"
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -41,25 +49,8 @@
               "buildOptimizer": false,
               "fileReplacements": [
                 {
-                  "replace": "src/qing/workbench/environments/environment.ts",
-                  "with": "src/qing/workbench/environments/environment.dev.ts"
-                }
-              ]
-            },
-            "web": {
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "fileReplacements": [
-                {
-                  "replace": "src/qing/workbench/environments/environment.ts",
-                  "with": "src/qing/workbench/environments/environment.web.ts"
+                  "replace": "src/workbench/environments/environment.ts",
+                  "with": "src/workbench/environments/environment.dev.ts"
                 }
               ]
             },
@@ -75,8 +66,8 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src/qing/workbench/environments/environment.ts",
-                  "with": "src/qing/workbench/environments/environment.prod.ts"
+                  "replace": "src/workbench/environments/environment.ts",
+                  "with": "src/workbench/environments/environment.prod.ts"
                 }
               ]
             }
@@ -90,9 +81,6 @@
           "configurations": {
             "dev": {
               "browserTarget": "workbench:build:dev"
-            },
-            "web": {
-              "browserTarget": "workbench:build:web"
             },
             "production": {
               "browserTarget": "workbench:build:production"
@@ -419,5 +407,5 @@
       }
     }
   },
-  "defaultProject": ""
+  "defaultProject": "workbench"
 }
