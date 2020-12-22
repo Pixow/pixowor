@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { ErrorHandler, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxsModule } from "@ngxs/store";
@@ -9,6 +9,7 @@ import { CoreModule } from "./core/core.module";
 import { SigninModule } from "./pages/signin/signin.module";
 import { ResmanagerModule } from "./pages/resmanager/resmanager.module";
 import { AuthState } from "./store/auth/auth.state";
+import { ErrorHandlerService } from "./core/services/error-handler.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,12 @@ import { AuthState } from "./store/auth/auth.state";
     ReactiveFormsModule,
     NgxsModule.forRoot([AuthState]),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: ErrorHandlerService,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

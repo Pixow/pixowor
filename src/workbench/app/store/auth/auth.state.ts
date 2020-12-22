@@ -1,4 +1,4 @@
-import { IUser, User } from "src/workbench/app/models";
+import { IUser, User } from "@workbench/app/models";
 import { Action, NgxsOnInit, Select, Selector, State, StateContext } from "@ngxs/store";
 import { LocalStorageService, QingWebApiService } from "@workbench/app/core/services";
 import { Injectable } from "@angular/core";
@@ -22,10 +22,11 @@ export class AuthState implements NgxsOnInit {
   ngxsOnInit() {}
 
   @Action(AuthActions.EditorSignin)
-  editorSignin({ patchState }: StateContext<AuthStateModel>, { payload }: AuthActions.EditorSignin) {
+  async editorSignin({ patchState }: StateContext<AuthStateModel>, { payload }: AuthActions.EditorSignin) {
     const { account, password } = payload;
 
     return this.qingWebApiService.sdk.auth.editorSignin(account, password).then((res) => {
+      console.log("res: ", res);
       patchState({
         user: res.data,
       });

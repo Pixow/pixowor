@@ -8,10 +8,6 @@
     "main.ts",
     "polyfills.ts"
   ],
-  "include": [
-    "app/**/*",
-    "environments/*"
-  ],
   "exclude": [
     "**/*.spec.ts"
   ],

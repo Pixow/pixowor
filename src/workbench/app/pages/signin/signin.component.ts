@@ -1,8 +1,9 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Select, Store } from "@ngxs/store";
 import { AuthActions } from "@workbench/app/store/auth/auth.actions";
+import { BehaviorSubject } from "rxjs";
 
 interface Introduce {
   title: string;
@@ -19,7 +20,7 @@ export class SigninComponent {
   public introduces: Introduce[];
   public signinForm: FormGroup;
   public autoSignin: boolean;
-  public accountIsError = false;
+  public isSubmitted = false;
 
   constructor(private store: Store, private router: Router) {
     this.introduces = [
@@ -36,19 +37,51 @@ export class SigninComponent {
     ];
 
     this.signinForm = new FormGroup({
-      account: new FormControl(""),
-      password: new FormControl(""),
+      account: new FormControl("", Validators.required),
+      password: new FormControl("", Validators.required),
     });
   }
 
+  get account() {
+    return this.signinForm.get("account");
+  }
+
+  public isAccountInvalid() {
+    const account = this.signinForm.get("account");
+    return account.invalid && (account.dirty || account.touched);
+  }
+
+  get password() {
+    return this.signinForm.get("password");
+  }
+
+  public isPasswordInvalid() {
+    const password = this.signinForm.get("password");
+    return password.invalid && (password.dirty || password.touched);
+  }
+
   onSubmit() {
-    this.accountIsError = true;
+    this.isSubmitted = true;
+
     this.store.dispatch(new AuthActions.EditorSignin(this.signinForm.value)).subscribe(
       () => {
+        this.isSubmitted = false;
         this.router.navigateByUrl("resmanager");
       },
       (error) => {
-        console.log(error);
+        this.isSubmitted = false;
+        const { code, msg } = error.response.data;
+        if (code === 10101) {
+          this.account.setErrors({
+            notFound: true,
+          });
+        }
+
+        if (code === 10102) {
+          this.password.setErrors({
+            incorrect: true,
+          });
+        }
       }
     );
   }

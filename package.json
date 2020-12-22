@@ -8,10 +8,11 @@
   "license": "MIT",
   "scripts": {
     "start": "npm-run-all -p electron:serve ng:serve",
-    "electron:serve": "wait-on tcp:4200 && npm run build:code && npx electron . --serve",
+    "electron:serve": "wait-on tcp:4200 && npm run build:code:serve && npx electron . --serve",
     "ng:serve": "ng serve -c dev",
     "build:workbench": "ng build workbench --base-href ./",
     "build:workbench:dev": "npm run build:workbench -- -c dev",
+    "build:code:serve": "tsc -p tsconfig-serve.json",
     "build:code": "tsc -p tsconfig.json",
     "build:extensions:element-editor": "ng build element-editor --base-href ./",
     "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron ."
@@ -40,7 +41,9 @@
     "module-alias": "^2.2.2",
     "npm-run-all": "^4.1.5",
     "primeflex": "^2.0.0",
+    "primeicons": "^4.1.0",
     "primeng": "^11.0.0",
+    "rxjs": "^6.6.3",
     "typescript": "~4.0.2",
     "wait-on": "^5.2.0",
     "zone.js": "^0.11.3"
