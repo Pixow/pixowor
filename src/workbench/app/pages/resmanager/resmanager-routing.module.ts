@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Routes, RouterModule } from "@angular/router";
-import { ResmanagerComponent } from "./resmanager.component";
+import { GameManagerComponent } from "./components/game-manager/game-manager.component";
 
 const routes: Routes = [
   {
-    path: "resmanager",
-    component: ResmanagerComponent,
+    path: "game-manager",
+    component: GameManagerComponent,
   },
 ];
 

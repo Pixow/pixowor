@@ -1,0 +1,67 @@
+.qing {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+}
+
+.qing-after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.qing-game::after {
+  @extend .qing-after;
+  background: url("/assets/images/game.svg") center center;
+  background-size: 100%;
+}
+
+.qing-game:hover,
+.qing-game.active,
+.qing-game.focus {
+  background: url("/assets/images/game-active.svg") center center;
+  background-size: 100%;
+}
+
+.qing-plug::after {
+  @extend .qing-after;
+  background: url("/assets/images/plug.svg") center center;
+  background-size: 100%;
+}
+
+.qing-plug:hover,
+.qing-plug.active,
+.qing-plug.focus {
+  background: url("/assets/images/plug-active.svg") center center;
+  background-size: 100%;
+}
+
+.qing-modules::after {
+  @extend .qing-after;
+  background: url("/assets/images/modules.svg") center center;
+  background-size: 100%;
+}
+
+.qing-modules:hover,
+.qing-modules.active,
+.qing-modules.focus {
+  background: url("/assets/images/modules-active.svg") center center;
+  background-size: 100%;
+}
+
+.qing-group::after {
+  @extend .qing-after;
+  background: url("/assets/images/group.svg") center center;
+  background-size: 100%;
+}
+
+.qing-group:hover,
+.qing-group.active,
+.qing-group.focus {
+  background: url("/assets/images/group-active.svg") center center;
+  background-size: 100%;
+}

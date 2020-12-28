@@ -1,0 +1,6 @@
+<div class="tabview">
+  <ul class="tabview-nav" tabViewNav (onTabClick)="open($event.originalEvent, $event.tab)" [tabs]="tabs"></ul>
+  <div class="tabview-panels">
+    <ng-content></ng-content>
+  </div>
+</div>

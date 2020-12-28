@@ -1,0 +1,7 @@
+<ng-container *ngFor="let tab of tabs">
+  <li class="tabview-nav-item" [ngClass]="{selected: tab.selected}" (click)="clickTab($event, tab)">
+    <span>{{tab.header}}</span>
+
+    <span *ngIf="tab.closable" class="qing qing-close" (click)="clickClose($event, tab)"></span>
+  </li>
+</ng-container>

@@ -46,8 +46,9 @@ export class CodeApplication {
       width: SIGNIN_WINDOW.width,
       height: SIGNIN_WINDOW.height,
       entry: workbenchEntry,
-      frame: false,
+      frame: true,
       resizable: false,
+      menu: false,
     });
 
     if (serve) {

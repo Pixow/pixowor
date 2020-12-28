@@ -1,4 +1,19 @@
-<h1>资源管理器</h1>
+<div class="resmanager-container">
+  <div class="resmanager-nav">
+    <div class="resmanager-header-logo">
+      <img src="assets/images/logo.ico" />
+    </div>
 
-<button (click)="loadElementEditor()">加载物件编辑器</button>
+    <div class="resmanager-navigation">
+      <navigation></navigation>
+    </div>
 
+    <div class="resmanager-user-profile">
+      <user-profile></user-profile>
+    </div>
+  </div>
+
+  <div class="resmanager-body">
+    <router-outlet></router-outlet>
+  </div>
+</div>

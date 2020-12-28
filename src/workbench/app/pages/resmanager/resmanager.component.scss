@@ -1,0 +1,44 @@
+@import "styles/styles.scss";
+.resmanager-container {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .resmanager-nav {
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+
+    .resmanager-header-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 60px;
+      background-color: $primary-color;
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .resmanager-navigation {
+      height: calc(100% - 60px - 60px);
+    }
+
+    .resmanager-user-profile {
+      @extend .center-content;
+      width: 100%;
+      height: 60px;
+      background-color: $nav;
+    }
+  }
+
+  .resmanager-body {
+    width: calc(100% - 60px);
+    height: 100%;
+  }
+}

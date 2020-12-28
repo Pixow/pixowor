@@ -8,6 +8,18 @@ body {
 
 // ---------------- 主题颜色 ------------------
 $text-danger: #dc3545;
+$text-active: #4164e4;
+$primary-color: #4164e4;
+$primary-color-disabled: #5569b3;
+$content-background-color: #f2f5fa;
+$nav: #2f313a;
+$nav-active: #3f4250;
+
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .error-message {
   display: flex;

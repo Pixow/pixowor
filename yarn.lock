@@ -2607,6 +2607,11 @@ circular-dependency-plugin@5.2.0:
   resolved "https://registry.npm.taobao.org/circular-dependency-plugin/download/circular-dependency-plugin-5.2.0.tgz#e09dbc2dd3e2928442403e2d45b41cea06bc0a93"
   integrity sha1-4J28LdPikoRCQD4tRbQc6ga8CpM=
 
+class-transformer@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.npm.taobao.org/class-transformer/download/class-transformer-0.3.1.tgz#ee681a5439ff2230fc57f5056412d3befa70d597"
+  integrity sha1-7mgaVDn/IjD8V/UFZBLTvvpw1Zc=
+
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.npm.taobao.org/class-utils/download/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"
@@ -7158,10 +7163,10 @@ primeicons@^4.1.0:
   resolved "https://registry.npm.taobao.org/primeicons/download/primeicons-4.1.0.tgz#19eaef8ef5594b0006358ae64e738d03e167c9bb"
   integrity sha1-GervjvVZSwAGNYrmTnONA+Fnybs=
 
-primeng@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.npm.taobao.org/primeng/download/primeng-11.0.0.tgz#f6f8019602fa13c14041d4f2d4bba931587e0cbf"
-  integrity sha1-9vgBlgL6E8FAQdTy1LupMVh+DL8=
+primeng@^11.1.0-rc.1:
+  version "11.1.0-rc.1"
+  resolved "https://registry.npm.taobao.org/primeng/download/primeng-11.1.0-rc.1.tgz#a777f21ad46015879a4ba792506e37cee705266a"
+  integrity sha1-p3fyGtRgFYeaS6eSUG43zucFJmo=
   dependencies:
     tslib "^2.0.0"
 
@@ -7744,16 +7749,9 @@ rxjs@6.6.2:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@6.6.3, rxjs@^6.5.5, rxjs@^6.6.0:
+rxjs@6.6.3, rxjs@^6.5.5, rxjs@^6.6.0, rxjs@^6.6.3:
   version "6.6.3"
   resolved "https://registry.npm.taobao.org/rxjs/download/rxjs-6.6.3.tgz?cache=0&sync_timestamp=1607305563098&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frxjs%2Fdownload%2Frxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
-  integrity sha1-jKhGNcTaqQDA05Z6buesYCce5VI=
-  dependencies:
-    tslib "^1.9.0"
-
-rxjs@^6.6.3:
-  version "6.6.3"
-  resolved "https://registry.npm.taobao.org/rxjs/download/rxjs-6.6.3.tgz?cache=0&sync_timestamp=1607305607879&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frxjs%2Fdownload%2Frxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
   integrity sha1-jKhGNcTaqQDA05Z6buesYCce5VI=
   dependencies:
     tslib "^1.9.0"

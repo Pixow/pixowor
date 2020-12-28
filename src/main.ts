@@ -1,7 +1,7 @@
 import "module-alias/register";
 
 import { app, BrowserWindow } from "electron";
-import { CodeMain } from "./code/electron-main/main";
+import { CodeMain } from "./code/main";
 
 app.once("ready", () => {
   onReady();

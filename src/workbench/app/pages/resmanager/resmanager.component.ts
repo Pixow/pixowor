@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { Store } from "@ngxs/store";
 import { ElectronService } from "@workbench/app/core/services";
+import { GameActions } from "@workbench/app/store/game/game.actions";
 
 @Component({
   selector: "resmanager",
@@ -9,7 +10,7 @@ import { ElectronService } from "@workbench/app/core/services";
 })
 export class ResmanagerComponent {
   constructor(private electronService: ElectronService, private store: Store) {
-    // store.dispatch(new GameAc());
+    store.dispatch(new GameActions.ListMyGames());
   }
 
   public loadElementEditor(): void {

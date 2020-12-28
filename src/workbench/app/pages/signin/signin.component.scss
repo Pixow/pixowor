@@ -10,7 +10,7 @@
     background: #ffffff;
 
     .p-progressbar-value {
-      background: #4164e4;
+      background: $primary-color;
     }
   }
 }
@@ -100,7 +100,7 @@
       background-color: #fafbff;
 
       &:focus {
-        outline-color: #4164e4;
+        outline-color: $primary-color;
         border: none;
       }
 
@@ -131,7 +131,7 @@
     }
 
     &:disabled {
-      background-color: #5569b3;
+      background-color: $primary-color-disabled;
     }
   }
 }

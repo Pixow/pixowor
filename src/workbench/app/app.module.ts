@@ -9,7 +9,8 @@ import { CoreModule } from "./core/core.module";
 import { SigninModule } from "./pages/signin/signin.module";
 import { ResmanagerModule } from "./pages/resmanager/resmanager.module";
 import { AuthState } from "./store/auth/auth.state";
-import { ErrorHandlerService } from "./core/services/error-handler.service";
+import { GameState } from "./store/game/game.state";
+import { ErrorHandlerService } from "./core/services";
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,7 @@ import { ErrorHandlerService } from "./core/services/error-handler.service";
     ResmanagerModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgxsModule.forRoot([AuthState]),
+    NgxsModule.forRoot([AuthState, GameState]),
   ],
   providers: [
     {

@@ -18,8 +18,7 @@ export class LocalStorageService {
     if (!data) return null;
 
     try {
-      const ret = JSON.parse(data);
-      return ret;
+      return JSON.parse(data);
     } catch (error) {
       return data;
     }

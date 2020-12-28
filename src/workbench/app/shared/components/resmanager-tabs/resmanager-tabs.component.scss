@@ -1,0 +1,14 @@
+.tabs-container {
+  display: flex;
+  flex-direction: row;
+
+  .tabs-item {
+    width: 100px;
+    height: 60px;
+    text-align: center;
+
+    &.active {
+      background-color: royalblue;
+    }
+  }
+}

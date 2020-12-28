@@ -1,9 +1,10 @@
+import { plainToClass } from "class-transformer";
 import { IUser, User } from "@workbench/app/models";
 import { Action, NgxsOnInit, Select, Selector, State, StateContext } from "@ngxs/store";
-import { LocalStorageService, QingWebApiService } from "@workbench/app/core/services";
 import { Injectable } from "@angular/core";
 import { AuthActions } from "./auth.actions";
 import { WorkbenchConfig } from "@environment/environment";
+import { LocalStorageService, QingWebApiService } from "@workbench/app/core/services";
 
 export interface AuthStateModel {
   user: User;
@@ -19,19 +20,34 @@ export interface AuthStateModel {
 export class AuthState implements NgxsOnInit {
   constructor(private qingWebApiService: QingWebApiService, private localStorageService: LocalStorageService) {}
 
-  ngxsOnInit() {}
+  @Selector()
+  public static user(state: AuthStateModel) {
+    return plainToClass(User, state.user);
+  }
+
+  ngxsOnInit(ctx: StateContext<AuthStateModel>) {
+    ctx.dispatch(new AuthActions.InitUser());
+  }
+
+  @Action(AuthActions.InitUser)
+  async InitUser({ patchState }: StateContext<AuthStateModel>) {
+    patchState({
+      user: this.localStorageService.get(WorkbenchConfig.storagekeys.USER_STORAGE_KEY),
+    });
+  }
 
   @Action(AuthActions.EditorSignin)
   async editorSignin({ patchState }: StateContext<AuthStateModel>, { payload }: AuthActions.EditorSignin) {
     const { account, password } = payload;
 
     return this.qingWebApiService.sdk.auth.editorSignin(account, password).then((res) => {
-      console.log("res: ", res);
+      const { data } = res.data;
       patchState({
-        user: res.data,
+        user: data,
       });
 
-      this.localStorageService.set(WorkbenchConfig.storagekeys.USER_STORAGE_KEY, res.data);
+      this.localStorageService.set(WorkbenchConfig.storagekeys.USER_STORAGE_KEY, data);
+      // this.qingWebApiService.initialize()
     });
   }
 

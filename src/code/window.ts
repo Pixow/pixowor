@@ -2,7 +2,7 @@ import * as url from "url";
 import * as path from "path";
 import { BrowserWindow, BrowserWindowConstructorOptions, screen } from "electron";
 
-import { Disposable, IDisposable } from "src/base/common/lifecycle";
+import { Disposable, IDisposable } from "../base/common/lifecycle";
 
 export interface ICodeWindow extends IDisposable {}
 
@@ -14,6 +14,7 @@ export interface IWindowCreationOptions {
   entry: string;
   frame?: boolean;
   resizable?: boolean;
+  menu?: boolean;
 }
 
 export class CodeWindow extends Disposable implements ICodeWindow {
@@ -41,6 +42,11 @@ export class CodeWindow extends Disposable implements ICodeWindow {
     if (config.hasOwnProperty("resizable")) options.resizable = config.resizable;
 
     this._win = new BrowserWindow(options);
+
+    if (config.hasOwnProperty("menu") && !config.menu) {
+      this._win.setMenu(null);
+    }
+
     this._win.loadURL(config.entry);
   }
 
