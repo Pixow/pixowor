@@ -1,0 +1,30 @@
+.resmanager-filter {
+  display: flex;
+  flex-direction: row;
+
+  .search {
+    position: relative;
+    margin-right: 20px;
+    input {
+      width: 300px;
+      height: 30px;
+      font-size: 14px;
+    }
+    .pi-search {
+      position: absolute;
+      cursor: pointer;
+      right: 5px;
+      bottom: 6px;
+    }
+  }
+
+  .order-condition {
+  }
+}
+
+::ng-deep p-dropdown {
+  .p-dropdown {
+    height: 30px;
+    line-height: 12px;
+  }
+}

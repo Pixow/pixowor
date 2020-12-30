@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Store } from "@ngxs/store";
 import { ElectronService } from "@workbench/app/core/services";
 import { GameActions } from "@workbench/app/store/game/game.actions";
+import { WorkbenchConfig } from "@environment/environment";
 
 @Component({
   selector: "resmanager",

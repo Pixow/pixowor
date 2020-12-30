@@ -1,0 +1,16 @@
+<div class="resmanager-filter">
+  <div class="search">
+    <input placeholder="搜索" (ngModel)="(searchValue)" />
+    <i class="pi pi-search" (click)="search()"></i>
+  </div>
+
+  <div class="order-condition">
+    <span>排序:</span>
+    <p-dropdown
+      [options]="orderConditions"
+      [(ngModel)]="orderValue"
+      (onChange)="order()"
+      optionLabel="name"
+    ></p-dropdown>
+  </div>
+</div>

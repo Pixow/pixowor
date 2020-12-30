@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add primeng@latest -D
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @types/fs-extra -D
 
 PATH: 
   C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\apowo-pc\bin;C:\Python38\Scripts;C:\Python38;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit;C:\Program Files\Redis;C:\Program Files (x86)\Java\jdk1.8.0_231\bin;C:\Program Files (x86)\gradle-6.0\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Go\bin;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\nodejs;C:\Users\apowo-pc\.windows-build-tools\python27;C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\apowo-pc\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\apowo-pc\AppData\Roaming\npm\node_modules\.bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Program Files\TortoiseSVN\bin;C:\Users\apowo-pc\AppData\Local\Microsoft\WindowsApps;C:\Users\apowo-pc\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\apowo-pc\AppData\Local\Yarn\bin;C:\flutter\bin;C:\Users\apowo-pc\AppData\Local\Microsoft\WindowsApps;C:\Users\apowo-pc\go\bin;C:\Users\apowo-pc\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Users\apowo-pc\.dotnet\tools;C:\Users\apowo-pc\AppData\Local\Android\Sdk\tools;C:\Users\apowo-pc\AppData\Local\Android\Sdk\tools\bin;C:\Users\apowo-pc\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\MongoDB\Server\4.0\bin;F:\go-work\bin;C:\MinGW\bin;C:\Users\apowo-pc\AppData\Roaming\npm
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'F:\PixelPai\qing\node_modules\.cache\babel-webpack\789b99014611732d685b265c86b7f91b.json'
+  Error: EPERM: operation not permitted, copyfile 'C:\Users\apowo-pc\AppData\Local\Yarn\Cache\v4\npm-@angular-core-11.0.4-8eebb6a550dc24e4d53f642c8a78a0da2830cd5b\node_modules\@angular\core\package.json' -> 'F:\PixelPai\qing\node_modules\@angular\core\package.json'
 
 npm manifest: 
   {
@@ -56,12 +56,14 @@ npm manifest:
       "class-transformer": "^0.3.1",
       "copyfiles": "^2.4.1",
       "electron": "^11.1.0",
+      "fs-extra": "^9.0.1",
       "jasmine-core": "^3.6.0",
       "lodash-es": "^4.17.15",
       "module-alias": "^2.2.2",
       "npm-run-all": "^4.1.5",
       "primeflex": "^2.0.0",
       "primeicons": "^4.1.0",
+      "primeng": "^11.1.0-rc.1",
       "rxjs": "^6.6.3",
       "typescript": "~4.0.2",
       "wait-on": "^5.2.0",
@@ -2125,6 +2127,11 @@ Lockfile:
     version "0.4.0"
     resolved "https://registry.npm.taobao.org/asynckit/download/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
     integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
+  
+  at-least-node@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.npm.taobao.org/at-least-node/download/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
+    integrity sha1-YCzUtG6EStTv/JKoARo8RuAjjcI=
   
   atob@^2.1.2:
     version "2.1.2"
@@ -4267,6 +4274,16 @@ Lockfile:
       jsonfile "^4.0.0"
       universalify "^0.1.0"
   
+  fs-extra@^9.0.1:
+    version "9.0.1"
+    resolved "https://registry.npm.taobao.org/fs-extra/download/fs-extra-9.0.1.tgz#910da0062437ba4c39fedd863f1675ccfefcb9fc"
+    integrity sha1-kQ2gBiQ3ukw5/t2GPxZ1zP78ufw=
+    dependencies:
+      at-least-node "^1.0.0"
+      graceful-fs "^4.2.0"
+      jsonfile "^6.0.1"
+      universalify "^1.0.0"
+  
   fs-minipass@^1.2.5:
     version "1.2.7"
     resolved "https://registry.npm.taobao.org/fs-minipass/download/fs-minipass-1.2.7.tgz#ccff8570841e7fe4265693da88936c55aed7f7c7"
@@ -5375,6 +5392,15 @@ Lockfile:
     version "4.0.0"
     resolved "https://registry.npm.taobao.org/jsonfile/download/jsonfile-4.0.0.tgz?cache=0&sync_timestamp=1604161917513&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjsonfile%2Fdownload%2Fjsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
     integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
+    optionalDependencies:
+      graceful-fs "^4.1.6"
+  
+  jsonfile@^6.0.1:
+    version "6.1.0"
+    resolved "https://registry.npm.taobao.org/jsonfile/download/jsonfile-6.1.0.tgz?cache=0&sync_timestamp=1604161876665&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjsonfile%2Fdownload%2Fjsonfile-6.1.0.tgz#bc55b2634793c679ec6403094eb13698a6ec0aae"
+    integrity sha1-vFWyY0eTxnnsZAMJTrE2mKbsCq4=
+    dependencies:
+      universalify "^2.0.0"
     optionalDependencies:
       graceful-fs "^4.1.6"
   
@@ -7244,6 +7270,13 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/primeicons/download/primeicons-4.1.0.tgz#19eaef8ef5594b0006358ae64e738d03e167c9bb"
     integrity sha1-GervjvVZSwAGNYrmTnONA+Fnybs=
   
+  primeng@^11.1.0-rc.1:
+    version "11.1.0-rc.1"
+    resolved "https://registry.npm.taobao.org/primeng/download/primeng-11.1.0-rc.1.tgz#a777f21ad46015879a4ba792506e37cee705266a"
+    integrity sha1-p3fyGtRgFYeaS6eSUG43zucFJmo=
+    dependencies:
+      tslib "^2.0.0"
+  
   process-nextick-args@~2.0.0:
     version "2.0.1"
     resolved "https://registry.npm.taobao.org/process-nextick-args/download/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
@@ -9041,6 +9074,16 @@ Lockfile:
     version "0.1.2"
     resolved "https://registry.npm.taobao.org/universalify/download/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
     integrity sha1-tkb2m+OULavOzJ1mOcgNwQXvqmY=
+  
+  universalify@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.npm.taobao.org/universalify/download/universalify-1.0.0.tgz?cache=0&sync_timestamp=1603180004159&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Funiversalify%2Fdownload%2Funiversalify-1.0.0.tgz#b61a1da173e8435b2fe3c67d29b9adf8594bd16d"
+    integrity sha1-thodoXPoQ1sv48Z9Kbmt+FlL0W0=
+  
+  universalify@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.npm.taobao.org/universalify/download/universalify-2.0.0.tgz?cache=0&sync_timestamp=1603180004159&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Funiversalify%2Fdownload%2Funiversalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
+    integrity sha1-daSYTv7cSwiXXFrrc/Uw0C3yVxc=
   
   unpipe@1.0.0, unpipe@~1.0.0:
     version "1.0.0"

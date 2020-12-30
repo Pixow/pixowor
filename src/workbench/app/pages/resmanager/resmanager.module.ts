@@ -6,11 +6,19 @@ import { ResmanagerRoutingModule } from "./resmanager-routing.module";
 import { ResmanagerComponent } from "./resmanager.component";
 import { GameManagerComponent } from "./components/game-manager/game-manager.component";
 import { NavigationComponent } from "./components/navigation/navigation.component";
-import { PluginManagerComponent } from './components/plugin-manager/plugin-manager.component';
-import { GameItemComponent } from './components/game-item/game-item.component';
+import { PluginManagerComponent } from "./components/plugin-manager/plugin-manager.component";
+import { GameItemComponent } from "./components/game-item/game-item.component";
+import { ResmanagerFilterComponent } from "./components/resmanager-filter/resmanager-filter.component";
 
 @NgModule({
-  declarations: [ResmanagerComponent, NavigationComponent, GameManagerComponent, PluginManagerComponent, GameItemComponent],
+  declarations: [
+    ResmanagerComponent,
+    NavigationComponent,
+    GameManagerComponent,
+    PluginManagerComponent,
+    GameItemComponent,
+    ResmanagerFilterComponent,
+  ],
   imports: [SharedModule, RouterModule],
 })
 export class ResmanagerModule {}

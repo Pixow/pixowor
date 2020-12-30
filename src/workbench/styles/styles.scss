@@ -21,6 +21,12 @@ $nav-active: #3f4250;
   justify-content: center;
 }
 
+.text-overflow {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .error-message {
   display: flex;
   align-items: center;

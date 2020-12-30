@@ -2,3 +2,17 @@
   width: 100%;
   height: 100%;
 }
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+
+  .game-filter {
+    margin-bottom: 10px;
+  }
+  .game-list {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

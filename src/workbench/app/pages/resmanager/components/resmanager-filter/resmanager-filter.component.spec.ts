@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TemplateGameItemComponent } from './template-game-item.component';
+import { ResmanagerFilterComponent } from './resmanager-filter.component';
 
-describe('TemplateGameItemComponent', () => {
-  let component: TemplateGameItemComponent;
-  let fixture: ComponentFixture<TemplateGameItemComponent>;
+describe('ResmanagerFilterComponent', () => {
+  let component: ResmanagerFilterComponent;
+  let fixture: ComponentFixture<ResmanagerFilterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TemplateGameItemComponent ]
+      declarations: [ ResmanagerFilterComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TemplateGameItemComponent);
+    fixture = TestBed.createComponent(ResmanagerFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -47,7 +47,6 @@ export class AuthState implements NgxsOnInit {
       });
 
       this.localStorageService.set(WorkbenchConfig.storagekeys.USER_STORAGE_KEY, data);
-      // this.qingWebApiService.initialize()
     });
   }
 

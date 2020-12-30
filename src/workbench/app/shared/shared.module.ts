@@ -10,6 +10,7 @@ import { CheckboxModule } from "primeng/checkbox";
 import { CarouselModule } from "primeng/carousel";
 import { ProgressBarModule } from "primeng/progressbar";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { DropdownModule } from "primeng/dropdown";
 
 const COMPONENTS = [PageNotFoundComponent, ResmanagerTabsComponent, UserProfileComponent];
 
@@ -21,7 +22,7 @@ const QINGMODULES = [TabViewModule];
 
 const COMMONMODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
-const PRIMENGMODULES = [CheckboxModule, CarouselModule, ProgressBarModule, ProgressSpinnerModule];
+const PRIMENGMODULES = [CheckboxModule, CarouselModule, ProgressBarModule, ProgressSpinnerModule, DropdownModule];
 
 @NgModule({
   declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
