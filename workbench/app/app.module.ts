@@ -12,11 +12,11 @@ import { ResmanagerModule } from "./pages/resmanager/resmanager.module";
 import { AuthState } from "./store/auth/auth.state";
 import { GameState } from "./store/game/game.state";
 import { ErrorHandlerService } from "./core/services";
-import { SceneTreePluginModule } from "plugins/scene-tree-plugin";
-import { WorkbenchMenuPluginModule } from "plugins/workbench-menu-plugin";
+import { ActivitybarComponent } from "workbench/app/slots/activitybar/activitybar.component";
+import { ExplorerComponent } from "workbench/app/slots/explorer/explorer.component";
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ActivitybarComponent, ExplorerComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

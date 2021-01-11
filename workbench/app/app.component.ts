@@ -74,10 +74,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.lazyLoaderService.loadModule(() => {
     //   return import("plugins/signin-plugin/module").then((m) => m.SigninPluginModule);
     // });
-
-    this.lazyLoaderService.loadModule(() => {
-      return import("plugins/activitybar-plugin/module").then((m) => m.ActivitybarPluginModule);
-    });
   }
 
   ngAfterViewInit() {
@@ -85,11 +81,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     const workbenchMenu = new PuzzleBlock("workbenchMenu", this.workbenchMenu.nativeElement);
     puzzle.registPuzzleBlock(workbenchMenu);
 
-    const workbenchExtensions = new PuzzleBlock("workbenchExtensions", this.workbenchExtensions.nativeElement);
-    puzzle.registPuzzleBlock(workbenchExtensions);
-
     const workbenchActivitybar = new PuzzleBlock("workbenchActivitybar", this.workbenchActivitybar.nativeElement);
     puzzle.registPuzzleBlock(workbenchActivitybar);
+
+    const workbenchExtensions = new PuzzleBlock("workbenchExtensions", this.workbenchExtensions.nativeElement);
+    puzzle.registPuzzleBlock(workbenchExtensions);
 
     this.pluginList.forEach((item) => {
       const { name, plugin } = item;
