@@ -65,3 +65,29 @@
   background: url("/assets/images/group-active.svg") center center;
   background-size: 100%;
 }
+
+.qing-market::after {
+  @extend .qing-after;
+  background: url("/assets/images/market.svg") center center;
+  background-size: 100%;
+}
+
+.qing-market:hover,
+.qing-market:active,
+.qing-market:focus {
+  background: url("/assets/images/market-active.svg") center center;
+  background-size: 100%;
+}
+
+.qing-function::after {
+  @extend .qing-after;
+  background: url("/assets/images/function.svg") center center;
+  background-size: 100%;
+}
+
+.qing-function:hover,
+.qing-function:active,
+.qing-function:focus {
+  background: url("/assets/images/function-active.svg") center center;
+  background-size: 100%;
+}

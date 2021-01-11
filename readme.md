@@ -1,5 +1,6 @@
 #### Qing 编辑器架构
 
+```
 qing-editor
   |
   -----plugins // 内置扩展，angular-render-plugin
@@ -11,6 +12,8 @@ qing-editor
   |
   -----workbench  // 工作台，插件实装到工作台的插槽中
 
+```
+  
 qing-web-api-sdk // 图轻平台接口SDK
 
 

@@ -21,6 +21,9 @@
             "main": "workbench/main.ts",
             "tsConfig": "workbench/tsconfig.app.json",
             "polyfills": "workbench/polyfills.ts",
+            "assets": [
+              "workbench/assets"
+            ],
             "styles": [
               "workbench/styles/reset.scss",
               "workbench/styles/styles.scss",

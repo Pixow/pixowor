@@ -1,0 +1,9 @@
+.workbench {
+  height: 100%;
+}
+
+.workbench__container {
+  height: calc(100% - 30px);
+  display: flex;
+  flex-direction: row;
+}

@@ -13,6 +13,7 @@ import { AuthState } from "./store";
 import { DialogService } from "primeng/dynamicdialog";
 import { ResmanagerComponent } from "workbench/app/pages/resmanager/resmanager.component";
 import { SigninComponent } from "plugins/signin-plugin";
+import { ActivitybarPlugin } from "plugins/activitybar-plugin";
 
 @Component({
   selector: "app-root",
@@ -31,6 +32,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       name: "workbench-menu-plugin",
       plugin: WorkbenchMenuPlugin,
+    },
+    {
+      name: "activitybar-plugin",
+      plugin: ActivitybarPlugin,
     },
   ];
 
@@ -69,6 +74,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.lazyLoaderService.loadModule(() => {
     //   return import("plugins/signin-plugin/module").then((m) => m.SigninPluginModule);
     // });
+
+    this.lazyLoaderService.loadModule(() => {
+      return import("plugins/activitybar-plugin/module").then((m) => m.ActivitybarPluginModule);
+    });
   }
 
   ngAfterViewInit() {
@@ -79,6 +88,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     const workbenchExtensions = new PuzzleBlock("workbenchExtensions", this.workbenchExtensions.nativeElement);
     puzzle.registPuzzleBlock(workbenchExtensions);
 
+    const workbenchActivitybar = new PuzzleBlock("workbenchActivitybar", this.workbenchActivitybar.nativeElement);
+    puzzle.registPuzzleBlock(workbenchActivitybar);
+
     this.pluginList.forEach((item) => {
       const { name, plugin } = item;
       const block = puzzle.getPuzzleBlock(plugin.contributes);
@@ -86,9 +98,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       block.triggerPluginRender(plugin.renderTrigger);
     });
 
-    // puzzle.triggerPluginRender(SceneTreePlugin.renderTrigger);
-    // puzzle.use(MenuPlugin);
-    // puzzle.triggerPluginRender(MenuPlugin.renderTrigger);
     // puzzle.use(ActivitybarPlugin);
     // puzzle.triggerPluginRender(ActivitybarPlugin.renderTrigger);
     // puzzle.use(FileSystemPlugin);
