@@ -33,7 +33,7 @@ npm manifest:
       "build:workbench:dev": "npm run build:workbench -- -c dev",
       "build:code:serve": "tsc -p tsconfig-serve.json",
       "build:code": "tsc -p tsconfig.json",
-      "build:extensions:element-editor": "ng build element-editor --base-href ./",
+      "build:plugins:element-editor": "ng build element-editor --base-href ./",
       "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron ."
     },
     "devDependencies": {

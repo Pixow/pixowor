@@ -1,0 +1,137 @@
+@import "styles/styles.scss";
+
+::ng-deep p-carousel {
+  width: 100%;
+}
+
+::ng-deep p-progressbar {
+  .p-progressbar {
+    height: 6px;
+    background: #ffffff;
+
+    .p-progressbar-value {
+      background: $primary-color;
+    }
+  }
+}
+
+.signin-container {
+  margin: 0;
+  height: 100%;
+
+  .signin-introduces {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f5fa;
+  }
+}
+
+.signin-introduces-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h2 {
+    margin: 10px 0;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 3px;
+  }
+
+  p {
+    margin: 0px 0 20px 0;
+    color: #999999;
+    letter-spacing: 1px;
+  }
+
+  img {
+    width: 500px;
+    height: 370px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+}
+
+.signin-form {
+  padding: 130px 20px 0;
+
+  h1 {
+    font-size: 26px;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+  }
+
+  form {
+    position: relative;
+    width: 100%;
+    padding-top: 5px;
+
+    .signin-form-mask {
+      position: absolute;
+      top: -10px;
+      width: 100%;
+      height: calc(100% + 10px);
+      background-color: #ffffff;
+      opacity: 0.5;
+      z-index: 10;
+    }
+  }
+
+  form > fieldset {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    margin-bottom: 15px;
+
+    label {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      height: 40px;
+      padding-left: 5px;
+      border-radius: 3px;
+      font-size: 16px;
+      border: 1px solid #e8e9eb;
+      background-color: #fafbff;
+
+      &:focus {
+        outline-color: $primary-color;
+        border: none;
+      }
+
+      &.error {
+        border-color: $text-danger;
+      }
+    }
+
+    p {
+      margin-top: 5px;
+    }
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    height: 40px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4164e4;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border: none;
+    }
+
+    &:disabled {
+      background-color: $primary-color-disabled;
+    }
+  }
+}

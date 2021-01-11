@@ -1,0 +1,36 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js init
+
+PATH: 
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\apowo-pc\bin;C:\Python38\Scripts;C:\Python38;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit;C:\Program Files\Redis;C:\Program Files (x86)\Java\jdk1.8.0_231\bin;C:\Program Files (x86)\gradle-6.0\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Go\bin;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\apowo-pc\.windows-build-tools\python27;C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\apowo-pc\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\apowo-pc\AppData\Roaming\npm\node_modules\.bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Program Files\TortoiseSVN\bin;C:\Users\apowo-pc\AppData\Local\Microsoft\WindowsApps;C:\Users\apowo-pc\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\apowo-pc\AppData\Local\Yarn\bin;C:\flutter\bin;C:\Users\apowo-pc\AppData\Local\Microsoft\WindowsApps;C:\Users\apowo-pc\go\bin;C:\Users\apowo-pc\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Users\apowo-pc\.dotnet\tools;C:\Users\apowo-pc\AppData\Local\Android\Sdk\tools;C:\Users\apowo-pc\AppData\Local\Android\Sdk\tools\bin;C:\Users\apowo-pc\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\MongoDB\Server\4.0\bin;F:\go-work\bin;C:\MinGW\bin;C:\Users\apowo-pc\AppData\Roaming\npm
+
+Yarn version: 
+  1.13.0
+
+Node version: 
+  14.15.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:125657:13)
+      at Interface.emit (events.js:315:20)
+      at Interface._ttyWrite (readline.js:875:16)
+      at ReadStream.onkeypress (readline.js:213:10)
+      at ReadStream.emit (events.js:315:20)
+      at emitKeys (internal/readline/utils.js:345:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (readline.js:1144:36)
+      at ReadStream.emit (events.js:315:20)
+      at addChunk (_stream_readable.js:309:12)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
