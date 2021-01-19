@@ -1,12 +1,28 @@
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { Store } from "@ngxs/store";
+import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { ContextService } from "workbench/app/core/services";
 
 @Component({
   selector: "explorer",
   templateUrl: "./explorer.component.html",
   styleUrls: ["./explorer.component.scss"],
 })
-export class ExplorerComponent {
-  constructor(private store: Store, private router: Router) {}
+export class ExplorerComponent implements OnInit {
+  @ViewChild("anchor", { read: ViewContainerRef }) anchor: ViewContainerRef;
+  constructor(private contextService: ContextService) {}
+
+  ngOnInit() {
+    this.contextService.activityItem$.subscribe((item) => {
+      if (item) {
+        this.createComponent(item.id);
+      }
+    });
+  }
+
+  createComponent(pluginName: string) {
+    const componentFactory = this.contextService.getComponentFactory(pluginName);
+    if (componentFactory) {
+      this.anchor.clear();
+      this.anchor.createComponent(componentFactory);
+    }
+  }
 }

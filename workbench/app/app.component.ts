@@ -1,19 +1,21 @@
 import * as path from "path";
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
-import { Select } from "@ngxs/store";
-import { SceneTreePlugin } from "plugins/scene-tree-plugin";
-import { WorkbenchMenuPlugin } from "plugins/workbench-menu-plugin";
-import { Puzzle, PuzzleBlock } from "glue/puzzle";
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Type, ViewChild } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { LazyLoaderService, QingWebApiService } from "./core/services";
-import { IUser } from "./models";
-import { AuthState } from "./store";
+import { ContextService, LazyLoaderService, QingWebApiService } from "./core/services";
+// import { AuthState } from "./store";
 import { DialogService } from "primeng/dynamicdialog";
 import { ResmanagerComponent } from "workbench/app/pages/resmanager/resmanager.component";
-import { SigninComponent } from "plugins/signin-plugin";
-import { ActivitybarPlugin } from "plugins/activitybar-plugin";
+import { SigninComponent, SigninPlugin } from "plugins/signin-plugin";
+
+import { MenuComponent } from "workbench/app/slots/menu/menu.component";
+import { ActivitybarComponent } from "workbench/app/slots/activitybar/activitybar.component";
+
+import { LuapackageExplorerPlugin } from "plugins/luapackage-explorer-plugin";
+import { WorkbenchMenuPlugin } from "plugins/workbench-menu-plugin";
+import { MarketExplorerPlugin } from "plugins/market-explorer-plugin";
+
+// test dynamic load plugin
+import { ElementEditorPlugin } from "@qing/element-editor-plugin";
 
 @Component({
   selector: "app-root",
@@ -24,84 +26,77 @@ import { ActivitybarPlugin } from "plugins/activitybar-plugin";
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private _destroy: Subject<boolean> = new Subject<boolean>();
 
-  private pluginList = [
+  private plugins = [
+    // {
+    //   name: "scene-tree-plugin",
+    //   plugin: SceneTreePlugin,
+    // },
     {
-      name: "scene-tree-plugin",
-      plugin: SceneTreePlugin,
+      plugin: SigninPlugin,
     },
     {
       name: "workbench-menu-plugin",
       plugin: WorkbenchMenuPlugin,
     },
     {
-      name: "activitybar-plugin",
-      plugin: ActivitybarPlugin,
+      name: "market-explorer-plugin",
+      plugin: MarketExplorerPlugin,
+    },
+    {
+      name: "luapackage-explorer-plugin",
+      plugin: LuapackageExplorerPlugin,
+    },
+    {
+      plugin: ElementEditorPlugin,
     },
   ];
 
-  @Select(AuthState.user) user$: Observable<IUser>;
+  // @Select(AuthState.user) user$: Observable<IUser>;
 
   constructor(
     private qingWebApiService: QingWebApiService,
-    private router: Router,
-    private lazyLoaderService: LazyLoaderService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private contextService: ContextService
   ) {
-    this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
-      if (user) {
-        // 设置Axios Interceptors
-        this.qingWebApiService.setInterceptors(user);
-      }
-    });
+    // this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
+    //   if (user) {
+    //     // 设置Axios Interceptors
+    //     this.qingWebApiService.setInterceptors(user);
+    //   }
+    // });
   }
 
-  @ViewChild("workbenchMenu") workbenchMenu: ElementRef;
-  @ViewChild("workbenchActivitybar") workbenchActivitybar: ElementRef;
+  @ViewChild("workbenchMenu") workbenchMenu: ElementRef<MenuComponent>;
+  @ViewChild("workbenchActivitybar") workbenchActivitybar: ElementRef<ActivitybarComponent>;
   @ViewChild("workbenchExplorer") workbenchExplorer: ElementRef;
   @ViewChild("workbenchEditor") workbenchEditor: ElementRef;
   @ViewChild("workbenchExtensions") workbenchExtensions: ElementRef;
   @ViewChild("workbenchStatusbar") workbenchStatusbar: ElementRef;
 
   ngOnInit() {
-    this.lazyLoaderService.loadModule(() => {
-      return import("plugins/workbench-menu-plugin/module").then((m) => m.WorkbenchMenuPluginModule);
-    });
-
-    this.lazyLoaderService.loadModule(() => {
-      return import("plugins/scene-tree-plugin/module").then((m) => m.SceneTreePluginModule);
-    });
-
+    // this.lazyLoaderService.loadModule(() => {
+    //   return import("plugins/scene-tree-plugin/module").then((m) => m.SceneTreePluginModule);
+    // });
     // this.lazyLoaderService.loadModule(() => {
     //   return import("plugins/signin-plugin/module").then((m) => m.SigninPluginModule);
     // });
   }
 
   ngAfterViewInit() {
-    const puzzle = new Puzzle();
-    const workbenchMenu = new PuzzleBlock("workbenchMenu", this.workbenchMenu.nativeElement);
-    puzzle.registPuzzleBlock(workbenchMenu);
+    this.contextService.createPuzzle();
 
-    const workbenchActivitybar = new PuzzleBlock("workbenchActivitybar", this.workbenchActivitybar.nativeElement);
-    puzzle.registPuzzleBlock(workbenchActivitybar);
+    this.contextService.puzzle.registPuzzleSlot("workbenchMenu", this.workbenchMenu);
 
-    const workbenchExtensions = new PuzzleBlock("workbenchExtensions", this.workbenchExtensions.nativeElement);
-    puzzle.registPuzzleBlock(workbenchExtensions);
+    this.contextService.puzzle.registPuzzleSlot("workbenchActivitybar", this.workbenchActivitybar);
 
-    this.pluginList.forEach((item) => {
-      const { name, plugin } = item;
-      const block = puzzle.getPuzzleBlock(plugin.contributes);
-      block.use(plugin);
-      block.triggerPluginRender(plugin.renderTrigger);
+    this.contextService.puzzle.registPuzzleSlot("workbenchExtensions", this.workbenchExtensions.nativeElement);
+
+    this.plugins.forEach((item) => {
+      const { plugin } = item;
+      this.contextService.puzzle.use(plugin);
     });
 
-    // puzzle.use(ActivitybarPlugin);
-    // puzzle.triggerPluginRender(ActivitybarPlugin.renderTrigger);
-    // puzzle.use(FileSystemPlugin);
-    // puzzle.triggerPluginRender(FileSystemPlugin.renderTrigger);
-    // puzzle.use(DebugPlugin);
-    // puzzle.triggerPluginRender(DebugPlugin.renderTrigger);
-
-    this.registComponentEvent();
+    // this.registComponentEvent();
   }
 
   registComponentEvent() {
@@ -114,6 +109,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     workbenchMenu.addEventListener("openSigninDialog", () => {
       this.dialogService.open(SigninComponent, {});
     });
+  }
+
+  openDialog(componentType: Type<any>) {
+    this.dialogService.open(componentType, {});
   }
 
   ngOnDestroy() {

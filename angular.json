@@ -21,6 +21,7 @@
             "main": "workbench/main.ts",
             "tsConfig": "workbench/tsconfig.app.json",
             "polyfills": "workbench/polyfills.ts",
+            "preserveSymlinks": true,
             "assets": [
               "workbench/assets"
             ],

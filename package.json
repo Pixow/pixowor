@@ -15,7 +15,8 @@
     "build:launcher:serve": "tsc -p tsconfig-serve.json",
     "build:launcher": "tsc -p tsconfig.json",
     "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron .",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build:types": "node build-package.js"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^10.0.1",
@@ -48,6 +49,7 @@
     "jasmine-core": "^3.6.0",
     "lodash-es": "^4.17.15",
     "module-alias": "^2.2.2",
+    "ng-packagr": "^11.0.3",
     "npm-run-all": "^4.1.5",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
@@ -57,12 +59,11 @@
     "typescript": "~4.0.2",
     "wait-on": "^5.2.0",
     "wget-improved": "^3.2.1",
-    "zone.js": "^0.11.3"
+    "zone.js": "^0.11.3",
+    "ngx-build-plus": "^10.1.1"
   },
   "_moduleAliases": {
     "src": "dist"
   },
-  "dependencies": {
-    "ngx-build-plus": "^10.1.1"
-  }
+  "dependencies": {}
 }

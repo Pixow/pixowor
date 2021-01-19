@@ -1,11 +1,15 @@
 <div class="workbench">
-  <div class="workbench__menu" #workbenchMenu></div>
+  <div class="workbench__menu">
+    <menu #workbenchMenu></menu>
+  </div>
   <div class="workbench__container">
-    <div class="workbench__container__activitybar" #workbenchActivitybar>
-      <activitybar items="items"></activitybar>
+    <div class="workbench__container__activitybar">
+      <activitybar #workbenchActivitybar></activitybar>
     </div>
 
-    <div class="workbench__container__explorer" #workbenchExplorer></div>
+    <div class="workbench__container__explorer">
+      <explorer #workbenchExplorer></explorer>
+    </div>
 
     <div class="workbench__container__editor" #workbenchEditor></div>
 

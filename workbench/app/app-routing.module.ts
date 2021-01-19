@@ -4,17 +4,12 @@ import { AuthGuardService } from "./core/services/auth-guard.service";
 import { GameManagerComponent } from "./pages/resmanager/components/game-manager/game-manager.component";
 import { PluginManagerComponent } from "./pages/resmanager/components/plugin-manager/plugin-manager.component";
 import { ResmanagerComponent } from "./pages/resmanager/resmanager.component";
-import { SigninComponent } from "./pages/signin/signin.component";
 
 const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
     redirectTo: "resmanager",
-  },
-  {
-    path: "signin",
-    component: SigninComponent,
   },
   {
     path: "resmanager",

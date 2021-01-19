@@ -10,15 +10,19 @@ import { Observable } from "rxjs";
 
 @Injectable()
 export class QingWebApiService {
+  static instance: QingWebApiService;
+
   private _sdk: IQingWebApiSdk;
   public get sdk() {
     return this._sdk;
   }
 
-  constructor(private localStorageService: LocalStorageService, private router: Router) {
+  constructor(private router: Router) {
     // if (WorkbenchConfig.environment === "LOCAL") {
     this._sdk = new QingWebApiSdk(Environment.Alpha);
     // }
+
+    QingWebApiService.instance = this;
   }
 
   setInterceptors(user: IUser) {

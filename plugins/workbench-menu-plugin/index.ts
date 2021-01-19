@@ -1,21 +1,26 @@
-import { Plugin } from "glue/core/plugin";
-import { Puzzle, PuzzleBlock } from "glue/puzzle";
+import { ContextService } from "workbench/app/core/services";
 
-function install(puzzle: PuzzleBlock) {
-  puzzle.on(this.renderTrigger, ({ el }) => {
-    const element = document.createElement("workbench-menu");
+function install(context: ContextService) {
+  // const element = document.createElement("workbench-menu");
+  // el.appendChild(element);
 
-    el.appendChild(element);
-  });
+  // context.registPlugin(WorkbenchMenuPlugin.name, WorkbenchMenuPlugin.contributes)
+
+  context
+    .loadModule(WorkbenchMenuPlugin.name, () => {
+      return import("./src/module").then((m) => m.WorkbenchMenuPluginModule);
+    })
+    .then((data) => {
+      context.triggerRender(WorkbenchMenuPlugin.name);
+    });
 }
 
-export const WorkbenchMenuPlugin: Plugin = {
+export const WorkbenchMenuPlugin = {
   name: "workbench-menu-plugin",
   displayName: "工作区菜单",
-  renderTrigger: "render-workbench-menu",
   contributes: "workbenchMenu",
   install,
 };
 
 export { WorkbenchMenuComponent } from "./src/workbench-menu/workbench-menu.component";
-export { WorkbenchMenuPluginModule } from "./module";
+export { WorkbenchMenuPluginModule } from "./src/module";

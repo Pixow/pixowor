@@ -19,6 +19,7 @@
       "glue": ["glue/*"],
       "workbench": ["workbench/*"],
       "launcher": ["launcher/*"],
+      "types": ["types/*"]
     },
     "lib": [
       "ES2017",
@@ -33,8 +34,7 @@
     "launcher/**/*",
     "workbench/**/*",
     "plugins/**/*",
-    "glue/**/*"
-, "main.ts"  ],
+    "glue/**/*"  ],
   "exclude": [
     "node_modules",
   ]

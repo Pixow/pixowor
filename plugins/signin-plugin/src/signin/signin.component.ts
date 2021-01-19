@@ -1,9 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
 import { Select, Store } from "@ngxs/store";
-import { AuthActions } from "workbench/app/store/auth/auth.actions";
-import { BehaviorSubject } from "rxjs";
+import { AuthActions } from "../store/auth.actions";
+import { DynamicDialogRef } from "primeng/dynamicdialog";
 
 interface Introduce {
   title: string;
@@ -22,7 +21,7 @@ export class SigninComponent {
   public autoSignin: boolean;
   public isSubmitted = false;
 
-  constructor(private store: Store, private router: Router) {
+  constructor(private store: Store, private ref: DynamicDialogRef) {
     this.introduces = [
       {
         title: "快速制作",
@@ -61,12 +60,13 @@ export class SigninComponent {
   }
 
   onSubmit() {
+    console.log("submit");
     this.isSubmitted = true;
 
     this.store.dispatch(new AuthActions.EditorSignin(this.signinForm.value)).subscribe(
       () => {
         this.isSubmitted = false;
-        this.router.navigateByUrl("resmanager");
+        this.ref.close();
       },
       (error) => {
         this.isSubmitted = false;

@@ -8,3 +8,9 @@ export interface OrderCondition {
   field: string;
   order: Order;
 }
+
+export interface ActivitybarItem {
+  pluginName: string;
+  title: string;
+  icon: string;
+}

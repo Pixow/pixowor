@@ -1,15 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { MenuItem } from "primeng/api";
+import { WorkbenchMenu } from "types/index";
 
 @Component({
   templateUrl: "./workbench-menu.component.html",
   styleUrls: ["./workbench-menu.component.scss"],
 })
-export class WorkbenchMenuComponent implements OnInit {
+export class WorkbenchMenuComponent implements OnInit, WorkbenchMenu {
   items: MenuItem[];
 
-  @Output() openGameResManager: EventEmitter<any> = new EventEmitter();
-  @Output() openSigninDialog: EventEmitter<any> = new EventEmitter();
+  @Output() open: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -26,13 +26,13 @@ export class WorkbenchMenuComponent implements OnInit {
           {
             label: "登录",
             command: () => {
-              this.openSigninDialog.emit();
+              this.open.emit("signin-plugin");
             },
           },
           {
             label: "打开游戏",
             command: () => {
-              this.openGameResManager.emit();
+              this.open.emit("resmanager");
             },
           },
           { label: "最近打开" },

@@ -1,35 +1,78 @@
-import { Context } from "./core/context";
-import { PuzzleView } from "./view/puzzle-view";
+import { Component, ElementRef, Type } from "@angular/core";
+import { IPlugin } from "types/index";
+import { ContextService } from "workbench/app/core/services";
+
+export enum WORKBENCH_PUZZLE_BLOCK {
+  WORKBENCH_ACTIVITYBAR = "WorkbenchActivitybar",
+  WORKBENCH_EXPLORER = "WorkbenchExplorer",
+}
 
 export class Puzzle {
-  blocks: Map<string, PuzzleBlock> = new Map();
+  slots: Map<string, PuzzleSlot> = new Map();
+  plugins: Map<string, IPlugin> = new Map();
 
-  constructor() {}
+  constructor(private contextService: ContextService) {}
 
-  registPuzzleBlock(block: PuzzleBlock) {
-    if (!this.blocks.has(block.id)) {
-      this.blocks.set(block.id, block);
+  registPuzzleSlot(id: string, container: ElementRef<any>) {
+    const block = new PuzzleSlot(id, container);
+    if (!this.slots.has(block.id)) {
+      this.slots.set(block.id, block);
     }
   }
 
-  getPuzzleBlock(id: string) {
-    return this.blocks.get(id);
+  getPuzzleSlot(id: string) {
+    return this.slots.get(id);
+  }
+
+  getPlugin(pluginName: string) {
+    return this.plugins.get(pluginName);
+  }
+
+  use(plugin: IPlugin) {
+    if (plugin.name && this.plugins.has(plugin.name)) {
+      throw new Error(`Plugin ${plugin.name} already in use`);
+    }
+
+    this.plugins.set(plugin.name, plugin);
+
+    // 注入 workbench 上下文
+    plugin.install(this.contextService);
+
+    if (!plugin.contributes) return;
+
+    if (plugin.contributes && typeof plugin.contributes === "string") {
+      const slot = this.slots.get(plugin.contributes);
+    } else {
+      for (const slotName of Object.keys(plugin.contributes)) {
+        const config = plugin.contributes[slotName];
+        const slot = this.slots.get(slotName);
+
+        if (slot) {
+          slot.injectConfig(config);
+        }
+      }
+    }
   }
 }
 
-export class PuzzleBlock extends Context {
+export class PuzzleSlot {
   id: string;
-  container: HTMLElement;
+  container: any;
+  config = {};
 
-  constructor(id: string, container: HTMLElement) {
-    super(id);
+  items = [];
+
+  constructor(id: string, container: ElementRef<any>) {
     this.id = id;
     this.container = container;
   }
 
-  triggerPluginRender(renderTrigger: string) {
-    this.trigger(renderTrigger, {
-      el: this.container,
+  injectConfig(config) {
+    // this.config = Object.assign(this.config, config);
+    this.items = this.items.concat(config);
+
+    setTimeout(() => {
+      this.container.items = this.items;
     });
   }
 }
