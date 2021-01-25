@@ -2,7 +2,7 @@ import { Component, ComponentFactoryResolver, EventEmitter, OnInit, ViewChild, V
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
 import { DialogService } from "primeng/dynamicdialog";
-import { WorkbenchMenu } from "types/index";
+import { WorkbenchMenu } from "workbench/puzzle";
 import { ContextService } from "workbench/app/core/services";
 
 @Component({

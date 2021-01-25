@@ -1,12 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { MenuItem } from "primeng/api";
-import { WorkbenchMenu } from "types/index";
 
 @Component({
   templateUrl: "./workbench-menu.component.html",
   styleUrls: ["./workbench-menu.component.scss"],
 })
-export class WorkbenchMenuComponent implements OnInit, WorkbenchMenu {
+export class WorkbenchMenuComponent implements OnInit {
   items: MenuItem[];
 
   @Output() open: EventEmitter<any> = new EventEmitter();

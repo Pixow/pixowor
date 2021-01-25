@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Environment, IQingWebApiSdk, QingWebApiSdk } from "qing-web-api-sdk";
 
-import { LocalStorageService } from "./local-storage.service";
 import { IUser } from "workbench/app/models";
 import { Router } from "@angular/router";
-import { Select, Store } from "@ngxs/store";
 // import { AuthState } from "workbench/app/store/auth/auth.state";
-import { Observable } from "rxjs";
 
+// @dynamic
 @Injectable()
 export class QingWebApiService {
   static instance: QingWebApiService;

@@ -1,6 +1,16 @@
-import { Component, ElementRef, Type } from "@angular/core";
-import { IPlugin } from "types/index";
+import { Component, ElementRef, EventEmitter, Type } from "@angular/core";
 import { ContextService } from "workbench/app/core/services";
+
+export interface IPlugin {
+  name: string;
+  displayName: string;
+  contributes?: any;
+  install: (context: any, options?: any) => void;
+}
+
+export interface WorkbenchMenu {
+  open: EventEmitter<any>;
+}
 
 export enum WORKBENCH_PUZZLE_BLOCK {
   WORKBENCH_ACTIVITYBAR = "WorkbenchActivitybar",

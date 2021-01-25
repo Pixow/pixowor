@@ -1,4 +1,4 @@
-import { IPlugin } from "types/index";
+import { IPlugin } from "workbench/puzzle";
 import { ContextService } from "workbench/app/core/services";
 
 function install(context: ContextService) {

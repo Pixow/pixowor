@@ -16,7 +16,7 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "outputPath": "dist/editor",
+            "outputPath": "dist/workbench",
             "index": "workbench/index.html",
             "main": "workbench/main.ts",
             "tsConfig": "workbench/tsconfig.app.json",
@@ -39,7 +39,10 @@
                 "workbench"
               ]
             },
-            "scripts": [],
+            "scripts": [
+              "node_modules/systemjs/dist/system.js",
+              "node_modules/systemjs/dist/extras/amd.js"
+            ],
             "customWebpackConfig": {
               "path": "./angular.webpack.js"
             }

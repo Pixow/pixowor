@@ -34,6 +34,7 @@ export class CodeApplication {
     if (serve) {
       workbenchEntry = "http://localhost:4200";
     } else {
+      // TODO: change this entry
       workbenchEntry = url.format({
         pathname: path.join(__dirname, "../../editor/index.html"),
         protocol: "file:",

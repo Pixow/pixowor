@@ -1,12 +1,29 @@
+import * as fsa from "fs-extra";
+
 import { Compiler, Injectable, Injector, Type, NgModuleFactory, ComponentFactory } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { QingWebApiService } from "workbench/app/core/services";
-import { ActivitybarItem } from "workbench/types/typing";
-import { IContextService, AppConfig } from "@qing/types";
-import { Puzzle } from "glue/puzzle";
+import { ActivitybarItem, AppConfig } from "workbench/types/typing";
+import { Puzzle } from "workbench/puzzle";
 import { DynamicInjector } from "workbench/app/models";
 import { LocalStorageService } from "workbench/app/core/services";
 import { WorkbenchConfig } from "workbench/environments/environment";
+import { ElectronService } from "./electron.service";
+import { HttpClient } from "@angular/common/http";
+import { PluginConfig } from "workbench/app/models";
+
+export interface IContextService {
+  activityItem$: any;
+  pluginComponentFactories: any;
+
+  initial(): void;
+
+  setActivitybar(item: any): void;
+
+  getComponentFactory(moduleName: string): any;
+
+  loadModule(moduleName: string, path: any): void;
+}
 
 @Injectable()
 export class ContextService implements IContextService {
@@ -15,8 +32,18 @@ export class ContextService implements IContextService {
   pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponents = new Map<string, Type<any>>();
 
-  constructor(private compiler: Compiler, private injector: Injector) {
+  constructor(
+    private http: HttpClient,
+    private compiler: Compiler,
+    private electronService: ElectronService,
+    private injector: Injector
+  ) {
     console.log("ContextService init");
+  }
+
+  public getPluginConfigs() {
+    return this.http.get<PluginConfig[]>("plugins-repo/plugins.config.json");
+    // fsa.readJson(this.electronService.appPath);
   }
 
   public initial() {

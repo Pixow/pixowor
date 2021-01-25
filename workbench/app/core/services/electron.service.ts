@@ -32,7 +32,7 @@ export class ElectronService {
     }
   }
 
-  openPlugin(name: string) {
-    this.ipcRenderer.send(`open-${name}`);
+  public get appPath() {
+    return this.remote.app.getAppPath();
   }
 }

@@ -2,12 +2,12 @@
   "name": "qing",
   "version": "0.0.1",
   "description": "图轻新版编辑器, 插件化架构设计",
-  "main": "dist/main.js",
+  "main": "lib/qing.bundle.js",
   "repository": "git@code.apowo.com:PixelPai/qing.git",
   "author": "<mojixiang@apowo.com>",
   "license": "MIT",
   "scripts": {
-    "start": "npm-run-all -p electron:serve ng:serve",
+    "start": "npm-run-all -p electron:serve ng:serve --proxy-config=proxy.conf.json",
     "electron:serve": "wait-on tcp:4200 && npm run build:launcher:serve && npx electron . --serve",
     "ng:serve": "ng serve -c dev",
     "build:workbench": "ng build workbench --base-href ./",
@@ -16,7 +16,7 @@
     "build:launcher": "tsc -p tsconfig.json",
     "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron .",
     "e2e": "ng e2e",
-    "build:types": "node build-package.js"
+    "build:package": "rimraf lib && npx rollup -c"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^10.0.1",
@@ -34,6 +34,8 @@
     "@angular/platform-browser-dynamic": "^11.0.4",
     "@angular/router": "^11.0.4",
     "@ngxs/store": "^3.7.1",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@types/jasmine": "^3.6.2",
     "@types/jest": "^26.0.19",
     "@types/lodash-es": "^4.17.3",
@@ -50,20 +52,26 @@
     "lodash-es": "^4.17.15",
     "module-alias": "^2.2.2",
     "ng-packagr": "^11.0.3",
+    "ngx-build-plus": "^10.1.1",
     "npm-run-all": "^4.1.5",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
     "primeng": "^11.1.0-rc.1",
     "protractor": "^7.0.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.38.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript2": "^0.29.0",
     "rxjs": "^6.6.3",
     "typescript": "~4.0.2",
     "wait-on": "^5.2.0",
     "wget-improved": "^3.2.1",
-    "zone.js": "^0.11.3",
-    "ngx-build-plus": "^10.1.1"
+    "zone.js": "^0.11.3"
   },
   "_moduleAliases": {
     "src": "dist"
   },
-  "dependencies": {}
+  "dependencies": {
+    "systemjs": "^6.8.3"
+  }
 }

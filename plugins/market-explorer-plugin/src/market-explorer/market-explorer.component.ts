@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 import { MarketComponent } from "../../type";
 import { MarketState } from "../store/market.state";
 import { last } from "lodash-es";
-import { AppConfig } from "@qing/types";
+import { AppConfig } from "workbench/types/typing";
 
 // export enum ComponentType {
 //   All = "",

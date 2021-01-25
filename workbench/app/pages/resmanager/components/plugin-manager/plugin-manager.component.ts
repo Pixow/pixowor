@@ -23,8 +23,4 @@ export class PluginManagerComponent implements OnInit {
   constructor(private electronService: ElectronService) {}
 
   ngOnInit(): void {}
-
-  openPlugin(name: string) {
-    this.electronService.openPlugin(name);
-  }
 }

@@ -1,5 +1,16 @@
 import * as path from "path";
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Type, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Type,
+  ViewChild,
+  Compiler,
+  Injector,
+  ViewContainerRef,
+} from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { ContextService, LazyLoaderService, QingWebApiService } from "./core/services";
 // import { AuthState } from "./store";
@@ -9,13 +20,34 @@ import { SigninComponent, SigninPlugin } from "plugins/signin-plugin";
 
 import { MenuComponent } from "workbench/app/slots/menu/menu.component";
 import { ActivitybarComponent } from "workbench/app/slots/activitybar/activitybar.component";
+import { DynamicInjector, PluginConfig } from "workbench/app/models";
 
 import { LuapackageExplorerPlugin } from "plugins/luapackage-explorer-plugin";
 import { WorkbenchMenuPlugin } from "plugins/workbench-menu-plugin";
 import { MarketExplorerPlugin } from "plugins/market-explorer-plugin";
 
 // test dynamic load plugin
-import { ElementEditorPlugin } from "@qing/element-editor-plugin";
+import { ModuleLoader } from "./module-loader";
+
+import * as angularCore from "@angular/core";
+import * as angularCommon from "@angular/common";
+import * as angularCommonHttp from "@angular/common/http";
+import * as angularForms from "@angular/forms";
+import * as angularAnimations from "@angular/animations";
+import * as angularPlatformBrowser from "@angular/platform-browser";
+import * as angularPlatformBrowserDynamic from "@angular/platform-browser-dynamic";
+
+const loader = new ModuleLoader();
+
+loader.register({
+  "@angular/core": angularCore,
+  "@angular/common": angularCommon,
+  "@angular/common/http": angularCommonHttp,
+  "@angular/forms": angularForms,
+  "@angular/animations": angularAnimations,
+  "@angular/platform-browser": angularPlatformBrowser,
+  "@angular/platform-browser-dynamic": angularPlatformBrowserDynamic,
+});
 
 @Component({
   selector: "app-root",
@@ -24,6 +56,7 @@ import { ElementEditorPlugin } from "@qing/element-editor-plugin";
   providers: [DialogService],
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild("content", { read: ViewContainerRef }) content: ViewContainerRef;
   private _destroy: Subject<boolean> = new Subject<boolean>();
 
   private plugins = [
@@ -46,9 +79,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       name: "luapackage-explorer-plugin",
       plugin: LuapackageExplorerPlugin,
     },
-    {
-      plugin: ElementEditorPlugin,
-    },
   ];
 
   // @Select(AuthState.user) user$: Observable<IUser>;
@@ -56,7 +86,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private qingWebApiService: QingWebApiService,
     private dialogService: DialogService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private compiler: Compiler,
+    private injector: Injector
   ) {
     // this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
     //   if (user) {
@@ -91,12 +123,34 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.contextService.puzzle.registPuzzleSlot("workbenchExtensions", this.workbenchExtensions.nativeElement);
 
-    this.plugins.forEach((item) => {
-      const { plugin } = item;
-      this.contextService.puzzle.use(plugin);
-    });
+    // this.plugins.forEach((item) => {
+    //   const { plugin } = item;
+    //   this.contextService.puzzle.use(plugin);
+    // });
 
     // this.registComponentEvent();
+
+    this.loadPlugins();
+  }
+
+  private async loadPlugins() {
+    const plugins = await this.contextService.getPluginConfigs().toPromise();
+    plugins.forEach((widget) => this.createPlugin(widget));
+  }
+
+  private async createPlugin(plugin: PluginConfig) {
+    const module = await loader.load(plugin.moduleBundlePath);
+
+    const moduleFactory = await this.compiler.compileModuleAsync(module[plugin.moduleName]);
+
+    const map = new WeakMap();
+    map.set(ContextService, this.contextService);
+    const moduleRef = moduleFactory.create(new DynamicInjector(this.injector, map));
+
+    const componentProvider = moduleRef.injector.get(plugin.name);
+    const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(componentProvider);
+
+    this.content.createComponent(componentFactory);
   }
 
   registComponentEvent() {
