@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 // 不能使用 workbench，打包的时候会引入workbench/service/index.ts导入的所有模块
 import { QingWebApiService } from "./qing-web-api.service";
 import { LocalStorageService } from "./local-storage.service";
-import { ActivitybarItem, AppConfig } from "workbench/types/typing";
+import { AppConfig } from "workbench/types/typing";
 import { Puzzle } from "workbench/puzzle";
 import { DynamicInjector } from "workbench/app/models/dynamic-injector";
 import { WorkbenchConfig } from "workbench/environments/environment";
@@ -56,7 +56,7 @@ export class ContextService implements IContextService {
     return LocalStorageService.instance;
   }
 
-  public setActivitybar(item: ActivitybarItem) {
+  public setActivitybar(item: any) {
     this.activityItem$.next(item);
   }
 

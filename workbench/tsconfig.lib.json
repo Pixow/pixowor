@@ -1,0 +1,21 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "emitDeclarationOnly": true,
+    "declaration": true,
+  },
+  "files": [
+   "public_api.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts"
+  ],
+  "angularCompilerOptions": {
+    "enableIvy": false,
+    "preserveSymlinks": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "preserveWhitespaces": true,
+  }
+}

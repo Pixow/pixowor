@@ -12,13 +12,12 @@ import json from '@rollup/plugin-json';
 export default {
   input: 'public_api.ts',
   output: {
-    file: 'lib/qing-workbench.bundle.js',
+    file: 'lib/public_api.d.ts',
   },
   plugins: [
     nodeResolve(),
     typescript({
-      typescript: require('typescript'),
-      module: "ES2015"
+      tsconfig: "./tsconfig.lib.json"
     }),
     commonjs(),
     json(),

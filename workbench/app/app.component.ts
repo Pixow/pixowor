@@ -143,6 +143,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private async createPlugin(plugin: PluginConfig) {
     const module = await loader.load(plugin.moduleBundlePath);
+
+    this.registSlotUi(module.config);
     console.log("🚀 ~ file: app.component.ts ~ line 153 ~ AppComponent ~ module", module);
 
     const moduleFactory = await this.compiler.compileModuleAsync(module[plugin.moduleName]);
@@ -156,6 +158,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(componentProvider);
 
     this.content.createComponent(componentFactory);
+  }
+
+  registSlotUi(config) {
+    for (const key of Object.keys(config.contributes)) {
+      const slot = this.contextService.puzzle.getPuzzleSlot(key);
+
+      if (slot) {
+        const items = config.contributes[key];
+        slot.container.addItems(items);
+      }
+    }
   }
 
   registComponentEvent() {

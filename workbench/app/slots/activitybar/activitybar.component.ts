@@ -1,18 +1,18 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
-import { ActivitybarItem } from "workbench/types/typing";
 import { ContextService } from "workbench/app/core/services";
+import { ActivitybarItem, Slot } from "workbench/app/models/slot";
 
 @Component({
   selector: "activitybar",
   templateUrl: "./activitybar.component.html",
   styleUrls: ["./activitybar.component.scss"],
 })
-export class ActivitybarComponent implements AfterViewInit {
-  @Input() items: ActivitybarItem[] = [];
-
-  constructor(private contextService: ContextService) {}
+export class ActivitybarComponent extends Slot implements AfterViewInit {
+  constructor(private contextService: ContextService) {
+    super();
+  }
 
   ngAfterViewInit() {}
 
