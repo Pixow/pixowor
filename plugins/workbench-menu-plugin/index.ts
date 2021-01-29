@@ -3,16 +3,14 @@ import { ContextService } from "workbench/app/core/services";
 function install(context: ContextService) {
   // const element = document.createElement("workbench-menu");
   // el.appendChild(element);
-
   // context.registPlugin(WorkbenchMenuPlugin.name, WorkbenchMenuPlugin.contributes)
-
-  context
-    .loadModule(WorkbenchMenuPlugin.name, () => {
-      return import("./src/module").then((m) => m.WorkbenchMenuPluginModule);
-    })
-    .then((data) => {
-      context.triggerRender(WorkbenchMenuPlugin.name);
-    });
+  // context
+  //   .loadModule(WorkbenchMenuPlugin.name, () => {
+  //     return import("./src/module").then((m) => m.WorkbenchMenuPluginModule);
+  //   })
+  //   .then((data) => {
+  //     context.triggerRender(WorkbenchMenuPlugin.name);
+  //   });
 }
 
 export const WorkbenchMenuPlugin = {

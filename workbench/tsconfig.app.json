@@ -11,7 +11,7 @@
     "**/*.spec.ts"
   ],
   "angularCompilerOptions": {
-    "enableIvy": true,
+    "enableIvy": false,
     "preserveSymlinks": true,
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,

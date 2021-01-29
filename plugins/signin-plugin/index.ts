@@ -8,10 +8,9 @@ function install(context: IContextService) {
   // const element = document.createElement("workbench-menu");
   // el.appendChild(element);
   // context.registEvent("openSignin")
-
-  context.loadModule(SigninPlugin.name, () => {
-    return import("./src/module").then((m) => m.SigninPluginModule);
-  });
+  // context.loadModule(SigninPlugin.name, () => {
+  //   return import("./src/module").then((m) => m.SigninPluginModule);
+  // });
 }
 
 export function getContext(injector: Injector) {

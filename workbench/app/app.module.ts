@@ -13,12 +13,14 @@ import { ErrorHandlerService } from "./core/services";
 import { MenuComponent } from "workbench/app/slots/menu/menu.component";
 import { ActivitybarComponent } from "workbench/app/slots/activitybar/activitybar.component";
 import { ExplorerComponent } from "workbench/app/slots/explorer/explorer.component";
+import { HttpClientModule } from "@angular/common/http";
 import { ContextModule } from "./context.module";
 
 @NgModule({
   declarations: [AppComponent, MenuComponent, ActivitybarComponent, ExplorerComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     CoreModule,
     ResmanagerModule,

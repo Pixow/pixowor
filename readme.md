@@ -26,3 +26,13 @@ qing-web-api-sdk // 图轻平台接口SDK
 4. puzzle.triggerPluginRender()
 
 ```
+
+#### Electron 国内下载加速
+DEBUG=* ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install electron
+
+
+```
+error-handler.service.ts:6 ErrorHandlerService ERROR!  Error: Uncaught (in promise): TypeError: Cannot read property 'ɵmod' of undefined
+TypeError: Cannot read property 'ɵmod' of undefined
+    at getNgModuleDef (core.js:1021)
+```

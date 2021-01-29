@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Environment, IQingWebApiSdk, QingWebApiSdk } from "qing-web-api-sdk";
 
-import { IUser } from "workbench/app/models";
+import { IUser } from "../../models/user";
 import { Router } from "@angular/router";
 // import { AuthState } from "workbench/app/store/auth/auth.state";
 
-// @dynamic
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class QingWebApiService {
   static instance: QingWebApiService;
 
@@ -16,6 +17,7 @@ export class QingWebApiService {
   }
 
   constructor(private router: Router) {
+    console.log("Qing web api service init");
     // if (WorkbenchConfig.environment === "LOCAL") {
     this._sdk = new QingWebApiSdk(Environment.Alpha);
     // }

@@ -1,16 +1,13 @@
-import * as fsa from "fs-extra";
-
 import { Compiler, Injectable, Injector, Type, NgModuleFactory, ComponentFactory } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { QingWebApiService } from "workbench/app/core/services";
+// 不能使用 workbench，打包的时候会引入workbench/service/index.ts导入的所有模块
+import { QingWebApiService } from "./qing-web-api.service";
+import { LocalStorageService } from "./local-storage.service";
 import { ActivitybarItem, AppConfig } from "workbench/types/typing";
 import { Puzzle } from "workbench/puzzle";
-import { DynamicInjector } from "workbench/app/models";
-import { LocalStorageService } from "workbench/app/core/services";
+import { DynamicInjector } from "workbench/app/models/dynamic-injector";
 import { WorkbenchConfig } from "workbench/environments/environment";
-import { ElectronService } from "./electron.service";
-import { HttpClient } from "@angular/common/http";
-import { PluginConfig } from "workbench/app/models";
+import { PluginConfig } from "workbench/app/models/plugin-model";
 
 export interface IContextService {
   activityItem$: any;
@@ -25,25 +22,17 @@ export interface IContextService {
   loadModule(moduleName: string, path: any): void;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class ContextService implements IContextService {
   private _puzzle: Puzzle;
   activityItem$ = new BehaviorSubject(null);
   pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponents = new Map<string, Type<any>>();
 
-  constructor(
-    private http: HttpClient,
-    private compiler: Compiler,
-    private electronService: ElectronService,
-    private injector: Injector
-  ) {
+  constructor(private compiler: Compiler, private injector: Injector) {
     console.log("ContextService init");
-  }
-
-  public getPluginConfigs() {
-    return this.http.get<PluginConfig[]>("plugins-repo/plugins.config.json");
-    // fsa.readJson(this.electronService.appPath);
   }
 
   public initial() {

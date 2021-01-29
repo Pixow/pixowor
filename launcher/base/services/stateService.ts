@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
 import { isUndefined, isEqual } from "lodash-es";
-import { writeFileSync } from "../node/pfs";
 import { IEnvironmentService } from "./environmentService";
 import { ILogService } from "./logService";
 
@@ -55,8 +54,6 @@ export class FileStorage {
     }
 
     try {
-      writeFileSync(this.dbPath, serializedDatabase);
-
       this.lastFlushedSerializedDatabase = serializedDatabase;
     } catch (error) {
       this.onError(error);

@@ -32,7 +32,7 @@ export class CodeApplication {
     let workbenchEntry: string;
 
     if (serve) {
-      workbenchEntry = "http://localhost:4200";
+      workbenchEntry = "http://localhost:4300";
     } else {
       // TODO: change this entry
       workbenchEntry = url.format({

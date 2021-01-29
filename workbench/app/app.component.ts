@@ -1,4 +1,3 @@
-import * as path from "path";
 import {
   AfterViewInit,
   Component,
@@ -12,7 +11,7 @@ import {
   ViewContainerRef,
 } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { ContextService, LazyLoaderService, QingWebApiService } from "./core/services";
+import { ContextService, QingWebApiService } from "./core/services";
 // import { AuthState } from "./store";
 import { DialogService } from "primeng/dynamicdialog";
 import { ResmanagerComponent } from "workbench/app/pages/resmanager/resmanager.component";
@@ -29,24 +28,35 @@ import { MarketExplorerPlugin } from "plugins/market-explorer-plugin";
 // test dynamic load plugin
 import { ModuleLoader } from "./module-loader";
 
-import * as angularCore from "@angular/core";
-import * as angularCommon from "@angular/common";
-import * as angularCommonHttp from "@angular/common/http";
-import * as angularForms from "@angular/forms";
 import * as angularAnimations from "@angular/animations";
+import * as angularCdk from "@angular/cdk";
+import * as angularCommon from "@angular/common";
+import * as angularCompiler from "@angular/compiler";
+import * as angularCore from "@angular/core";
+import * as angularElements from "@angular/elements";
+import * as angularForms from "@angular/forms";
 import * as angularPlatformBrowser from "@angular/platform-browser";
 import * as angularPlatformBrowserDynamic from "@angular/platform-browser-dynamic";
+import * as angularRouter from "@angular/router";
+import * as ngxsStore from "@ngxs/store";
+import { HttpClient } from "@angular/common/http";
+import * as qingWorkbench from "../public_api";
 
 const loader = new ModuleLoader();
 
 loader.register({
-  "@angular/core": angularCore,
-  "@angular/common": angularCommon,
-  "@angular/common/http": angularCommonHttp,
-  "@angular/forms": angularForms,
   "@angular/animations": angularAnimations,
+  "@angular/cdk": angularCdk,
+  "@angular/common": angularCommon,
+  "@angular/compiler": angularCompiler,
+  "@angular/core": angularCore,
+  "@angular/elements": angularElements,
+  "@angular/forms": angularForms,
   "@angular/platform-browser": angularPlatformBrowser,
   "@angular/platform-browser-dynamic": angularPlatformBrowserDynamic,
+  "@angular/router": angularRouter,
+  "@ngxs/store": ngxsStore,
+  "qing-workbench": qingWorkbench,
 });
 
 @Component({
@@ -84,7 +94,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   // @Select(AuthState.user) user$: Observable<IUser>;
 
   constructor(
-    private qingWebApiService: QingWebApiService,
+    private http: HttpClient,
     private dialogService: DialogService,
     private contextService: ContextService,
     private compiler: Compiler,
@@ -105,14 +115,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("workbenchExtensions") workbenchExtensions: ElementRef;
   @ViewChild("workbenchStatusbar") workbenchStatusbar: ElementRef;
 
-  ngOnInit() {
-    // this.lazyLoaderService.loadModule(() => {
-    //   return import("plugins/scene-tree-plugin/module").then((m) => m.SceneTreePluginModule);
-    // });
-    // this.lazyLoaderService.loadModule(() => {
-    //   return import("plugins/signin-plugin/module").then((m) => m.SigninPluginModule);
-    // });
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.contextService.createPuzzle();
@@ -134,20 +137,22 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async loadPlugins() {
-    const plugins = await this.contextService.getPluginConfigs().toPromise();
+    const plugins = await this.http.get<PluginConfig[]>("plugins-repo/plugins.config.json").toPromise();
     plugins.forEach((widget) => this.createPlugin(widget));
   }
 
   private async createPlugin(plugin: PluginConfig) {
     const module = await loader.load(plugin.moduleBundlePath);
+    console.log("🚀 ~ file: app.component.ts ~ line 153 ~ AppComponent ~ module", module);
 
     const moduleFactory = await this.compiler.compileModuleAsync(module[plugin.moduleName]);
 
+    // 注入context
     const map = new WeakMap();
     map.set(ContextService, this.contextService);
     const moduleRef = moduleFactory.create(new DynamicInjector(this.injector, map));
 
-    const componentProvider = moduleRef.injector.get(plugin.name);
+    const componentProvider = moduleRef.injector.get(plugin.component);
     const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(componentProvider);
 
     this.content.createComponent(componentFactory);

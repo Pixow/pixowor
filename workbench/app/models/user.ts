@@ -1,6 +1,3 @@
-import * as url from "url";
-import { WorkbenchConfig } from "workbench/environments/environment";
-
 export interface IUser {
   id: string;
   username: string;
@@ -10,7 +7,7 @@ export interface IUser {
   refreshToken: string;
   avatar: string;
 
-  avatarUrl: string | null;
+  // avatarUrl: string | null;
 }
 
 export class User implements IUser {
@@ -26,11 +23,11 @@ export class User implements IUser {
     Object.assign(this, data);
   }
 
-  public get avatarUrl() {
-    if (this.avatar) {
-      return url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.avatar);
-    } else {
-      return null;
-    }
-  }
+  // public get avatarUrl() {
+  //   if (this.avatar) {
+  //     return url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.avatar);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 }
