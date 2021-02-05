@@ -15,9 +15,11 @@ import { ActivitybarComponent } from "workbench/app/slots/activitybar/activityba
 import { ExplorerComponent } from "workbench/app/slots/explorer/explorer.component";
 import { HttpClientModule } from "@angular/common/http";
 import { ContextModule } from "./context.module";
-
+import { ToastModule } from "primeng/toast";
+import { MessageService } from "primeng/api";
+import { StageComponent } from "workbench/app/slots/stage/stage.component";
 @NgModule({
-  declarations: [AppComponent, MenuComponent, ActivitybarComponent, ExplorerComponent],
+  declarations: [AppComponent, MenuComponent, ActivitybarComponent, ExplorerComponent, StageComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -26,6 +28,7 @@ import { ContextModule } from "./context.module";
     ResmanagerModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    ToastModule,
     NgxsModule.forRoot([GameState]),
     ContextModule.forRoot(),
   ],
@@ -34,6 +37,7 @@ import { ContextModule } from "./context.module";
       provide: ErrorHandler,
       useClass: ErrorHandlerService,
     },
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

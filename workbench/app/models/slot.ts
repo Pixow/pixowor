@@ -1,14 +1,23 @@
 export interface ActivitybarItem {
-  pluginName: string;
+  id: string;
   title: string;
   icon: string;
 }
 
+export interface ExplorerItem {
+  component: string;
+}
+
 export abstract class Slot {
-  items: Array<ActivitybarItem> = [];
+  protected _items: Array<ActivitybarItem | ExplorerItem> = [];
   constructor() {}
 
   addItems(items) {
-    this.items = this.items.concat(items);
+    this._items = this._items.concat(items);
   }
+}
+
+export enum SlotKeys {
+  WorkbenchActivitybar = "workbenchActivitybar",
+  WorkbenchStage = "workbenchStage",
 }

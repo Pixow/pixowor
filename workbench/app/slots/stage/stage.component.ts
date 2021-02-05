@@ -1,15 +1,15 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
 
 @Component({
-  selector: "explorer",
-  templateUrl: "./explorer.component.html",
-  styleUrls: ["./explorer.component.scss"],
+  selector: "stage",
+  templateUrl: "./stage.component.html",
+  styleUrls: ["./stage.component.scss"],
   providers: [MessageService],
 })
-export class ExplorerComponent extends Slot implements OnInit {
+export class StageComponent extends Slot implements OnInit {
   @ViewChild("anchor", { read: ViewContainerRef }) anchor: ViewContainerRef;
   constructor(private contextService: ContextService, private messageService: MessageService) {
     super();
@@ -30,4 +30,6 @@ export class ExplorerComponent extends Slot implements OnInit {
       this.anchor.createComponent(componentFactory);
     }
   }
+
+  registComponent(componentName) {}
 }

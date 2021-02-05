@@ -14,6 +14,10 @@ export class ActivitybarComponent extends Slot implements AfterViewInit {
     super();
   }
 
+  public get items() {
+    return this._items as ActivitybarItem[];
+  }
+
   ngAfterViewInit() {}
 
   openExplorer(item: ActivitybarItem) {

@@ -5,6 +5,7 @@ import { Injectable } from "@angular/core";
 import { ipcRenderer, webFrame, remote } from "electron";
 import * as childProcess from "child_process";
 import * as fs from "fs";
+import * as path from "path";
 
 @Injectable()
 export class ElectronService {
@@ -34,5 +35,10 @@ export class ElectronService {
 
   public get appPath() {
     return this.remote.app.getAppPath();
+  }
+
+  public readFile(uri: string) {
+    const filePath = path.join(this.appPath, uri);
+    return this.fs.readFile(filePath, () => {});
   }
 }

@@ -30,6 +30,7 @@ import { ModuleLoader } from "./module-loader";
 
 import * as angularAnimations from "@angular/animations";
 import * as angularCdk from "@angular/cdk";
+import * as angularCdkScrolling from "@angular/cdk/scrolling";
 import * as angularCommon from "@angular/common";
 import * as angularCompiler from "@angular/compiler";
 import * as angularCore from "@angular/core";
@@ -39,14 +40,19 @@ import * as angularPlatformBrowser from "@angular/platform-browser";
 import * as angularPlatformBrowserDynamic from "@angular/platform-browser-dynamic";
 import * as angularRouter from "@angular/router";
 import * as ngxsStore from "@ngxs/store";
+import * as lodashEs from "lodash-es";
 import { HttpClient } from "@angular/common/http";
 import * as qingWorkbench from "../public_api";
+import { MessageService } from "primeng/api";
+import { SlotKeys } from "workbench/app/models";
+import { StageComponent } from "workbench/app/slots/stage/stage.component";
 
 const loader = new ModuleLoader();
 
 loader.register({
   "@angular/animations": angularAnimations,
   "@angular/cdk": angularCdk,
+  "@angular/cdk/scrolling": angularCdkScrolling,
   "@angular/common": angularCommon,
   "@angular/compiler": angularCompiler,
   "@angular/core": angularCore,
@@ -57,6 +63,7 @@ loader.register({
   "@angular/router": angularRouter,
   "@ngxs/store": ngxsStore,
   "qing-workbench": qingWorkbench,
+  "lodash-es": lodashEs,
 });
 
 @Component({
@@ -69,28 +76,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("content", { read: ViewContainerRef }) content: ViewContainerRef;
   private _destroy: Subject<boolean> = new Subject<boolean>();
 
-  private plugins = [
-    // {
-    //   name: "scene-tree-plugin",
-    //   plugin: SceneTreePlugin,
-    // },
-    {
-      plugin: SigninPlugin,
-    },
-    {
-      name: "workbench-menu-plugin",
-      plugin: WorkbenchMenuPlugin,
-    },
-    {
-      name: "market-explorer-plugin",
-      plugin: MarketExplorerPlugin,
-    },
-    {
-      name: "luapackage-explorer-plugin",
-      plugin: LuapackageExplorerPlugin,
-    },
-  ];
-
   // @Select(AuthState.user) user$: Observable<IUser>;
 
   constructor(
@@ -98,7 +83,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private dialogService: DialogService,
     private contextService: ContextService,
     private compiler: Compiler,
-    private injector: Injector
+    private injector: Injector,
+    private messageService: MessageService
   ) {
     // this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
     //   if (user) {
@@ -144,7 +130,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private async createPlugin(plugin: PluginConfig) {
     const module = await loader.load(plugin.moduleBundlePath);
 
-    this.registSlotUi(module.config);
+    this.registSlotUi(plugin.id, module.config);
     console.log("🚀 ~ file: app.component.ts ~ line 153 ~ AppComponent ~ module", module);
 
     const moduleFactory = await this.compiler.compileModuleAsync(module[plugin.moduleName]);
@@ -157,34 +143,59 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     const componentProvider = moduleRef.injector.get(plugin.component);
     const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(componentProvider);
 
-    this.content.createComponent(componentFactory);
+    this.contextService.registComponentFactory(plugin.id, componentFactory);
+    // this.content.createComponent(componentFactory);
   }
 
-  registSlotUi(config) {
-    for (const key of Object.keys(config.contributes)) {
-      const slot = this.contextService.puzzle.getPuzzleSlot(key);
+  registSlotUi(pluginId, config) {
+    for (const slotKey of Object.keys(config.contributes)) {
+      const slot = this.contextService.puzzle.getPuzzleSlot(slotKey);
 
-      if (slot) {
-        const items = config.contributes[key];
-        slot.container.addItems(items);
+      if (!slot) {
+        continue;
+      }
+
+      switch (slotKey) {
+        case SlotKeys.WorkbenchActivitybar:
+          const items = config.contributes[slotKey];
+          slot.container.addItems(Object.assign(items, { id: pluginId }));
+          break;
+        case SlotKeys.WorkbenchStage:
+          const componentName = config.contributes[slotKey];
+          (slot.container as StageComponent).registComponent(componentName);
+          break;
+        default:
+          break;
       }
     }
   }
 
-  registComponentEvent() {
-    const workbenchMenu = document.querySelector("workbench-menu");
-    workbenchMenu.addEventListener("openGameResManager", (event) => {
-      console.log("open game resource manager");
-      this.dialogService.open(ResmanagerComponent, {});
-    });
+  // registComponentEvent() {
+  //   const workbenchMenu = document.querySelector("workbench-menu");
+  //   workbenchMenu.addEventListener("openGameResManager", (event) => {
+  //     console.log("open game resource manager");
+  //     this.dialogService.open(ResmanagerComponent, {});
+  //   });
 
-    workbenchMenu.addEventListener("openSigninDialog", () => {
-      this.dialogService.open(SigninComponent, {});
-    });
-  }
+  //   workbenchMenu.addEventListener("openSigninDialog", () => {
+  //     this.dialogService.open(SigninComponent, {});
+  //   });
+  // }
 
   openDialog(componentType: Type<any>) {
     this.dialogService.open(componentType, {});
+  }
+
+  showMessage() {
+    this.messageService.add({
+      key: "globalMessage",
+      severity: "success",
+      detail: "sdxxxx",
+    });
+  }
+
+  show() {
+    this.contextService.success("sssss");
   }
 
   ngOnDestroy() {

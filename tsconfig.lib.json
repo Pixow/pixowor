@@ -25,6 +25,9 @@
       "ES2015",
       "DOM",
       "DOM.Iterable"
+    ],
+    "plugins": [
+      { "transform": "typescript-transform-paths", "useRootDirs": true, "afterDeclarations": true }
     ]
   },
   "files": ["workbench/public_api.ts"],

@@ -1,10 +1,9 @@
 {
   "name": "qing-workbench",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "",
   "types": "lib/public_api.d.ts",
-  "scripts": {
-    "build:lib": "npx rimraf lib && npx rollup -c",
-    "build": "npx rimraf lib && tsc --build tsconfig.lib.json"
-  }
+  "files": [
+    "lib/**/*"
+  ]
 }

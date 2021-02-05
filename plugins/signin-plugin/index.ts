@@ -1,5 +1,4 @@
 import { Injector } from "@angular/core";
-import { CONTEXT_TOKEN_NAME } from "workbench/types/typing";
 import { IContextService } from "workbench/app/core/services";
 
 export const tokens = new Map();
@@ -11,10 +10,6 @@ function install(context: IContextService) {
   // context.loadModule(SigninPlugin.name, () => {
   //   return import("./src/module").then((m) => m.SigninPluginModule);
   // });
-}
-
-export function getContext(injector: Injector) {
-  return injector.get<IContextService>(tokens.get(CONTEXT_TOKEN_NAME));
 }
 
 export const SigninPlugin = {

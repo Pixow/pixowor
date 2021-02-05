@@ -16,7 +16,7 @@
     "build:launcher": "tsc -p tsconfig.json",
     "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron .",
     "e2e": "ng e2e",
-    "build:lib": "rimraf workbench/lib && tsc -p tsconfig.lib.json",
+    "build:lib": "rimraf lib && ttsc -p tsconfig.lib.json",
     "build:plugins": "node build-plugins.js"
   },
   "peerDependencies": {
@@ -72,7 +72,9 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.29.0",
     "rxjs": "^6.6.3",
+    "ttypescript": "^1.5.12",
     "typescript": "~4.0.2",
+    "typescript-transform-paths": "^2.2.2",
     "wait-on": "^5.2.0",
     "wget-improved": "^3.2.1",
     "zone.js": "^0.11.3"
