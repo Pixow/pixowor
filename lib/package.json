@@ -1,7 +1,7 @@
 {
   "name": "qing-workbench",
   "author": "<mojixiang@apowo.com>",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "",
   "types": "./public_api.d.ts",
   "files": [
