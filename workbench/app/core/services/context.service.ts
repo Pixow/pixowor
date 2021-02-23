@@ -1,4 +1,4 @@
-import { Compiler, Injectable, Injector, Type, NgModuleFactory, ComponentFactory } from "@angular/core";
+import { Injectable, Type, ComponentFactory } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 // 不能使用 workbench，打包的时候会引入workbench/service/index.ts导入的所有模块
 import { QingWebApiService } from "./qing-web-api.service";
@@ -64,17 +64,6 @@ export class ContextService implements IContextService {
     return this.pluginComponents.get(pluginName);
   }
 
-  // public triggerRender(pluginName: string) {
-  //   const plugin = this.puzzle.getPlugin(pluginName);
-  //   const slot = this.puzzle.getPuzzleSlot(plugin.contributes);
-  //   const factory = this.pluginComponentFactories.get(pluginName);
-  //   console.log("🚀 ~ file: context.service.ts ~ line 56 ~ ContextService ~ factory", factory);
-
-  //   if (factory) {
-  //     slot.container.createComponent(factory);
-  //   }
-  // }
-
   registComponentFactory(pluginId: string, factory: ComponentFactory<unknown>) {
     this.pluginComponentFactories.set(pluginId, factory);
   }
@@ -110,39 +99,4 @@ export class ContextService implements IContextService {
       detail: message,
     });
   }
-
-  // public loadModule(pluginName: string, path: any) {
-  //   return new Promise((resolve, reject) => {
-  //     (path() as Promise<NgModuleFactory<any> | Type<any>>)
-  //       .then((elementModuleOrFactory) => {
-  //         if (elementModuleOrFactory instanceof NgModuleFactory) {
-  //           // if ViewEngine
-  //           return elementModuleOrFactory;
-  //         } else {
-  //           try {
-  //             // if Ivy
-  //             return this.compiler.compileModuleAsync(elementModuleOrFactory);
-  //           } catch (err) {
-  //             reject(err);
-  //           }
-  //         }
-  //       })
-  //       .then((moduleFactory) => {
-  //         try {
-  //           const map = new WeakMap();
-  //           map.set(AppConfig, WorkbenchConfig);
-  //           const moduleRef = moduleFactory.create(new DynamicInjector(this.injector, map));
-  //           const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory<Type<any>>(
-  //             moduleRef.instance.componentType
-  //           );
-  //           this.pluginComponentFactories.set(pluginName, componentFactory);
-  //           this.pluginComponents.set(pluginName, moduleRef.instance.componentType);
-  //           resolve(true);
-  //           // do something with the module...
-  //         } catch (err) {
-  //           reject(err);
-  //         }
-  //       });
-  //   });
-  // }
 }

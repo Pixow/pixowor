@@ -1,5 +1,3 @@
-import * as url from "url";
-import * as path from "path";
 import { BrowserWindow, BrowserWindowConstructorOptions, screen } from "electron";
 
 import { Disposable, IDisposable } from "../base/common/lifecycle";

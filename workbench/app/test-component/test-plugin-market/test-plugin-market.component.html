@@ -1,0 +1,29 @@
+<div class="plugins-market">
+  <div class="plugins-market__header">
+    <h1>插件市场</h1>
+  </div>
+  <div class="plugins-market__search">
+    <input placeholder="搜索插件市场" />
+  </div>
+
+  <p-accordion>
+    <p-accordionTab header="本地安装">
+      <ul>
+        <li *ngFor="let plugin of plugins">
+          <div class="plugin-item">
+            <div class="plugin-logo">
+              <img src="{{ plugin.logo }}" />
+            </div>
+
+            <div class="plugin-info">
+              <h3>{{ plugin.name }}</h3>
+              <p>{{ plugin.description }}</p>
+              <i>{{ plugin.author }}</i>
+              <button (click)="installPlugin(plugin.id)">安装</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </p-accordionTab>
+  </p-accordion>
+</div>

@@ -18,13 +18,22 @@ import { ContextModule } from "./context.module";
 import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
 import { StageComponent } from "workbench/app/slots/stage/stage.component";
+import { SharedModule } from "workbench/app/shared/shared.module";
+
 @NgModule({
-  declarations: [AppComponent, MenuComponent, ActivitybarComponent, ExplorerComponent, StageComponent],
+  declarations: [
+    AppComponent,
+    MenuComponent,
+    ActivitybarComponent,
+    ExplorerComponent,
+    StageComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
     CoreModule,
+    SharedModule,
     ResmanagerModule,
     AppRoutingModule,
     ReactiveFormsModule,

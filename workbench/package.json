@@ -1,9 +1,0 @@
-{
-  "name": "qing-workbench",
-  "version": "0.0.2",
-  "main": "",
-  "types": "lib/public_api.d.ts",
-  "files": [
-    "lib/**/*"
-  ]
-}

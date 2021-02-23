@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
 import { ContextService } from "workbench/app/core/services";
@@ -21,6 +29,7 @@ export class ActivitybarComponent extends Slot implements AfterViewInit {
   ngAfterViewInit() {}
 
   openExplorer(item: ActivitybarItem) {
+    console.log("item: ", item);
     this.contextService.setActivitybar(item);
   }
 }

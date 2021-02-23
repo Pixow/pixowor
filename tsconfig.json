@@ -8,31 +8,17 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "target": "ES5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "typeRoots": ["node_modules/@types"],
     "types": ["node", "jest"],
     "baseUrl": "./",
     "paths": {
       "plugins": ["plugins/*"],
       "workbench": ["workbench/*"],
-      "launcher": ["launcher/*"],
+      "launcher": ["launcher/*"]
     },
-    "lib": [
-      "ES2017",
-      "ES2016",
-      "ES2015",
-      "DOM",
-      "DOM.Iterable"
-    ]
+    "lib": ["ES2017", "ES2016", "ES2015", "DOM", "DOM.Iterable"]
   },
   "files": ["main.ts"],
-  "include": [
-    "launcher/**/*",
-    "workbench/**/*",
-    "plugins/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-  ]
+  "include": ["launcher/**/*", "workbench/**/*", "plugins/**/*"],
+  "exclude": ["node_modules"]
 }

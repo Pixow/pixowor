@@ -10,22 +10,16 @@ import {
   Injector,
   ViewContainerRef,
 } from "@angular/core";
-import { Observable, Subject } from "rxjs";
-import { ContextService, QingWebApiService } from "./core/services";
-// import { AuthState } from "./store";
+import { Subject } from "rxjs";
+import * as path from "path";
+import { ContextService, ElectronService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";
-import { ResmanagerComponent } from "workbench/app/pages/resmanager/resmanager.component";
-import { SigninComponent, SigninPlugin } from "plugins/signin-plugin";
 
 import { MenuComponent } from "workbench/app/slots/menu/menu.component";
 import { ActivitybarComponent } from "workbench/app/slots/activitybar/activitybar.component";
 import { DynamicInjector, PluginConfig } from "workbench/app/models";
 
-import { LuapackageExplorerPlugin } from "plugins/luapackage-explorer-plugin";
-import { WorkbenchMenuPlugin } from "plugins/workbench-menu-plugin";
-import { MarketExplorerPlugin } from "plugins/market-explorer-plugin";
-
-// test dynamic load plugin
+// dynamic load plugin
 import { ModuleLoader } from "./module-loader";
 
 import * as angularAnimations from "@angular/animations";
@@ -41,8 +35,9 @@ import * as angularPlatformBrowserDynamic from "@angular/platform-browser-dynami
 import * as angularRouter from "@angular/router";
 import * as ngxsStore from "@ngxs/store";
 import * as lodashEs from "lodash-es";
+import * as primeng from "primeng";
 import { HttpClient } from "@angular/common/http";
-import * as qingWorkbench from "../public_api";
+// import * as qingWorkbench from "../../public_api";
 import { MessageService } from "primeng/api";
 import { SlotKeys } from "workbench/app/models";
 import { StageComponent } from "workbench/app/slots/stage/stage.component";
@@ -62,8 +57,9 @@ loader.register({
   "@angular/platform-browser-dynamic": angularPlatformBrowserDynamic,
   "@angular/router": angularRouter,
   "@ngxs/store": ngxsStore,
-  "qing-workbench": qingWorkbench,
+  // "qing-workbench": qingWorkbench,
   "lodash-es": lodashEs,
+  primeng: primeng,
 });
 
 @Component({
@@ -84,7 +80,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private contextService: ContextService,
     private compiler: Compiler,
     private injector: Injector,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private electronService: ElectronService
   ) {
     // this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
     //   if (user) {
@@ -105,45 +102,53 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.contextService.createPuzzle();
+    this.registPuzzleSlots();
+    this.loadPlugins();
+  }
 
+  private registPuzzleSlots() {
     this.contextService.puzzle.registPuzzleSlot("workbenchMenu", this.workbenchMenu);
 
     this.contextService.puzzle.registPuzzleSlot("workbenchActivitybar", this.workbenchActivitybar);
 
-    this.contextService.puzzle.registPuzzleSlot("workbenchExtensions", this.workbenchExtensions.nativeElement);
-
-    // this.plugins.forEach((item) => {
-    //   const { plugin } = item;
-    //   this.contextService.puzzle.use(plugin);
-    // });
-
-    // this.registComponentEvent();
-
-    this.loadPlugins();
+    this.contextService.puzzle.registPuzzleSlot(
+      "workbenchExtensions",
+      this.workbenchExtensions.nativeElement
+    );
   }
 
-  private async loadPlugins() {
-    const plugins = await this.http.get<PluginConfig[]>("plugins-repo/plugins.config.json").toPromise();
-    plugins.forEach((widget) => this.createPlugin(widget));
+  private loadPlugins() {
+    // TODO: 从软件安装目录读取插件配置文件
+    this.electronService.readFile("plugins.config.json", (res) => {
+      console.log("read plugins.config.json ====>", res);
+      const plugins = JSON.parse(res);
+
+      for (let plugin of plugins) {
+        console.log("plugin: ", plugin);
+        this.createPlugin(plugin);
+      }
+    });
   }
 
   private async createPlugin(plugin: PluginConfig) {
     const module = await loader.load(plugin.moduleBundlePath);
+    const config = module.config;
 
-    this.registSlotUi(plugin.id, module.config);
+    this.registSlotUi(config.id, config);
     console.log("🚀 ~ file: app.component.ts ~ line 153 ~ AppComponent ~ module", module);
 
-    const moduleFactory = await this.compiler.compileModuleAsync(module[plugin.moduleName]);
+    const moduleFactory = await this.compiler.compileModuleAsync(module[config.moduleName]);
 
     // 注入context
     const map = new WeakMap();
     map.set(ContextService, this.contextService);
     const moduleRef = moduleFactory.create(new DynamicInjector(this.injector, map));
 
-    const componentProvider = moduleRef.injector.get(plugin.component);
-    const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(componentProvider);
-
-    this.contextService.registComponentFactory(plugin.id, componentFactory);
+    const componentProvider = moduleRef.injector.get(config.componentName);
+    const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
+      componentProvider
+    );
+    this.contextService.registComponentFactory(config.id, componentFactory);
     // this.content.createComponent(componentFactory);
   }
 
@@ -163,8 +168,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         case SlotKeys.WorkbenchStage:
           const componentName = config.contributes[slotKey];
           (slot.container as StageComponent).registComponent(componentName);
-          break;
-        default:
           break;
       }
     }

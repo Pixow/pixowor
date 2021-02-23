@@ -18,7 +18,8 @@
     "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron .",
     "e2e": "ng e2e",
     "build:lib": "rimraf ./lib && ttsc -p tsconfig.lib.json",
-    "build:plugins": "node build-plugins.js"
+    "build:plugins": "node build-plugins.js",
+    "publish:lib": "sh ./npm_publish.sh"
   },
   "peerDependencies": {
     "@types/node": "^14.14.14"

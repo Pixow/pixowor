@@ -36,13 +36,14 @@ export class AuthState implements NgxsOnInit {
 
   @Action(AuthActions.InitUser)
   async InitUser({ patchState }: StateContext<AuthStateModel>) {
-    patchState({
-      user: this.localStorageService.get(WorkbenchConfig.storagekeys.USER_STORAGE_KEY),
-    });
+    patchState({});
   }
 
   @Action(AuthActions.EditorSignin)
-  async editorSignin({ patchState }: StateContext<AuthStateModel>, { payload }: AuthActions.EditorSignin) {
+  async editorSignin(
+    { patchState }: StateContext<AuthStateModel>,
+    { payload }: AuthActions.EditorSignin
+  ) {
     const { account, password } = payload;
 
     return this.context.sdk.auth.editorSignin(account, password).then((res) => {
@@ -50,13 +51,9 @@ export class AuthState implements NgxsOnInit {
       patchState({
         user: data,
       });
-
-      this.context.localStorage.set(WorkbenchConfig.storagekeys.USER_STORAGE_KEY, data);
     });
   }
 
   @Action(AuthActions.EditorSignout)
-  editorSignout() {
-    this.context.localStorage.remove(WorkbenchConfig.storagekeys.USER_STORAGE_KEY);
-  }
+  editorSignout() {}
 }

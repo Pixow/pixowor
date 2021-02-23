@@ -1,8 +1,6 @@
 [
   {
     "name": "@qing/plugins-market-plugin",
-    "component": "PluginsMarketComponent",
-    "moduleBundlePath": "/plugins-repo/plugins-market-plugin.bundle.js",
-    "moduleName": "PluginsMarketPluginModule"
+    "moduleBundlePath": "http://127.0.0.1:45326/plugins-repo/plugins-market-plugin.bundle.js"
   }
 ]

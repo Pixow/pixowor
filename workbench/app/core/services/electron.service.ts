@@ -6,6 +6,7 @@ import { ipcRenderer, webFrame, remote } from "electron";
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as path from "path";
+import ipc_channel from "launcher/code/ipc_channel";
 
 @Injectable()
 export class ElectronService {
@@ -26,7 +27,7 @@ export class ElectronService {
       this.webFrame = window.require("electron").webFrame;
 
       // If you wan to use remote object, pleanse set enableRemoteModule to true in main.ts
-      // this.remote = window.require('electron').remote;
+      this.remote = window.require("electron").remote;
 
       this.childProcess = window.require("child_process");
       this.fs = window.require("fs");
@@ -37,8 +38,11 @@ export class ElectronService {
     return this.remote.app.getAppPath();
   }
 
-  public readFile(uri: string) {
+  public readFile(uri: string, cb: Function) {
     const filePath = path.join(this.appPath, uri);
-    return this.fs.readFile(filePath, () => {});
+    this.ipcRenderer.send(ipc_channel.READ_LOCAL_FILE, { path: filePath });
+    this.ipcRenderer.on(ipc_channel.READ_LOCAL_FILE, (e, res) => {
+      cb(res);
+    });
   }
 }

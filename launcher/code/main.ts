@@ -1,10 +1,11 @@
+import * as path from "path";
 import { app } from "electron";
 import { CodeApplication } from "./app";
-import { IInstantiationService } from "../base/services/instantiationService";
 
 export class CodeMain {
   main(): void {
     this.startup();
+    console.log("app apth: ", app.getAppPath());
   }
 
   private async startup(): Promise<void> {
