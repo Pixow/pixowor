@@ -1,5 +1,6 @@
 {
   "name": "qing-workbench",
+  "author": "<mojixiang@apowo.com>",
   "version": "0.0.3",
   "main": "",
   "types": "lib/public_api.d.ts",
