@@ -1,6 +1,6 @@
 {
   "name": "qing",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "图轻新版编辑器, 插件化架构设计",
   "main": "dist/main.js",
   "repository": "git@code.apowo.com:PixelPai/qing.git",
@@ -10,13 +10,14 @@
     "start": "npm-run-all -p electron:serve ng:serve",
     "electron:serve": "wait-on http-get://localhost:4300/ && npm run build:launcher:serve && npx electron . --serve",
     "ng:serve": "ng serve -c dev --port 4300 --proxy-config proxy.conf.json",
+    "serve:worker": "",
     "build:workbench": "ng build workbench --base-href ./",
     "build:workbench:dev": "npm run build:workbench -- -c dev",
     "build:launcher:serve": "tsc -p tsconfig-serve.json",
     "build:launcher": "tsc -p tsconfig.json",
     "electron:local": "npm-run-all -p build:code build:workbench:dev && npx electron .",
     "e2e": "ng e2e",
-    "build:lib": "rimraf lib && ttsc -p tsconfig.lib.json",
+    "build:lib": "rimraf ./lib && ttsc -p tsconfig.lib.json",
     "build:plugins": "node build-plugins.js"
   },
   "peerDependencies": {
