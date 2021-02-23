@@ -3,8 +3,8 @@
   "author": "<mojixiang@apowo.com>",
   "version": "0.0.3",
   "main": "",
-  "types": "lib/public_api.d.ts",
+  "types": "./public_api.d.ts",
   "files": [
-    "lib/**/*"
+    "./**/*"
   ]
 }
