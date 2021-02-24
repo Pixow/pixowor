@@ -37,7 +37,7 @@ import * as ngxsStore from "@ngxs/store";
 import * as lodashEs from "lodash-es";
 import * as primeng from "primeng";
 import { HttpClient } from "@angular/common/http";
-// import * as qingWorkbench from "../../public_api";
+import * as qingWorkbench from "../../public_api";
 import { MessageService } from "primeng/api";
 import { SlotKeys } from "workbench/app/models";
 import { StageComponent } from "workbench/app/slots/stage/stage.component";
@@ -57,7 +57,7 @@ loader.register({
   "@angular/platform-browser-dynamic": angularPlatformBrowserDynamic,
   "@angular/router": angularRouter,
   "@ngxs/store": ngxsStore,
-  // "qing-workbench": qingWorkbench,
+  "qing-workbench": qingWorkbench,
   "lodash-es": lodashEs,
   primeng: primeng,
 });
