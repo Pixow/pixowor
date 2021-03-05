@@ -9,6 +9,7 @@ import {
   Compiler,
   Injector,
   ViewContainerRef,
+  ComponentFactoryResolver,
 } from "@angular/core";
 import { Subject } from "rxjs";
 import * as path from "path";
@@ -35,12 +36,20 @@ import * as angularPlatformBrowserDynamic from "@angular/platform-browser-dynami
 import * as angularRouter from "@angular/router";
 import * as ngxsStore from "@ngxs/store";
 import * as lodashEs from "lodash-es";
-import * as primeng from "primeng";
-import { HttpClient } from "@angular/common/http";
+import * as primengAccordion from "primeng/accordion";
+import * as primengProgressbar from "primeng/progressbar";
+import * as primengCheckbox from "primeng/checkbox";
+import * as primengCarousel from "primeng/carousel";
+import * as primengFileupload from "primeng/fileupload";
 import * as qingWorkbench from "../../public_api";
 import { MessageService } from "primeng/api";
 import { SlotKeys } from "workbench/app/models";
 import { StageComponent } from "workbench/app/slots/stage/stage.component";
+import { PLUGINS_CONFIG_FILE } from "workbench/consts";
+import { ExplorerComponent } from "workbench/app/slots/explorer/explorer.component";
+import { ExtensionsComponent } from "workbench/app/slots/extensions/extensions.component";
+import { StatusbarComponent } from "workbench/app/slots/statusbar/statusbar.component";
+import { WORKBENCH_PUZZLE_BLOCK } from "workbench/puzzle";
 
 const loader = new ModuleLoader();
 
@@ -59,7 +68,11 @@ loader.register({
   "@ngxs/store": ngxsStore,
   "qing-workbench": qingWorkbench,
   "lodash-es": lodashEs,
-  primeng: primeng,
+  "primeng/accordion": primengAccordion,
+  "primeng/progressbar": primengProgressbar,
+  "primeng/checkbox": primengCheckbox,
+  "primeng/carousel": primengCarousel,
+  "primeng/fileupload": primengFileupload,
 });
 
 @Component({
@@ -70,18 +83,20 @@ loader.register({
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("content", { read: ViewContainerRef }) content: ViewContainerRef;
+  @ViewChild("dialog", { read: ViewContainerRef }) dialogRef: ViewContainerRef;
   private _destroy: Subject<boolean> = new Subject<boolean>();
 
-  // @Select(AuthState.user) user$: Observable<IUser>;
+  display = false;
+  title = "";
+
+  static instance: AppComponent;
 
   constructor(
-    private http: HttpClient,
     private dialogService: DialogService,
     private contextService: ContextService,
     private compiler: Compiler,
     private injector: Injector,
-    private messageService: MessageService,
-    private electronService: ElectronService
+    private messageService: MessageService
   ) {
     // this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
     //   if (user) {
@@ -89,14 +104,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //     this.qingWebApiService.setInterceptors(user);
     //   }
     // });
+    AppComponent.instance = this;
   }
 
   @ViewChild("workbenchMenu") workbenchMenu: ElementRef<MenuComponent>;
   @ViewChild("workbenchActivitybar") workbenchActivitybar: ElementRef<ActivitybarComponent>;
-  @ViewChild("workbenchExplorer") workbenchExplorer: ElementRef;
-  @ViewChild("workbenchEditor") workbenchEditor: ElementRef;
-  @ViewChild("workbenchExtensions") workbenchExtensions: ElementRef;
-  @ViewChild("workbenchStatusbar") workbenchStatusbar: ElementRef;
+  @ViewChild("workbenchExplorer") workbenchExplorer: ElementRef<ExplorerComponent>;
+  @ViewChild("workbenchStage") workbenchStage: ElementRef<StageComponent>;
+  @ViewChild("workbenchExtensions") workbenchExtensions: ElementRef<ExtensionsComponent>;
+  @ViewChild("workbenchStatusbar") workbenchStatusbar: ElementRef<StatusbarComponent>;
 
   ngOnInit() {}
 
@@ -111,17 +127,34 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.contextService.puzzle.registPuzzleSlot("workbenchActivitybar", this.workbenchActivitybar);
 
-    this.contextService.puzzle.registPuzzleSlot(
-      "workbenchExtensions",
-      this.workbenchExtensions.nativeElement
-    );
+    this.contextService.puzzle.registPuzzleSlot("workbenchExplorer", this.workbenchExplorer);
+
+    this.contextService.puzzle.registPuzzleSlot("workbenchStage", this.workbenchStage);
+
+    this.contextService.puzzle.registPuzzleSlot("workbenchExtensions", this.workbenchExtensions);
+
+    this.contextService.puzzle.registPuzzleSlot("workbenchStatusbar", this.workbenchStatusbar);
+  }
+
+  public showDialog(title: string, componentName: string) {
+    this.dialogRef.clear();
+    const componentFactory = this.contextService.getComponentFactory(componentName);
+
+    const componentRef = this.dialogRef.createComponent<Component>(componentFactory);
+
+    this.title = title;
+    this.display = true;
+  }
+
+  public destroyDialog() {
+    this.dialogRef.clear();
+    this.display = false;
   }
 
   private loadPlugins() {
     // TODO: 从软件安装目录读取插件配置文件
-    this.electronService.readFile("plugins.config.json", (res) => {
-      console.log("read plugins.config.json ====>", res);
-      const plugins = JSON.parse(res);
+    this.contextService.getConfigData(PLUGINS_CONFIG_FILE, ({ data }) => {
+      const plugins = JSON.parse(data);
 
       for (let plugin of plugins) {
         console.log("plugin: ", plugin);
@@ -130,7 +163,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private async createPlugin(plugin: PluginConfig) {
+  public async createPlugin(plugin: PluginConfig) {
     const module = await loader.load(plugin.moduleBundlePath);
     const config = module.config;
 
@@ -144,17 +177,32 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     map.set(ContextService, this.contextService);
     const moduleRef = moduleFactory.create(new DynamicInjector(this.injector, map));
 
-    const componentProvider = moduleRef.injector.get(config.componentName);
+    // 注册 entryComponent
+    const componentProvider = moduleRef.injector.get(config.entryComponent);
     const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
       componentProvider
     );
-    this.contextService.registComponentFactory(config.id, componentFactory);
-    // this.content.createComponent(componentFactory);
+    this.contextService.registEntryComponent(config.id, componentFactory);
+
+    // 注册 components
+    for (const componentName of config.components) {
+      const componentProvider = moduleRef.injector.get(componentName);
+      const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
+        componentProvider
+      );
+      this.contextService.registComponentFactory(componentName, componentFactory);
+    }
+
+    // 执行plugin active 方法
+    if (module.active) {
+      module.active(this.contextService);
+    }
   }
 
   registSlotUi(pluginId, config) {
     for (const slotKey of Object.keys(config.contributes)) {
-      const slot = this.contextService.puzzle.getPuzzleSlot(slotKey);
+      const slot = this.contextService.puzzle.getPuzzleSlot(slotKey as WORKBENCH_PUZZLE_BLOCK);
+      const slotConfig = config.contributes[slotKey];
 
       if (!slot) {
         continue;
@@ -162,11 +210,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
       switch (slotKey) {
         case SlotKeys.WorkbenchActivitybar:
-          const items = config.contributes[slotKey];
-          slot.container.addItems(Object.assign(items, { id: pluginId }));
+          const item = slotConfig;
+          (slot.container as ActivitybarComponent).addItems(Object.assign(item, { id: pluginId }));
           break;
-        case SlotKeys.WorkbenchStage:
-          const componentName = config.contributes[slotKey];
+        case SlotKeys.WorkbenchStage || SlotKeys.WorkbenchExplorer:
+          const { componentName } = slotConfig;
           (slot.container as StageComponent).registComponent(componentName);
           break;
       }
@@ -189,17 +237,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogService.open(componentType, {});
   }
 
-  showMessage() {
-    this.messageService.add({
-      key: "globalMessage",
-      severity: "success",
-      detail: "sdxxxx",
-    });
-  }
+  // showMessage() {
+  //   this.messageService.add({
+  //     key: "globalMessage",
+  //     severity: "success",
+  //     detail: "sdxxxx",
+  //   });
+  // }
 
-  show() {
-    this.contextService.success("sssss");
-  }
+  // show() {
+  //   this.contextService.success("sssss");
+  // }
+
+  // addItem() {
+  //   console.log(this.contextService.puzzle.getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_MENU));
+  //   this.contextService.puzzle
+  //     .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_MENU)
+  //     .container.addMenu({ label: "ceshi" });
+  // }
 
   ngOnDestroy() {
     this._destroy.next(true);

@@ -78,6 +78,7 @@ export class TabView implements AfterContentInit {
     this._activeIndex = val;
     if (!isEmpty(this.tabs)) {
       this.tabs[this._activeIndex].selected = true;
+      this.tabs[this._activeIndex].closable = true;
     }
   }
 
@@ -93,6 +94,7 @@ export class TabView implements AfterContentInit {
     if (!isEmpty(this.tabs)) {
       if (this._activeIndex != null) {
         this.tabs[this._activeIndex].selected = true;
+        this.tabs[this._activeIndex].closable = true;
       }
     }
   }

@@ -1,9 +1,15 @@
+@import "styles/styles.scss";
+
 .workbench {
   height: 100%;
 }
 
+.workbench_menu {
+  height: 30px;
+}
+
 .workbench__container {
-  height: calc(100% - 30px);
+  height: calc(100% - 20px - 30px);
   display: flex;
   flex-direction: row;
 }
@@ -14,4 +20,19 @@
 
 .workbench__container__explorer {
   width: 300px;
+}
+
+.workbench__container__stage {
+  width: calc(100% - 660px);
+  background-color: $explorer-bc-active;
+}
+
+.workbench__container__extensions {
+  width: 300px;
+  background-color: $explorer-bc-active;
+}
+
+.workbench__statusbar {
+  height: 20px;
+  background-color: $primary-color;
 }

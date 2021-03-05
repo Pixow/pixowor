@@ -91,3 +91,29 @@
   background: url("/assets/images/function-active.svg") center center;
   background-size: 100%;
 }
+
+.qing-user::after {
+  @extend .qing-after;
+  background: url("/assets/images/user.svg") center center;
+  background-size: 100%;
+}
+
+.qing-user:hover,
+.qing-user:active,
+.qing-user:focus {
+  background: url("/assets/images/user-active.svg") center center;
+  background-size: 100%;
+}
+
+.qing-close::after {
+  @extend .qing-after;
+  background: url("/assets/images/close.svg") center center;
+  background-size: 100%;
+}
+.qing-close:hover,
+.qing-close:active,
+.qing-close:focus {
+  @extend .qing-after;
+  background: url("/assets/images/close-active.svg") center center;
+  background-size: 100%;
+}

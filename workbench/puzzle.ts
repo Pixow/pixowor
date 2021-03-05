@@ -13,15 +13,18 @@ export interface WorkbenchMenu {
 }
 
 export enum WORKBENCH_PUZZLE_BLOCK {
-  WORKBENCH_ACTIVITYBAR = "WorkbenchActivitybar",
-  WORKBENCH_EXPLORER = "WorkbenchExplorer",
+  WORKBENCH_MENU = "workbenchMenu",
+  WORKBENCH_ACTIVITYBAR = "workbenchActivitybar",
+  WORKBENCH_EXPLORER = "workbenchExplorer",
+  WORKBENCH_STAGE = "workbenchStage",
+  WORKBENCH_EXTENSIONS = "workbenchExtensions",
+  WORKBENCH_STATUSBAR = "workbenchStatusbar",
 }
 
 export class Puzzle {
   slots: Map<string, PuzzleSlot> = new Map();
-  plugins: Map<string, IPlugin> = new Map();
 
-  constructor(private contextService: ContextService) {}
+  constructor() {}
 
   registPuzzleSlot(id: string, container: ElementRef<any>) {
     const block = new PuzzleSlot(id, container);
@@ -30,38 +33,8 @@ export class Puzzle {
     }
   }
 
-  getPuzzleSlot(id: string) {
+  getPuzzleSlot(id: WORKBENCH_PUZZLE_BLOCK) {
     return this.slots.get(id);
-  }
-
-  getPlugin(pluginName: string) {
-    return this.plugins.get(pluginName);
-  }
-
-  use(plugin: IPlugin) {
-    if (plugin.name && this.plugins.has(plugin.name)) {
-      throw new Error(`Plugin ${plugin.name} already in use`);
-    }
-
-    this.plugins.set(plugin.name, plugin);
-
-    // 注入 workbench 上下文
-    plugin.install(this.contextService);
-
-    if (!plugin.contributes) return;
-
-    if (plugin.contributes && typeof plugin.contributes === "string") {
-      const slot = this.slots.get(plugin.contributes);
-    } else {
-      for (const slotName of Object.keys(plugin.contributes)) {
-        const config = plugin.contributes[slotName];
-        const slot = this.slots.get(slotName);
-
-        if (slot) {
-          slot.injectConfig(config);
-        }
-      }
-    }
   }
 }
 
@@ -75,14 +48,5 @@ export class PuzzleSlot {
   constructor(id: string, container: ElementRef<any>) {
     this.id = id;
     this.container = container;
-  }
-
-  injectConfig(config) {
-    // this.config = Object.assign(this.config, config);
-    this.items = this.items.concat(config);
-
-    setTimeout(() => {
-      this.container.items = this.items;
-    });
   }
 }

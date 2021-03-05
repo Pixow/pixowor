@@ -1,0 +1,8 @@
+{
+  "name": "qing-auth-plugin",
+  "version": "1.0.0",
+  "author": "moJiXiang",
+  "dependencies": {
+    "qing-workbench": "0.0.7"
+  }
+}

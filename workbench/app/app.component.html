@@ -11,7 +11,9 @@
       <explorer #workbenchExplorer></explorer>
     </div>
 
-    <div class="workbench__container__editor" #workbenchEditor></div>
+    <div class="workbench__container__stage">
+      <stage #workbenchStage></stage>
+    </div>
 
     <div class="workbench__container__extensions" #workbenchExtensions></div>
   </div>
@@ -20,3 +22,7 @@
 
 <div #content></div>
 <p-toast key="globalMessage" position="top-center"></p-toast>
+
+<p-dialog header="{{ title }}" [(visible)]="display">
+  <div #dialog></div>
+</p-dialog>

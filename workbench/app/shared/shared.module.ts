@@ -20,7 +20,10 @@ import { ProgressBarModule } from "primeng/progressbar";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { DropdownModule } from "primeng/dropdown";
 import { DynamicDialogModule } from "primeng/dynamicdialog";
+import { DialogModule } from "primeng/dialog";
 import { AccordionModule } from "primeng/accordion";
+import { FileUploadModule } from "primeng/fileupload";
+import { MenubarModule } from "primeng/menubar";
 
 const COMPONENTS = [
   PageNotFoundComponent,
@@ -45,6 +48,9 @@ const PRIMENGMODULES = [
   DropdownModule,
   DynamicDialogModule,
   AccordionModule,
+  DialogModule,
+  FileUploadModule,
+  MenubarModule,
 ];
 
 @NgModule({

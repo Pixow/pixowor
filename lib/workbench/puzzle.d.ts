@@ -1,5 +1,4 @@
 import { ElementRef, EventEmitter } from "@angular/core";
-import { ContextService } from "./app/core/services/index";
 export interface IPlugin {
     name: string;
     displayName: string;
@@ -10,18 +9,18 @@ export interface WorkbenchMenu {
     open: EventEmitter<any>;
 }
 export declare enum WORKBENCH_PUZZLE_BLOCK {
-    WORKBENCH_ACTIVITYBAR = "WorkbenchActivitybar",
-    WORKBENCH_EXPLORER = "WorkbenchExplorer"
+    WORKBENCH_MENU = "workbenchMenu",
+    WORKBENCH_ACTIVITYBAR = "workbenchActivitybar",
+    WORKBENCH_EXPLORER = "workbenchExplorer",
+    WORKBENCH_STAGE = "workbenchStage",
+    WORKBENCH_EXTENSIONS = "workbenchExtensions",
+    WORKBENCH_STATUSBAR = "workbenchStatusbar"
 }
 export declare class Puzzle {
-    private contextService;
     slots: Map<string, PuzzleSlot>;
-    plugins: Map<string, IPlugin>;
-    constructor(contextService: ContextService);
+    constructor();
     registPuzzleSlot(id: string, container: ElementRef<any>): void;
-    getPuzzleSlot(id: string): PuzzleSlot;
-    getPlugin(pluginName: string): IPlugin;
-    use(plugin: IPlugin): void;
+    getPuzzleSlot(id: WORKBENCH_PUZZLE_BLOCK): PuzzleSlot;
 }
 export declare class PuzzleSlot {
     id: string;
@@ -29,5 +28,4 @@ export declare class PuzzleSlot {
     config: {};
     items: any[];
     constructor(id: string, container: ElementRef<any>);
-    injectConfig(config: any): void;
 }

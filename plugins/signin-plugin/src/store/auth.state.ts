@@ -4,7 +4,7 @@ import { Action, NgxsOnInit, Select, Selector, State, StateContext } from "@ngxs
 import { Injectable, Injector } from "@angular/core";
 import { AuthActions } from "./auth.actions";
 import { WorkbenchConfig } from "workbench/environments/environment";
-import { LocalStorageService, QingWebApiService } from "workbench/app/core/services";
+import { QingWebApiService } from "workbench/app/core/services";
 
 export interface AuthStateModel {
   user: User;
@@ -19,11 +19,7 @@ export interface AuthStateModel {
 @Injectable()
 export class AuthState implements NgxsOnInit {
   context;
-  constructor(
-    private injector: Injector,
-    private qingWebApiService: QingWebApiService,
-    private localStorageService: LocalStorageService
-  ) {}
+  constructor(private injector: Injector, private qingWebApiService: QingWebApiService) {}
 
   @Selector()
   public static user(state: AuthStateModel) {

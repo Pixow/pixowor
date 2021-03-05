@@ -55,6 +55,10 @@ export class WorkbenchMenuComponent implements OnInit {
           { label: "Refresh", icon: "pi pi-fw pi-refresh" },
         ],
       },
+      {
+        label: "帮助",
+        items: [{ label: "检查更新" }, { label: "帮助文档" }],
+      },
     ];
   }
 }

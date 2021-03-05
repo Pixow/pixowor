@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
@@ -24,7 +24,7 @@ export class ExplorerComponent extends Slot implements OnInit {
   }
 
   createComponent(pluginId: string) {
-    const componentFactory = this.contextService.getComponentFactory(pluginId);
+    const componentFactory = this.contextService.getEntryComponent(pluginId);
     if (componentFactory) {
       this.anchor.clear();
       this.anchor.createComponent(componentFactory);

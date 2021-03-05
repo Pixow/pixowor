@@ -38,6 +38,27 @@
   }
 }
 
+::ng-deep p-fileupload {
+  .p-fileupload {
+    .p-fileupload-buttonbar {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+
+      .p-button {
+        background-color: #4164e4;
+        padding: 3px;
+      }
+    }
+
+    .p-fileupload-content {
+      color: #fff;
+      background-color: transparent;
+      border: none;
+    }
+  }
+}
+
 .plugins-market {
   &__header {
     padding: 10px;
@@ -105,6 +126,55 @@
       font-size: 12px;
       line-height: 14px;
       border-radius: 3px;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+
+  &__upload {
+    padding: 10px;
+    color: #fff;
+  }
+}
+
+.game-item {
+  display: flex;
+  padding: 10px;
+
+  &:hover {
+    background-color: #1b1d22;
+  }
+
+  .game-logo {
+    margin-right: 10px;
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  .game-info {
+    position: relative;
+    h3 {
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+
+    button {
+      position: absolute;
+      bottom: 0;
+      border: none;
+      background-color: #4164e4;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 3px;
+      padding: 2px 5px;
       cursor: pointer;
       outline: none;
     }

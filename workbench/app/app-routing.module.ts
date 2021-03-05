@@ -1,27 +1,19 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
+import { AppComponent } from "workbench/app/app.component";
 import { AuthGuardService } from "./core/services/auth-guard.service";
-import { GameManagerComponent } from "./pages/resmanager/components/game-manager/game-manager.component";
-import { PluginManagerComponent } from "./pages/resmanager/components/plugin-manager/plugin-manager.component";
-import { ResmanagerComponent } from "./pages/resmanager/resmanager.component";
 
 const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    redirectTo: "resmanager",
+    redirectTo: "home",
   },
   {
-    path: "resmanager",
+    path: "home",
     canActivate: [AuthGuardService],
-    component: ResmanagerComponent,
-    children: [
-      { path: "", pathMatch: "full", redirectTo: "game-manager" },
-      { path: "game-manager", component: GameManagerComponent },
-      { path: "plugin-manager", component: PluginManagerComponent },
-    ],
+    component: AppComponent,
   },
-  { path: "**", component: ResmanagerComponent },
 ];
 
 @NgModule({

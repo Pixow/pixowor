@@ -1,9 +1,8 @@
 import { Injector } from "@angular/core";
-import { IContextService } from "workbench/app/core/services";
 
 export const tokens = new Map();
 
-function install(context: IContextService) {
+function install(context) {
   // const element = document.createElement("workbench-menu");
   // el.appendChild(element);
   // context.registEvent("openSignin")

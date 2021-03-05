@@ -11,5 +11,31 @@ export declare class ElectronService {
     get isElectron(): boolean;
     constructor();
     get appPath(): string;
-    readFile(uri: string, cb: Function): void;
+    get appDataPath(): string;
+    readAppFile(uri: string, cb: Function): void;
+    readAppDataFile(uri: string, cb: Function): void;
+    readFile(filePath: string, cb: Function): void;
+    readJson(filePath: string, cb: Function): void;
+    writeFile(content: string, cb: Function): void;
+    writeJson({ filePath, content }: {
+        filePath: string;
+        content: any;
+    }, cb: Function): void;
+    zipFiles({ files, folderName }: {
+        files: string[];
+        folderName: string;
+    }, cb: Function): void;
+    unzipFile({ source, dest }: {
+        source: string;
+        dest: string;
+    }, cb: Function): void;
+    uploadFile({ uri, key, qiniuToken }: {
+        uri: string;
+        key: string;
+        qiniuToken: string;
+    }, cb: Function): void;
+    downloadFile({ uri, output }: {
+        uri: string;
+        output: string;
+    }, cb: Function): void;
 }

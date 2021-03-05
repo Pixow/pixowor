@@ -3,6 +3,7 @@ import { Environment, IQingWebApiSdk, QingWebApiSdk } from "qing-web-api-sdk";
 
 import { IUser } from "../../models/user";
 import { Router } from "@angular/router";
+import { ContextService } from "workbench/app/core/services";
 // import { AuthState } from "workbench/app/store/auth/auth.state";
 
 @Injectable({
@@ -16,16 +17,18 @@ export class QingWebApiService {
     return this._sdk;
   }
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private context: ContextService) {
     console.log("Qing web api service init");
     // if (WorkbenchConfig.environment === "LOCAL") {
     this._sdk = new QingWebApiSdk(Environment.Alpha);
+    const user = this.context.getUser();
+    this._setInterceptors(user);
     // }
 
     QingWebApiService.instance = this;
   }
 
-  setInterceptors(user: IUser) {
+  private _setInterceptors(user: IUser) {
     this._sdk.setRequestInterceptor(
       async (config) => {
         config.headers = {
@@ -45,7 +48,10 @@ export class QingWebApiService {
       },
       async (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 403 || (error.response.status === 401 && !originalRequest._retry)) {
+        if (
+          error.response.status === 403 ||
+          (error.response.status === 401 && !originalRequest._retry)
+        ) {
           originalRequest._retry = true;
 
           this._sdk.auth

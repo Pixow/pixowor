@@ -19,5 +19,6 @@ export abstract class Slot {
 
 export enum SlotKeys {
   WorkbenchActivitybar = "workbenchActivitybar",
+  WorkbenchExplorer = "workbenchExplorer",
   WorkbenchStage = "workbenchStage",
 }

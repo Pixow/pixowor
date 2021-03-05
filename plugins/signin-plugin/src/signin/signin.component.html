@@ -16,7 +16,7 @@
       </ng-template>
     </p-carousel>
   </div>
-  <div class="signin-form p-col-4">
+  <div class="signin-form qing-form p-col-4">
     <div class="sign-logo"></div>
     <h1>欢迎使用图轻</h1>
 
@@ -50,7 +50,14 @@
 
       <fieldset>
         <label for="password"> 密&nbsp;&nbsp;码 </label>
-        <input id="password" [ngClass]="{ error: isPasswordInvalid() }" type="password" appPassword formControlName="password" placeholder="密码" />
+        <input
+          id="password"
+          [ngClass]="{ error: isPasswordInvalid() }"
+          type="password"
+          appPassword
+          formControlName="password"
+          placeholder="密码"
+        />
 
         <div *ngIf="isPasswordInvalid()">
           <div *ngIf="password.errors.required">

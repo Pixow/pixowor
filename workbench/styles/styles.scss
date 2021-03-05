@@ -50,3 +50,62 @@ $explorer-bc-active: #1b1d22;
     background: url("/assets/images/error.svg");
   }
 }
+::ng-deep p-accordion {
+  .p-accordion {
+    .p-accordion-header {
+      &.p-highlight {
+        .p-accordion-header-link {
+          background-color: #1b1d22 !important;
+          color: #fff !important;
+        }
+      }
+      &:hover {
+        .p-accordion-header-link {
+          background-color: #1b1d22 !important;
+          color: #fff !important;
+        }
+      }
+
+      .p-accordion-header-link {
+        border: none;
+        color: #fff;
+        background: transparent;
+        border-radius: 0 !important;
+        padding: 0.5rem;
+        font-weight: normal;
+        &:focus {
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    .p-accordion-tab {
+      .p-accordion-content {
+        background: transparent;
+        border-radius: 0 !important;
+        padding: 0;
+        border: none;
+      }
+    }
+  }
+}
+::ng-deep p-fileupload {
+  .p-fileupload {
+    .p-fileupload-buttonbar {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+
+      .p-button {
+        background-color: #4164e4;
+        padding: 3px;
+      }
+    }
+
+    .p-fileupload-content {
+      color: #fff;
+      background-color: transparent;
+      border: none;
+    }
+  }
+}

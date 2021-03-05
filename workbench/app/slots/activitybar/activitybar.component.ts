@@ -29,7 +29,6 @@ export class ActivitybarComponent extends Slot implements AfterViewInit {
   ngAfterViewInit() {}
 
   openExplorer(item: ActivitybarItem) {
-    console.log("item: ", item);
     this.contextService.setActivitybar(item);
   }
 }

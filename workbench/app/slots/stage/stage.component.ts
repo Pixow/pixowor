@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
+import { EDITOR_EVENTS } from "workbench/consts";
 
 @Component({
   selector: "stage",
@@ -10,26 +11,43 @@ import { MessageService } from "primeng/api";
   providers: [MessageService],
 })
 export class StageComponent extends Slot implements OnInit {
-  @ViewChild("anchor", { read: ViewContainerRef }) anchor: ViewContainerRef;
+  types = [
+    {
+      title: "场景",
+      for: "scene",
+    },
+    {
+      title: "物件",
+      for: "element",
+    },
+    {
+      title: "代码",
+      for: "code",
+    },
+  ];
+
+  @ViewChild("sceneEditor", { read: ViewContainerRef }) sceneEditor: ViewContainerRef;
   constructor(private contextService: ContextService, private messageService: MessageService) {
     super();
   }
 
-  ngOnInit() {
-    this.contextService.activityItem$.subscribe((item) => {
-      if (item) {
-        this.createComponent(item.id);
-      }
-    });
-  }
+  ngOnInit() {}
 
-  createComponent(pluginId: string) {
-    const componentFactory = this.contextService.getComponentFactory(pluginId);
+  createSceneEditor() {
+    const componentFactory = this.contextService.getComponentFactory("SceneEditorComponent");
     if (componentFactory) {
-      this.anchor.clear();
-      this.anchor.createComponent(componentFactory);
+      this.sceneEditor.clear();
+      this.sceneEditor.createComponent(componentFactory);
     }
   }
 
   registComponent(componentName) {}
+
+  renderComponent(componentName: string) {
+    const componentFactory = this.contextService.getComponentFactory(componentName);
+    if (componentFactory) {
+      this.sceneEditor.clear();
+      this.sceneEditor.createComponent(componentFactory);
+    }
+  }
 }

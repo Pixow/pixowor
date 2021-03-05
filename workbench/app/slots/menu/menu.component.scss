@@ -1,0 +1,10 @@
+::ng-deep p-menubar {
+  .p-menubar {
+    height: 30px;
+    padding: 0;
+
+    .p-menuitem-link {
+      padding: 0.4rem 1rem !important;
+    }
+  }
+}
