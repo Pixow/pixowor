@@ -93,6 +93,7 @@
     "axios": "^0.21.1",
     "qiniu": "^7.3.2",
     "qs": "^6.9.6",
-    "systemjs": "^6.8.3"
+    "systemjs": "^6.8.3",
+    "qing-web-api-service": "git+ssh://git@code.apowo.com:PixelPai/qing-web-api-sdk.git#master"
   }
 }
