@@ -10,5 +10,9 @@
   {
     "name": "game-explorer-plugin",
     "moduleBundlePath": "http://127.0.0.1:45326/plugins-repo/game-explorer-plugin/bundle.js"
+  },
+  {
+    "name": "scene-editor-plugin",
+    "moduleBundlePath": "http://127.0.0.1:45326/plugins-repo/scene-editor-plugin/bundle.js"
   }
 ]

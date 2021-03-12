@@ -10,16 +10,16 @@ import * as url from "url";
 import * as wget from "wget-improved";
 import * as fsa from "fs-extra";
 
-import ipc_channel from "./ipc_channel";
+import { UI_CHANNELS } from "./ipc_channel";
 import { isFileExists, readAFile } from "../base/node/file";
 
 export default {
-  [ipc_channel.READ_FILE]: ({ params, cb }) => {
+  [UI_CHANNELS.READ_FILE]: ({ params, cb }) => {
     const { path } = params;
 
     readAFile({ path, cb });
   },
-  [ipc_channel.READ_JSON]: ({ params, cb }) => {
+  [UI_CHANNELS.READ_JSON]: ({ params, cb }) => {
     const { filePath } = params;
 
     fsa.readJson(filePath, (err, data) => {
@@ -30,7 +30,7 @@ export default {
       }
     });
   },
-  [ipc_channel.WRITE_JSON]: ({ params, cb }) => {
+  [UI_CHANNELS.WRITE_JSON]: ({ params, cb }) => {
     const { filePath, content } = params;
 
     fsa.writeJson(filePath, content, (err) => {
@@ -41,7 +41,7 @@ export default {
       }
     });
   },
-  [ipc_channel.ZIP_FILES]: ({ params, cb }) => {
+  [UI_CHANNELS.ZIP_FILES]: ({ params, cb }) => {
     console.log("params: ", params);
     const { folderName, files } = params;
     const temp = app.getPath("temp");
@@ -70,7 +70,7 @@ export default {
       });
     });
   },
-  [ipc_channel.UPLOAD_FILE]: ({ params, cb }) => {
+  [UI_CHANNELS.UPLOAD_FILE]: ({ params, cb }) => {
     const { uri, key, qiniuToken } = params;
     console.log("uri, qiniuToken: ", uri, key, qiniuToken);
 
@@ -90,7 +90,7 @@ export default {
       }
     });
   },
-  [ipc_channel.DOWNLOAD_FILE]: ({ params, cb }) => {
+  [UI_CHANNELS.DOWNLOAD_FILE]: ({ params, cb }) => {
     const { uri, output } = params;
 
     if (isFileExists(output)) {
@@ -112,7 +112,7 @@ export default {
       }
     }
   },
-  [ipc_channel.UNZIP_FILE]: ({ params, cb }) => {
+  [UI_CHANNELS.UNZIP_FILE]: ({ params, cb }) => {
     const { source, dest } = params;
 
     const inp = fs.createReadStream(source);

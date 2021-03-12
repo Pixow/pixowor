@@ -41,7 +41,13 @@ import * as primengProgressbar from "primeng/progressbar";
 import * as primengCheckbox from "primeng/checkbox";
 import * as primengCarousel from "primeng/carousel";
 import * as primengFileupload from "primeng/fileupload";
+import * as primengMenu from "primeng/menu";
+import * as primengTree from "primeng/tree";
 import * as qingWorkbench from "../../public_api";
+import * as gameCore from "@PixelPai/game-core";
+import * as pixelpaiProto from "pixelpai_proto";
+import * as netSocketPacket from "net-socket-packet";
+
 import { MessageService } from "primeng/api";
 import { SlotKeys } from "workbench/app/models";
 import { StageComponent } from "workbench/app/slots/stage/stage.component";
@@ -73,6 +79,11 @@ loader.register({
   "primeng/checkbox": primengCheckbox,
   "primeng/carousel": primengCarousel,
   "primeng/fileupload": primengFileupload,
+  "primeng/menu": primengMenu,
+  "primeng/tree": primengTree,
+  "@PixelPai/game-core": gameCore,
+  pixelpai_proto: pixelpaiProto,
+  "net-socket-packet": netSocketPacket,
 });
 
 @Component({

@@ -126,6 +126,102 @@
           }
         }
       }
+    },
+    "worker": {
+      "root": "",
+      "sourceRoot": "worker",
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "outputPath": "dist/worker",
+            "index": "worker/index.html",
+            "main": "worker/main.ts",
+            "tsConfig": "worker/tsconfig.app.json",
+            "polyfills": "worker/polyfills.ts",
+            "preserveSymlinks": true,
+            "assets": [],
+            "styles": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["worker"]
+            },
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "./angular.webpack.js"
+            }
+          },
+          "configurations": {
+            "dev": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "fileReplacements": [
+                {
+                  "replace": "workbench/environments/environment.ts",
+                  "with": "workbench/environments/environment.dev.ts"
+                }
+              ]
+            },
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "workbench/environments/environment.ts",
+                  "with": "workbench/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "worker:build"
+          },
+          "configurations": {
+            "dev": {
+              "browserTarget": "worker:build:dev"
+            },
+            "production": {
+              "browserTarget": "worker:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "editor:build"
+          }
+        },
+
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": ".eslintrc.json",
+            "lintFilePatterns": ["src/**.ts", "main.ts"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "workbench"

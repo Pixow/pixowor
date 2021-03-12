@@ -12,6 +12,9 @@ export declare class ElectronService {
     constructor();
     get appPath(): string;
     get appDataPath(): string;
+    get userDataPath(): string;
+    get tempPath(): string;
+    message2Main(command: string, payload: any): void;
     readAppFile(uri: string, cb: Function): void;
     readAppDataFile(uri: string, cb: Function): void;
     readFile(filePath: string, cb: Function): void;
@@ -37,5 +40,13 @@ export declare class ElectronService {
     downloadFile({ uri, output }: {
         uri: string;
         output: string;
+    }, cb: Function): void;
+    launchGame({ gameFolder, gameId }: {
+        gameFolder: string;
+        gameId: string;
+    }, cb: Function): void;
+    launchScene({ gameFolder, sceneId }: {
+        gameFolder: string;
+        sceneId: number;
     }, cb: Function): void;
 }

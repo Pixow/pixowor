@@ -37,12 +37,16 @@ export class Game implements IGame {
   releaseVersions: IGameVersion[];
   pastVersions: IGameVersion[];
 
+  isDownload: boolean = false;
+
   constructor(data?: Partial<IGame>) {
     Object.assign(this, data);
   }
 
   public get gameCover() {
-    return this.cover ? url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.cover) : "./assets/images/game_thumb.png";
+    return this.cover
+      ? url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.cover)
+      : "./assets/images/game_thumb.png";
   }
 
   public get isExists() {
@@ -61,13 +65,20 @@ export class Game implements IGame {
     return path.join(this._storePath, `${this.owner.username}/game/${this._id}`);
   }
   private get _storePath() {
-    return path.join(remote.app.getPath("userData"), "QingData");
+    return path.join(remote.app.getPath("userData"));
   }
 
-  public getGameZipUri(version: string): string {
-    return url.resolve(
-      WorkbenchConfig.WEB_RESOURCE_URI,
-      `${this.owner.username}/game/${this._id}/${version}/${this._id}.zip`
-    );
+  public getZipFileName(version?: string): string {
+    return `${this.owner.username}/game/${this._id}/${version || this.lastGameVersion.version}/${
+      this._id
+    }.zip`;
+  }
+
+  public getTempZipFileName(version?: string): string {
+    return `${this._id}_${version || this.lastGameVersion.version}.zip`;
+  }
+
+  public getGameZipUri(version?: string): string {
+    return url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.getZipFileName(version));
   }
 }

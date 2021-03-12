@@ -1,4 +1,4 @@
-export default {
+export const UI_CHANNELS = {
   READ_FILE: "read-file",
   READ_JSON: "read-json",
   ZIP_FILES: "zip-files",
@@ -7,4 +7,14 @@ export default {
   UPLOAD_FILE: "upload-file",
   DOWNLOAD_FILE: "download-file",
   UNZIP_FILE: "unzip-file",
+};
+
+export const UI2WORKER_CHANNELS = {
+  LAUNCH_GAME: "launch-game",
+  LAUNCH_SCENE: "launch-scene",
+};
+
+export const WORKER2UI_CHANNELS = {
+  LAUNCH_GAME_BACK: "launch-game-back",
+  LAUNCH_SCENE_BACK: "launch-scene-back",
 };

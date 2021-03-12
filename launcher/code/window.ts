@@ -13,6 +13,7 @@ export interface IWindowCreationOptions {
   frame?: boolean;
   resizable?: boolean;
   menu?: boolean;
+  show?: boolean;
 }
 
 export class CodeWindow extends Disposable implements ICodeWindow {
@@ -38,6 +39,7 @@ export class CodeWindow extends Disposable implements ICodeWindow {
     if (config.hasOwnProperty("y")) options.y = config.y;
     if (config.hasOwnProperty("frame")) options.frame = config.frame;
     if (config.hasOwnProperty("resizable")) options.resizable = config.resizable;
+    if (config.hasOwnProperty("show")) options.show = config.show;
 
     this._win = new BrowserWindow(options);
 

@@ -6,6 +6,8 @@ import { ElectronService } from "./electron.service";
 import { EventBus } from "../../utils/index";
 import { ApiService } from "../../utils/api-service";
 import { User } from "../../models/user";
+import { Game } from "../../models/game";
+import { SocketConnection } from "../socket-connection";
 export declare class ContextService {
     private messageService;
     private electronService;
@@ -16,6 +18,7 @@ export declare class ContextService {
     pluginComponentFactories: Map<string, ComponentFactory<unknown>>;
     pluginComponents: Map<string, Type<any>>;
     _apiService: ApiService;
+    _currentGame: Game;
     eventBus: EventBus;
     constructor(messageService: MessageService, electronService: ElectronService, zone: NgZone);
     initial(): void;
@@ -27,6 +30,7 @@ export declare class ContextService {
         get(key: string): any;
         remove(key: string): void;
     };
+    get socket(): SocketConnection;
     setActivitybar(item: any): void;
     getComponentFactory(componentName: string): ComponentFactory<unknown>;
     registComponentFactory(componentName: string, factory: ComponentFactory<unknown>): void;
@@ -37,12 +41,23 @@ export declare class ContextService {
         pluginName: string;
         pluginVersion: string;
     }, cb: Function): void;
+    downloadGame(game: Game, cb: Function): void;
     enablePlugin(pluginName: string): void;
     disablePlugin(pluginName: string): void;
     getConfigData(configFile: string, cb: Function): void;
     getPluginsFromMarket(): void;
     setUser(user: User): void;
     getUser(): any;
+    setCurrentGame(game: Game): void;
+    getCurrentGame(): Game;
+    launchGame(game: Game, cb: Function): void;
+    launchScene(game: Game, sceneId: number, cb: Function): void;
+    getGameServerConfig(): {
+        TEST_GAME_CONFIG_IP_MOBILE: string;
+        TEST_GAME_CONFIG_PORT_MOBILE: number;
+        API_URL: string;
+        WEB_RESOURCE_URI: string;
+    };
     success(message: any): void;
     error(message: any): void;
     showDialog(title: string, componentName: string): void;

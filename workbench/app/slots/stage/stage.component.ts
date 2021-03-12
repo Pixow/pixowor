@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Component, NgZone, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
@@ -27,7 +27,7 @@ export class StageComponent extends Slot implements OnInit {
   ];
 
   @ViewChild("sceneEditor", { read: ViewContainerRef }) sceneEditor: ViewContainerRef;
-  constructor(private contextService: ContextService, private messageService: MessageService) {
+  constructor(private contextService: ContextService, private ngZone: NgZone) {
     super();
   }
 
@@ -47,7 +47,9 @@ export class StageComponent extends Slot implements OnInit {
     const componentFactory = this.contextService.getComponentFactory(componentName);
     if (componentFactory) {
       this.sceneEditor.clear();
-      this.sceneEditor.createComponent(componentFactory);
+      this.ngZone.run(() => {
+        this.sceneEditor.createComponent(componentFactory);
+      });
     }
   }
 }

@@ -26,11 +26,14 @@ export declare class Game implements IGame {
     lastVersion: string;
     releaseVersions: IGameVersion[];
     pastVersions: IGameVersion[];
+    isDownload: boolean;
     constructor(data?: Partial<IGame>);
     get gameCover(): string;
     get isExists(): any;
     get lastGameVersion(): IGameVersion;
     get gameFolder(): string;
     private get _storePath();
-    getGameZipUri(version: string): string;
+    getZipFileName(version?: string): string;
+    getTempZipFileName(version?: string): string;
+    getGameZipUri(version?: string): string;
 }

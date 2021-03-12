@@ -117,3 +117,15 @@
   background: url("/assets/images/close-active.svg") center center;
   background-size: 100%;
 }
+
+.qing-settings::after {
+  @extend .qing-after;
+  background: url("/assets/images/settings.svg") center center;
+  background-size: 100%;
+}
+.qing-settings:hover,
+.qing-settings:active,
+.qing-settings:focus {
+  background: url("/assets/images/settings-active.svg") center center;
+  background-size: 100%;
+}

@@ -5,6 +5,7 @@ import { ipcMain, app } from "electron";
 const Server = require("electron-rpc/server");
 import { CodeWindow } from "./window";
 import routes from "./routes";
+import { UI2WORKER_CHANNELS, WORKER2UI_CHANNELS } from "./ipc_channel";
 const { spawn } = require("child_process");
 export class CodeApplication {
   constructor() {
@@ -16,24 +17,34 @@ export class CodeApplication {
   private initRpcServer(window) {
     const app = new Server();
     app.configure(window.webContents);
-
-    app.on("load-game", (req, next) => {
-      const { gameId } = req;
-      fs.readFile(path.join(app.getPath("userData"), gameId), (err, data) => {
-        if (err) return next(err);
-        next(null, data);
-      });
-    });
   }
 
-  private initWorkerWindow() {
-    const workerURL = ` `;
+  private initWorkerWindow(isServe: boolean = false): CodeWindow {
+    let workbenchEntry: string;
+
+    if (isServe) {
+      workbenchEntry = "http://localhost:4301";
+    } else {
+      workbenchEntry = url.format({
+        pathname: path.join(__dirname, "../../worker/index.html"),
+        protocol: "file:",
+        slashes: true,
+      });
+    }
+
     const workerWindow = new CodeWindow({
-      entry: workerURL,
+      entry: workbenchEntry,
       frame: true,
       resizable: false,
       menu: false,
+      show: true,
     });
+
+    if (isServe) {
+      workerWindow.win.webContents.openDevTools();
+    }
+
+    return workerWindow;
   }
 
   private initIpcRoutes() {
@@ -45,6 +56,22 @@ export class CodeApplication {
             e.sender.send(routeName, response);
           },
         });
+      });
+    }
+  }
+
+  private initUI2WorkerRoutes(workerWindow) {
+    for (let routeName in UI2WORKER_CHANNELS) {
+      ipcMain.on(UI2WORKER_CHANNELS[routeName], (e, params) => {
+        workerWindow.win.webContents.send(UI2WORKER_CHANNELS[routeName], params);
+      });
+    }
+  }
+
+  private initWorker2UIRoutes(uiWindow) {
+    for (let routeName in WORKER2UI_CHANNELS) {
+      ipcMain.on(WORKER2UI_CHANNELS[routeName], (e, params) => {
+        uiWindow.win.webContents.send(WORKER2UI_CHANNELS[routeName], params);
       });
     }
   }
@@ -75,23 +102,26 @@ export class CodeApplication {
       });
     }
 
-    const codeWin = new CodeWindow({
+    const uiWindow = new CodeWindow({
       entry: workbenchEntry,
       frame: true,
       resizable: false,
       menu: false,
     });
 
-    this.initWorkerWindow();
+    const workerWindow = this.initWorkerWindow(serve);
 
     this.initIpcRoutes();
 
-    this.initRpcServer(codeWin);
+    this.initRpcServer(uiWindow);
 
     this.startPluginsRepoServer();
 
+    this.initWorker2UIRoutes(uiWindow);
+    this.initUI2WorkerRoutes(workerWindow);
+
     if (serve) {
-      codeWin.win.webContents.openDevTools();
+      uiWindow.win.webContents.openDevTools();
     }
   }
 }

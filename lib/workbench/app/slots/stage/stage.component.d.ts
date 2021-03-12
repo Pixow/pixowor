@@ -1,16 +1,15 @@
-import { OnInit, ViewContainerRef } from "@angular/core";
+import { NgZone, OnInit, ViewContainerRef } from "@angular/core";
 import { Slot } from "../../models/slot";
 import { ContextService } from "../../core/services/index";
-import { MessageService } from "primeng/api";
 export declare class StageComponent extends Slot implements OnInit {
     private contextService;
-    private messageService;
+    private ngZone;
     types: {
         title: string;
         for: string;
     }[];
     sceneEditor: ViewContainerRef;
-    constructor(contextService: ContextService, messageService: MessageService);
+    constructor(contextService: ContextService, ngZone: NgZone);
     ngOnInit(): void;
     createSceneEditor(): void;
     registComponent(componentName: any): void;

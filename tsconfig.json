@@ -9,16 +9,17 @@
     "resolveJsonModule": true,
     "target": "ES5",
     "typeRoots": ["node_modules/@types"],
-    "types": ["node", "jest"],
+    "types": ["node", "jest", "long"],
     "baseUrl": "./",
     "paths": {
       "plugins": ["plugins/*"],
       "workbench": ["workbench/*"],
+      "worker": ["worker/*"],
       "launcher": ["launcher/*"]
     },
     "lib": ["ES2017", "ES2016", "ES2015", "DOM", "DOM.Iterable"]
   },
   "files": ["main.ts"],
-  "include": ["launcher/**/*", "workbench/**/*", "plugins/**/*"],
+  "include": ["launcher/**/*", "workbench/**/*", "worker/*", "plugins/**/*"],
   "exclude": ["node_modules"]
 }

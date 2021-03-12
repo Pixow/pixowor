@@ -16,6 +16,8 @@ import { WorkbenchConfig } from "workbench/environments/environment";
 import { PLUGINS_CONFIG_FILE, PLUGINS_FOLDER, PLUGINS_WEB_URI } from "workbench/consts";
 import { ModuleLoader } from "workbench/app/module-loader";
 import { User } from "workbench/app/models/user";
+import { Game } from "workbench/app/models/game";
+import { SocketConnection } from "workbench/app/core/socket-connection";
 
 @Injectable({
   providedIn: "root",
@@ -27,6 +29,7 @@ export class ContextService {
   pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponents = new Map<string, Type<any>>();
   _apiService: ApiService;
+  _currentGame: Game;
 
   eventBus: EventBus;
 
@@ -41,6 +44,8 @@ export class ContextService {
     this._apiService = new ApiService();
 
     this.eventBus = new EventBus();
+
+    this.electronService.ipcRenderer.on("message-from-worker", (event, arg) => {});
   }
 
   public initial() {
@@ -62,6 +67,10 @@ export class ContextService {
 
   public get localStorage() {
     return LocalStorage;
+  }
+
+  public get socket() {
+    return SocketConnection.getInstance();
   }
 
   public setActivitybar(item: any) {
@@ -97,13 +106,13 @@ export class ContextService {
   ) {
     const zipFileName = `${pluginName}_${pluginVersion}.zip`;
     const uri = url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, zipFileName);
-    const temp = this.electronService.remote.app.getPath("temp");
-    const output = url.resolve(temp, zipFileName);
+    const output = url.resolve(this.electronService.tempPath, zipFileName);
 
+    // TODO: 只使用appDataPath
     const appPath =
       WorkbenchConfig.environment === "DEVELOPMENT"
         ? this.electronService.appPath
-        : this.electronService.appDataPath;
+        : this.electronService.userDataPath;
 
     this.downloadFile({ uri, output }, () => {
       const pluginFolder = path.join(appPath, `${PLUGINS_FOLDER}/${pluginName}`);
@@ -134,9 +143,36 @@ export class ContextService {
     });
   }
 
-  public downloadGame(gameId: string) {
-    const gameFileName = "";
-    const uri = url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, gameFileName);
+  public downloadGame(game: Game, cb: Function) {
+    console.log(
+      "🚀 ~ file: context.service.ts ~ line 139 ~ ContextService ~ downloadGame ~ game",
+      game
+    );
+    const tempZipFileName = game.getTempZipFileName();
+    const uri = game.getGameZipUri();
+    const output = url.resolve(this.electronService.tempPath, tempZipFileName);
+
+    this.downloadFile({ uri, output }, () => {
+      console.log("userDataPath: ", this.electronService.userDataPath);
+      console.log("appDataPath: ", this.electronService.appDataPath);
+
+      const dest = path.join(
+        this.electronService.userDataPath,
+        `${game.owner.username}/game/${game._id}`
+      );
+      this.unzipFile({ source: output, dest }, () => {
+        // 读取 ${gameId}/package.json 中的
+        // elements: {
+        //   "xxxxx": 0.0.1
+        // },
+        // terrains: {
+        //   "xxxxx": 0.0.2
+        // }
+        // 然后下载对应资源
+
+        cb();
+      });
+    });
   }
 
   public enablePlugin(pluginName: string) {}
@@ -160,6 +196,38 @@ export class ContextService {
 
   public getUser() {
     return LocalStorage.get(USER_STORAGE_KEY);
+  }
+
+  public setCurrentGame(game: Game) {
+    this._currentGame = game;
+  }
+
+  public getCurrentGame(): Game {
+    return this._currentGame;
+  }
+
+  public launchGame(game: Game, cb: Function) {
+    this.electronService.launchGame({ gameFolder: game.gameFolder, gameId: game._id }, cb);
+  }
+
+  public launchScene(game: Game, sceneId: number, cb: Function) {
+    this.electronService.launchScene({ gameFolder: game.gameFolder, sceneId: sceneId }, cb);
+  }
+
+  public getGameServerConfig() {
+    const {
+      TEST_GAME_CONFIG_IP_MOBILE,
+      TEST_GAME_CONFIG_PORT_MOBILE,
+      API_URL,
+      WEB_RESOURCE_URI,
+    } = WorkbenchConfig;
+
+    return {
+      TEST_GAME_CONFIG_IP_MOBILE,
+      TEST_GAME_CONFIG_PORT_MOBILE,
+      API_URL,
+      WEB_RESOURCE_URI,
+    };
   }
 
   // ----------- UI ---------------
