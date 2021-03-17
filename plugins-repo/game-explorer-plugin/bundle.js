@@ -1,8 +1,12 @@
-System.register(['@angular/common', '@angular/core', '@angular/forms', '@ngxs/store', 'primeng/accordion', 'primeng/menu', 'qing-workbench'], function (exports) {
+System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular/forms', '@ngxs/store', 'primeng/accordion', 'primeng/menu'], function (exports) {
     'use strict';
-    var CommonModule, Injectable, Inject, Component, Input, NgModule, FormsModule, ReactiveFormsModule, Action, Selector, State, Select, NgxsModule, AccordionModule, MenuModule, ContextService, Game;
+    var ContextService, Game, WORKBENCH_PUZZLE_BLOCK, CommonModule, Injectable, Inject, Component, Input, NgModule, FormsModule, ReactiveFormsModule, Action, Selector, State, Select, Store, NgxsModule, AccordionModule, MenuModule;
     return {
         setters: [function (module) {
+            ContextService = module.ContextService;
+            Game = module.Game;
+            WORKBENCH_PUZZLE_BLOCK = module.WORKBENCH_PUZZLE_BLOCK;
+        }, function (module) {
             CommonModule = module.CommonModule;
         }, function (module) {
             Injectable = module.Injectable;
@@ -18,14 +22,12 @@ System.register(['@angular/common', '@angular/core', '@angular/forms', '@ngxs/st
             Selector = module.Selector;
             State = module.State;
             Select = module.Select;
+            Store = module.Store;
             NgxsModule = module.NgxsModule;
         }, function (module) {
             AccordionModule = module.AccordionModule;
         }, function (module) {
             MenuModule = module.MenuModule;
-        }, function (module) {
-            ContextService = module.ContextService;
-            Game = module.Game;
         }],
         execute: function () {
 
@@ -1621,14 +1623,24 @@ System.register(['@angular/common', '@angular/core', '@angular/forms', '@ngxs/st
             }());
 
             var GameExplorerComponent = exports('GameExplorerComponent', /** @class */ (function () {
-                function GameExplorerComponent(context) {
+                function GameExplorerComponent(context, store) {
                     this.context = context;
+                    this.store = store;
                 }
                 GameExplorerComponent.prototype.ngOnInit = function () {
                     this.context.initial();
                     this.myGames$.subscribe(function (data) {
                         console.log("myGames: ", data);
                     });
+                };
+                GameExplorerComponent.prototype.onTabOpen = function (event) {
+                    var index = event.index;
+                    if (index === 1) {
+                        this.store.dispatch(new GameActions.ListMyGames());
+                    }
+                    else {
+                        this.store.dispatch(new GameActions.ListTemplateGames());
+                    }
                 };
                 __decorate([
                     Select(GameState.templateGames),
@@ -1641,11 +1653,12 @@ System.register(['@angular/common', '@angular/core', '@angular/forms', '@ngxs/st
                 GameExplorerComponent = __decorate([
                     Component({
                         selector: "game-explorer",
-                        template: "<div class=\"game-explorer\"><p-accordion><p-accordionTab header=\"\u6A21\u677F\u6E38\u620F\"><div class=\"scroll-box\"><ul><li *ngFor=\"let game of templateGames$ | async\"><div class=\"game-item\"><div class=\"game-logo\"><img src=\"{{ game.gameCover }}\"></div><div class=\"game-info\"><h3>{{ game.name }}</h3><p>{{ game.description }}</p><ng-container *ngIf=\"game.isExists; else download\"><p-menu [model]=\"items\"></p-menu><i class=\"qing qing-settings\"></i></ng-container><ng-template #download><button (click)=\"downloadGame(game._id)\">{{ game.isDownload ? \"\u4E0B\u8F7D\u4E2D\" : \"\u4E0B\u8F7D\" }}</button></ng-template></div></div></li></ul></div></p-accordionTab><p-accordionTab header=\"\u6211\u7684\u6E38\u620F\"><div class=\"scroll-box\"><ul><li *ngFor=\"let game of myGames$ | async\"><game-item [game]=\"game\"></game-item></li></ul></div></p-accordionTab></p-accordion></div>",
+                        template: "<div class=\"game-explorer\"><p-accordion (onOpen)=\"onTabOpen($event)\"><p-accordionTab header=\"\u6A21\u677F\u6E38\u620F\"><div class=\"scroll-box\"><ul><li *ngFor=\"let game of templateGames$ | async\"><div class=\"game-item\"><div class=\"game-logo\"><img src=\"{{ game.gameCover }}\"></div><div class=\"game-info\"><h3>{{ game.name }}</h3><p>{{ game.description }}</p><ng-container *ngIf=\"game.isExists; else download\"><p-menu [model]=\"items\"></p-menu><i class=\"qing qing-settings\"></i></ng-container><ng-template #download><button (click)=\"downloadGame(game._id)\">{{ game.isDownload ? \"\u4E0B\u8F7D\u4E2D\" : \"\u4E0B\u8F7D\" }}</button></ng-template></div></div></li></ul></div></p-accordionTab><p-accordionTab header=\"\u6211\u7684\u6E38\u620F\"><div class=\"scroll-box\"><ul><li *ngFor=\"let game of myGames$ | async\"><game-item [game]=\"game\"></game-item></li></ul></div></p-accordionTab></p-accordion></div>",
                         styles: [".scroll-box{max-height:1000px;overflow-y:auto}.scroll-box::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);background-color:#f5f5f5}.scroll-box::-webkit-scrollbar{width:10px;background-color:#f5f5f5}.scroll-box::-webkit-scrollbar-thumb{background-color:#1b1d22}"],
                     }),
                     __param(0, Inject(ContextService)),
-                    __metadata("design:paramtypes", [ContextService])
+                    __metadata("design:paramtypes", [ContextService,
+                        Store])
                 ], GameExplorerComponent);
                 return GameExplorerComponent;
             }()));
@@ -1659,8 +1672,7 @@ System.register(['@angular/common', '@angular/core', '@angular/forms', '@ngxs/st
                             label: "编辑",
                             command: function () {
                                 console.log("编辑游戏", _this.game._id);
-                                _this.context.setCurrentGame(_this.game);
-                                _this.context.eventBus.emit("open-scene-editor");
+                                _this.context.setEditedGame(_this.game);
                             },
                         },
                         {
@@ -1724,18 +1736,32 @@ System.register(['@angular/common', '@angular/core', '@angular/forms', '@ngxs/st
             var config$1 = exports('config', {
                 name: "game-explorer-plugin",
                 id: "gameExplorer",
-                entryComponent: "GameExplorerComponent",
-                components: [],
+                components: ["GameExplorerComponent"],
                 moduleName: "GameExplorerPluginModule",
                 displayName: "游戏列表",
                 contributes: {
                     workbenchActivitybar: {
                         title: "游戏列表",
                         icon: "qing qing-game",
+                        command: function (context) {
+                            context.eventBus.emit(config$1.events.OPEN_GAME_EXPLORER);
+                        },
+                    },
+                    workbenchExplorer: {
+                        component: "GameExplorerComponent",
                     },
                 },
+                events: {
+                    OPEN_GAME_EXPLORER: "open-game-explorer",
+                },
             });
-            var active = exports('active', function (context) { });
+            var active = exports('active', function (context) {
+                context.eventBus.on(config$1.events.OPEN_GAME_EXPLORER, function () {
+                    context.puzzle
+                        .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_EXPLORER)
+                        .container.renderComponent("GameExplorerComponent");
+                });
+            });
             var deactive = exports('deactive', function (context) { });
 
         }

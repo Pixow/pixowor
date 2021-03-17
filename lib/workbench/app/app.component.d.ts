@@ -1,4 +1,4 @@
-import { AfterViewInit, ElementRef, OnDestroy, OnInit, Type, Compiler, Injector, ViewContainerRef } from "@angular/core";
+import { AfterViewInit, ElementRef, OnDestroy, OnInit, Type, Compiler, Injector, ViewContainerRef, NgZone } from "@angular/core";
 import { ContextService } from "./core/services/index";
 import { DialogService } from "primeng/dynamicdialog";
 import { MenuComponent } from "./slots/menu/menu.component";
@@ -14,6 +14,7 @@ export declare class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private contextService;
     private compiler;
     private injector;
+    private ngZone;
     private messageService;
     content: ViewContainerRef;
     dialogRef: ViewContainerRef;
@@ -21,7 +22,7 @@ export declare class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     display: boolean;
     title: string;
     static instance: AppComponent;
-    constructor(dialogService: DialogService, contextService: ContextService, compiler: Compiler, injector: Injector, messageService: MessageService);
+    constructor(dialogService: DialogService, contextService: ContextService, compiler: Compiler, injector: Injector, ngZone: NgZone, messageService: MessageService);
     workbenchMenu: ElementRef<MenuComponent>;
     workbenchActivitybar: ElementRef<ActivitybarComponent>;
     workbenchExplorer: ElementRef<ExplorerComponent>;
@@ -35,7 +36,8 @@ export declare class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     destroyDialog(): void;
     private loadPlugins;
     createPlugin(plugin: PluginConfig): Promise<void>;
-    registSlotUi(pluginId: any, config: any): void;
+    injectToSlot(config: any): void;
+    registEvents(event: any): void;
     openDialog(componentType: Type<any>): void;
     ngOnDestroy(): void;
 }

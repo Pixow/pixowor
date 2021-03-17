@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
@@ -10,7 +10,9 @@ import { EDITOR_EVENTS } from "workbench/consts";
   styleUrls: ["./extensions.component.scss"],
   providers: [MessageService],
 })
-export class ExtensionsComponent extends Slot implements OnInit {
+export class ExtensionsComponent extends Slot implements OnInit, OnDestroy {
+  private cdInterval = null;
+
   types = [
     {
       title: "场景",
@@ -26,33 +28,24 @@ export class ExtensionsComponent extends Slot implements OnInit {
     },
   ];
 
-  @ViewChild("sceneEditor", { read: ViewContainerRef }) sceneEditor: ViewContainerRef;
+  @ViewChild("extensions", { read: ViewContainerRef }) extensions: ViewContainerRef;
   constructor(private contextService: ContextService, private messageService: MessageService) {
     super();
   }
 
-  ngOnInit() {
-    this.contextService.eventBus.on(EDITOR_EVENTS.OPEN_SCENE_EDITOR_EVENT_NAME, () => {
-      console.log("open scene editor");
-      this.createSceneEditor();
-    });
-  }
-
-  createSceneEditor() {
-    const componentFactory = this.contextService.getComponentFactory("SceneEditorComponent");
-    if (componentFactory) {
-      this.sceneEditor.clear();
-      this.sceneEditor.createComponent(componentFactory);
-    }
-  }
-
-  registComponent(componentName) {}
+  ngOnInit() {}
 
   renderComponent(componentName: string) {
-    const componentFactory = this.contextService.getComponentFactory(componentName);
+    const componentFactory = this.getComponentFactory(componentName);
     if (componentFactory) {
-      this.sceneEditor.clear();
-      this.sceneEditor.createComponent(componentFactory);
+      const compRef = this.extensions.createComponent(componentFactory);
+      this.cdInterval = setInterval(() => {
+        compRef.changeDetectorRef.detectChanges();
+      }, 50);
     }
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.cdInterval);
   }
 }

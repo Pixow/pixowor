@@ -795,6 +795,7 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                                         user: data,
                                     });
                                     _this.context.setUser(data);
+                                    _this.context.setInterceptors(data);
                                 })];
                         });
                     });
@@ -985,13 +986,16 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 name: "qing-auth-plugin",
                 id: "qingAuth",
                 entryComponent: "QingAuthComponent",
-                components: ["SigninComponent"],
+                components: ["QingAuthComponent", "SigninComponent"],
                 moduleName: "QingAuthPluginModule",
                 displayName: "登录插件",
                 contributes: {
                     workbenchActivitybar: {
                         title: "登录插件",
                         icon: "qing qing-user",
+                        command: function (context) {
+                            context.eventBus.emit(config$1.events.OPEN_QING_AUTH);
+                        },
                     },
                     workbenchExplorer: {
                         component: "QingAuthComponent",
@@ -1000,8 +1004,16 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                         component: "SigninComponent",
                     },
                 },
+                events: {
+                    OPEN_QING_AUTH: "open-qing-auth",
+                },
             });
             var OPEN_SCENE = "open-scene";
+            var renderSignin = function (context) {
+                context.puzzle
+                    .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_STAGE)
+                    .container.renderComponent("SigninComponent");
+            };
             var active = exports('active', function (context) {
                 context.puzzle
                     .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_MENU)
@@ -1011,14 +1023,14 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                         context.eventBus.emit(OPEN_SCENE);
                     },
                 });
-                context.eventBus.on(OPEN_SCENE, function () {
+                context.eventBus.on(config$1.events.OPEN_QING_AUTH, function () {
                     context.puzzle
-                        .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_STAGE)
-                        .container.renderComponent("SigninComponent");
+                        .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_EXPLORER)
+                        .container.renderComponent("QingAuthComponent");
                 });
             });
             var deactive = exports('deactive', function (context) {
-                context.eventBus.off(OPEN_SCENE);
+                context.eventBus.off(OPEN_SCENE, renderSignin);
             });
 
         }

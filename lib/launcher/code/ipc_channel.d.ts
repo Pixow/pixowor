@@ -1,4 +1,5 @@
 export declare const UI_CHANNELS: {
+    READ_DIR: string;
     READ_FILE: string;
     READ_JSON: string;
     ZIP_FILES: string;

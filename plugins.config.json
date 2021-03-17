@@ -14,5 +14,13 @@
   {
     "name": "scene-editor-plugin",
     "moduleBundlePath": "http://127.0.0.1:45326/plugins-repo/scene-editor-plugin/bundle.js"
+  },
+  {
+    "name": "scene-tree-plugin",
+    "moduleBundlePath": "http://127.0.0.1:45326/plugins-repo/scene-tree-plugin/bundle.js"
+  },
+  {
+    "name": "asset-market-plugin",
+    "moduleBundlePath": "http://127.0.0.1:45326/plugins-repo/asset-market-plugin/bundle.js"
   }
 ]

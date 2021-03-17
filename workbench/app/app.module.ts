@@ -16,6 +16,8 @@ import { ContextModule } from "./context.module";
 import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
 import { StageComponent } from "workbench/app/slots/stage/stage.component";
+import { ExtensionsComponent } from "workbench/app/slots/extensions/extensions.component";
+import { StatusbarComponent } from "workbench/app/slots/statusbar/statusbar.component";
 import { SharedModule } from "workbench/app/shared/shared.module";
 
 @NgModule({
@@ -25,6 +27,8 @@ import { SharedModule } from "workbench/app/shared/shared.module";
     ActivitybarComponent,
     ExplorerComponent,
     StageComponent,
+    ExtensionsComponent,
+    StatusbarComponent,
   ],
   imports: [
     BrowserModule,

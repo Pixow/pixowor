@@ -1,8 +1,10 @@
 import { ipcRenderer } from "electron";
 import * as fs from "fs";
+import * as path from "path";
 import { Component, NgModule, OnInit } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { GameConfig, SceneConfig } from "./game-config";
+import { GameConfig, SceneConfig } from "../workbench/app/models/game-config";
+import { IConfigObject } from "game-capsule";
 
 @Component({
   selector: "worker-root",
@@ -10,7 +12,9 @@ import { GameConfig, SceneConfig } from "./game-config";
 })
 export class WorkerComponent implements OnInit {
   public gameConfig: GameConfig = null;
-  public sceneConfig: SceneConfig = null;
+
+  public sceneConfigMap = new Map();
+  public customNodeConfig = null;
   public lockFile = false;
 
   constructor() {}
@@ -38,33 +42,55 @@ export class WorkerComponent implements OnInit {
         }
 
         this.gameConfig.deserialize(buffer);
+        this.gameConfig.generateGameTree();
 
         message2UI("launch-game-back", { gameConfig: this.gameConfig });
+
+        // fs.readFile(path.join(gameFolder, "custom-node.config.json"), "utf8", (err, data) => {
+        //   this.customNodeConfig = JSON.parse(data);
+        // });
       });
     });
 
     ipcRenderer.on("launch-scene", (event, arg) => {
       const { gameFolder, sceneId } = arg;
 
-      this.sceneConfig = new SceneConfig(gameFolder, sceneId);
+      if (this.sceneConfigMap.get(sceneId)) {
+        message2UI("launch-scene-back", { sceneConfig: this.sceneConfigMap.get(sceneId) });
+      }
 
-      fs.readFile(this.sceneConfig.scenePiFile, (err, buffer) => {
+      const sceneConfig = new SceneConfig(gameFolder, sceneId);
+
+      fs.readFile(sceneConfig.scenePiFile, (err, buffer) => {
         if (err) {
           console.log(err);
         }
 
-        this.sceneConfig.deserialize(buffer);
+        sceneConfig.deserialize(buffer);
+        sceneConfig.generateSceneTree();
 
-        message2UI("launch-scene-back", { sceneConfig: this.sceneConfig });
+        this.sceneConfigMap.set(sceneId, sceneConfig);
+
+        message2UI("launch-scene-back", { sceneConfig: sceneConfig });
       });
+    });
+
+    ipcRenderer.on("generate-scene-tree", (event, arg) => {
+      const { sceneId } = arg;
+      const sceneConfig = this.sceneConfigMap.get(sceneId);
+      const sceneTree = this.generateTree(sceneConfig);
+
+      message2UI("generate-scene-tree-back", { sceneTree });
     });
 
     ipcRenderer.on("command-scene", (event, arg) => {
       this.lockFile = true;
 
-      const { command, args } = arg;
+      const { sceneId, command, args } = arg;
 
-      this.sceneConfig.doCommand(command, args);
+      const sceneConfig = this.sceneConfigMap.get(sceneId);
+
+      sceneConfig.doCommand(command, args);
     });
 
     ipcRenderer.on("save-scene", (event, arg) => {
@@ -72,9 +98,13 @@ export class WorkerComponent implements OnInit {
         return;
       }
 
-      const sceneBuffer = this.sceneConfig.serialize();
+      const { sceneId } = arg;
 
-      fs.writeFile(this.sceneConfig.scenePiFile, sceneBuffer, (error) => {
+      const sceneConfig = this.sceneConfigMap.get(sceneId);
+
+      const sceneBuffer = sceneConfig.serialize();
+
+      fs.writeFile(sceneConfig.scenePiFile, sceneBuffer, (error) => {
         if (error) {
           console.log(error);
         }
@@ -83,8 +113,12 @@ export class WorkerComponent implements OnInit {
 
     ipcRenderer.on("exist-game", (event, arg) => {
       this.gameConfig = null;
-      this.sceneConfig = null;
+      this.sceneConfigMap.clear();
     });
+  }
+
+  generateTree(config: IConfigObject) {
+    console.log("generate config tree: ", config);
   }
 }
 

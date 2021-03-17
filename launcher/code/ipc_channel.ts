@@ -1,4 +1,5 @@
 export const UI_CHANNELS = {
+  READ_DIR: "read-dir",
   READ_FILE: "read-file",
   READ_JSON: "read-json",
   ZIP_FILES: "zip-files",

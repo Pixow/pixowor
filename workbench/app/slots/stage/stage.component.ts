@@ -26,29 +26,19 @@ export class StageComponent extends Slot implements OnInit {
     },
   ];
 
-  @ViewChild("sceneEditor", { read: ViewContainerRef }) sceneEditor: ViewContainerRef;
+  @ViewChild("stage", { read: ViewContainerRef }) stage: ViewContainerRef;
   constructor(private contextService: ContextService, private ngZone: NgZone) {
     super();
   }
 
   ngOnInit() {}
 
-  createSceneEditor() {
-    const componentFactory = this.contextService.getComponentFactory("SceneEditorComponent");
-    if (componentFactory) {
-      this.sceneEditor.clear();
-      this.sceneEditor.createComponent(componentFactory);
-    }
-  }
-
-  registComponent(componentName) {}
-
   renderComponent(componentName: string) {
-    const componentFactory = this.contextService.getComponentFactory(componentName);
+    const componentFactory = this.getComponentFactory(componentName);
     if (componentFactory) {
-      this.sceneEditor.clear();
+      this.stage.clear();
       this.ngZone.run(() => {
-        this.sceneEditor.createComponent(componentFactory);
+        this.stage.createComponent(componentFactory);
       });
     }
   }

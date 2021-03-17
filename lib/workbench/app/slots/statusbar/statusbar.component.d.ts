@@ -9,10 +9,9 @@ export declare class StatusbarComponent extends Slot implements OnInit {
         title: string;
         for: string;
     }[];
-    sceneEditor: ViewContainerRef;
+    statusbar: ViewContainerRef;
     constructor(contextService: ContextService, messageService: MessageService);
     ngOnInit(): void;
-    createSceneEditor(): void;
     registComponent(componentName: any): void;
     renderComponent(componentName: string): void;
 }

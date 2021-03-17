@@ -4,3 +4,4 @@ export * from "./lua-package";
 export * from "./dynamic-injector";
 export * from "./plugin-model";
 export * from "./slot";
+export * from "./game-config";

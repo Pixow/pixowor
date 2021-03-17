@@ -14,6 +14,17 @@ import { UI_CHANNELS } from "./ipc_channel";
 import { isFileExists, readAFile } from "../base/node/file";
 
 export default {
+  [UI_CHANNELS.READ_DIR]: ({ params, cb }) => {
+    const { dir } = params;
+
+    fs.readdir(dir, (err, files) => {
+      if (err) {
+        cb({ error: err });
+      } else {
+        cb({ data: files });
+      }
+    });
+  },
   [UI_CHANNELS.READ_FILE]: ({ params, cb }) => {
     const { path } = params;
 

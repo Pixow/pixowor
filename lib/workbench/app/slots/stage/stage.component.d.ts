@@ -8,10 +8,8 @@ export declare class StageComponent extends Slot implements OnInit {
         title: string;
         for: string;
     }[];
-    sceneEditor: ViewContainerRef;
+    stage: ViewContainerRef;
     constructor(contextService: ContextService, ngZone: NgZone);
     ngOnInit(): void;
-    createSceneEditor(): void;
-    registComponent(componentName: any): void;
     renderComponent(componentName: string): void;
 }

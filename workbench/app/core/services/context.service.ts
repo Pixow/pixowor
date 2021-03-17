@@ -1,5 +1,5 @@
 import { Injectable, Type, ComponentFactory, NgZone } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import * as url from "url";
 import * as path from "path";
 // 不能使用 workbench，打包的时候会引入workbench/service/index.ts导入的所有模块
@@ -18,6 +18,7 @@ import { ModuleLoader } from "workbench/app/module-loader";
 import { User } from "workbench/app/models/user";
 import { Game } from "workbench/app/models/game";
 import { SocketConnection } from "workbench/app/core/socket-connection";
+import { GameConfig, SceneConfig } from "workbench/app/models";
 
 @Injectable({
   providedIn: "root",
@@ -29,7 +30,10 @@ export class ContextService {
   pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponents = new Map<string, Type<any>>();
   _apiService: ApiService;
-  _currentGame: Game;
+  _editedGame$: BehaviorSubject<Game> = new BehaviorSubject(null);
+  _editedGameConfig$: BehaviorSubject<GameConfig> = new BehaviorSubject(null);
+  _editedSceneConfig$: BehaviorSubject<SceneConfig> = new BehaviorSubject(null);
+  plugins = new Map<string, any>();
 
   eventBus: EventBus;
 
@@ -65,12 +69,20 @@ export class ContextService {
     return this._apiService.sdk;
   }
 
+  public setInterceptors(user: User) {
+    this._apiService.setInterceptors(user);
+  }
+
   public get localStorage() {
     return LocalStorage;
   }
 
   public get socket() {
     return SocketConnection.getInstance();
+  }
+
+  public get WorkbenchConfig() {
+    return WorkbenchConfig;
   }
 
   public setActivitybar(item: any) {
@@ -175,9 +187,23 @@ export class ContextService {
     });
   }
 
-  public enablePlugin(pluginName: string) {}
+  public registPlugin(pluginName: string, plugin) {
+    this.plugins.set(pluginName, plugin);
+  }
 
-  public disablePlugin(pluginName: string) {}
+  public enablePlugin(pluginName: string) {
+    const plugin = this.plugins.get(pluginName);
+    if (plugin.active) {
+      plugin.active(this);
+    }
+  }
+
+  public disablePlugin(pluginName: string) {
+    const plugin = this.plugins.get(pluginName);
+    if (plugin.deactive) {
+      plugin.deactive(this);
+    }
+  }
 
   public getConfigData(configFile: string, cb: Function) {
     if (WorkbenchConfig.environment === "DEVELOPMENT") {
@@ -198,12 +224,30 @@ export class ContextService {
     return LocalStorage.get(USER_STORAGE_KEY);
   }
 
-  public setCurrentGame(game: Game) {
-    this._currentGame = game;
+  public setEditedGame(game: Game) {
+    this._editedGame$.next(game);
+
+    this.launchGame(game, ({ payload }) => {
+      this._editedGameConfig$.next(payload.gameConfig);
+
+      const scenes = payload.gameConfig._capsule._root._scenes;
+
+      this.launchScene(game, scenes[0].id, ({ payload }) => {
+        this._editedSceneConfig$.next(payload.sceneConfig);
+      });
+    });
   }
 
-  public getCurrentGame(): Game {
-    return this._currentGame;
+  public get editedGame$(): BehaviorSubject<Game> {
+    return this._editedGame$;
+  }
+
+  public get editedGameConfig$(): BehaviorSubject<GameConfig> {
+    return this._editedGameConfig$;
+  }
+
+  public get editedSceneConfig$(): BehaviorSubject<SceneConfig> {
+    return this._editedSceneConfig$;
   }
 
   public launchGame(game: Game, cb: Function) {
@@ -260,6 +304,10 @@ export class ContextService {
   }
 
   // ------------- File System ---------------
+  readDir(dir: string, cb: Function) {
+    this.electronService.readDir(dir, cb);
+  }
+
   readFile(filePath: string, cb: Function) {
     this.electronService.readFile(filePath, cb);
   }

@@ -67,17 +67,16 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                     this.context = context;
                 }
                 SceneEditorComponent.prototype.ngOnInit = function () {
-                    var _this = this;
                     this.context.initial();
-                    this._game = this.context.getCurrentGame();
-                    this.context.launchGame(this._game, function (_a) {
-                        var payload = _a.payload;
-                        _this._gameCapsule = payload.gameConfig.capsule;
-                        _this.context.launchScene(_this._game, _this._scene.id, function (_a) {
-                            var payload = _a.payload;
-                            _this._gameCapsule.importScene(payload.sceneConfig);
+                };
+                SceneEditorComponent.prototype.ngAfterViewInit = function () {
+                    var _this = this;
+                    var game = this.context.editedGame$.getValue();
+                    this._game = game;
+                    this.context.editedSceneConfig$.subscribe(function (sceneConfig) {
+                        if (sceneConfig) {
                             _this.start();
-                        });
+                        }
                     });
                 };
                 SceneEditorComponent.prototype.start = function () {
@@ -100,7 +99,6 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                             secure: true,
                         },
                         game_created: function () {
-                            _this._app.setGameConfig(_this._gameCapsule);
                             var packet = new PBpacket(op_client.OPCODE._OP_EDITOR_REQ_CLIENT_CHANGE_TO_EDITOR_MODE);
                             var content = packet.content;
                             var _a = _this._scene.size, rows = _a.rows, cols = _a.cols, tileWidth = _a.tileWidth, tileHeight = _a.tileHeight;
@@ -122,7 +120,7 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 SceneEditorComponent = __decorate([
                     Component({
                         selector: "scene-editor",
-                        template: "<div id=\"scene\" #sceneEditor></div><scene-tree></scene-tree>",
+                        template: "<div id=\"scene\" #sceneEditor></div>",
                         styles: ["h1{color:#fff}#scene{width:100%;height:100%}"],
                     }),
                     __param(0, Inject(ContextService)),
@@ -131,113 +129,12 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 return SceneEditorComponent;
             }()));
 
-            var SceneTreeComponent = /** @class */ (function () {
-                function SceneTreeComponent() {
-                    this.files = [
-                        {
-                            label: "Documents",
-                            data: "Documents Folder",
-                            expandedIcon: "pi pi-folder-open",
-                            collapsedIcon: "pi pi-folder",
-                            children: [
-                                {
-                                    label: "Work",
-                                    data: "Work Folder",
-                                    expandedIcon: "pi pi-folder-open",
-                                    collapsedIcon: "pi pi-folder",
-                                    children: [
-                                        {
-                                            label: "Expenses.doc",
-                                            icon: "pi pi-file",
-                                            data: "Expenses Document",
-                                        },
-                                        {
-                                            label: "Resume.doc",
-                                            icon: "pi pi-file",
-                                            data: "Resume Document",
-                                        },
-                                    ],
-                                },
-                                {
-                                    label: "Home",
-                                    data: "Home Folder",
-                                    expandedIcon: "pi pi-folder-open",
-                                    collapsedIcon: "pi pi-folder",
-                                    children: [
-                                        {
-                                            label: "Invoices.txt",
-                                            icon: "pi pi-file",
-                                            data: "Invoices for this month",
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                        {
-                            label: "Pictures",
-                            data: "Pictures Folder",
-                            expandedIcon: "pi pi-folder-open",
-                            collapsedIcon: "pi pi-folder",
-                            children: [
-                                {
-                                    label: "barcelona.jpg",
-                                    icon: "pi pi-image",
-                                    data: "Barcelona Photo",
-                                },
-                                { label: "logo.jpg", icon: "pi pi-image", data: "PrimeFaces Logo" },
-                                { label: "primeui.png", icon: "pi pi-image", data: "PrimeUI Logo" },
-                            ],
-                        },
-                        {
-                            label: "Movies",
-                            data: "Movies Folder",
-                            expandedIcon: "pi pi-folder-open",
-                            collapsedIcon: "pi pi-folder",
-                            children: [
-                                {
-                                    label: "Al Pacino",
-                                    data: "Pacino Movies",
-                                    children: [
-                                        { label: "Scarface", icon: "pi pi-video", data: "Scarface Movie" },
-                                        { label: "Serpico", icon: "pi pi-video", data: "Serpico Movie" },
-                                    ],
-                                },
-                                {
-                                    label: "Robert De Niro",
-                                    data: "De Niro Movies",
-                                    children: [
-                                        {
-                                            label: "Goodfellas",
-                                            icon: "pi pi-video",
-                                            data: "Goodfellas Movie",
-                                        },
-                                        {
-                                            label: "Untouchables",
-                                            icon: "pi pi-video",
-                                            data: "Untouchables Movie",
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ];
-                }
-                SceneTreeComponent = __decorate([
-                    Component({
-                        selector: "scene-tree",
-                        template: "<p-tree [value]=\"files\"></p-tree>",
-                        styles: [""],
-                    })
-                ], SceneTreeComponent);
-                return SceneTreeComponent;
-            }());
-
             var SceneEditorPluginModule = exports('SceneEditorPluginModule', /** @class */ (function () {
                 function SceneEditorPluginModule() {
                 }
                 SceneEditorPluginModule = __decorate([
                     NgModule({
-                        declarations: [SceneEditorComponent, SceneTreeComponent],
+                        declarations: [SceneEditorComponent],
                         imports: [
                             CommonModule,
                             FormsModule,
@@ -246,16 +143,12 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                             MenuModule,
                             TreeModule,
                         ],
-                        exports: [SceneEditorComponent, SceneTreeComponent],
-                        entryComponents: [SceneEditorComponent, SceneTreeComponent],
+                        exports: [SceneEditorComponent],
+                        entryComponents: [SceneEditorComponent],
                         providers: [
                             {
                                 provide: "SceneEditorComponent",
                                 useValue: SceneEditorComponent,
-                            },
-                            {
-                                provide: " SceneTreeComponent",
-                                useValue: SceneTreeComponent,
                             },
                         ],
                     })
@@ -270,15 +163,17 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 components: ["SceneEditorComponent"],
                 moduleName: "SceneEditorPluginModule",
                 displayName: "场景编辑",
+                events: {
+                    OPEN_SCENE_EDITOR: "open-scene-editor",
+                },
                 contributes: {},
             });
-            var OPEN_SCENE_EDITOR = "open-scene-editor";
             var active = exports('active', function (context) {
-                context.eventBus.on(OPEN_SCENE_EDITOR, function () {
-                    context.puzzle
-                        .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_STAGE)
-                        .container.renderComponent("SceneEditorComponent");
-                });
+                // context.eventBus.on(config.events.OPEN_SCENE_EDITOR, function () {
+                // });
+                context.puzzle
+                    .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_STAGE)
+                    .container.renderComponent("SceneEditorComponent");
             });
             var deactive = exports('deactive', function (context) { });
 

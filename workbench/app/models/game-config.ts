@@ -1,5 +1,6 @@
 import { Capsule, SceneNode } from "game-capsule";
 import * as path from "path";
+import { TreeNode } from "primeng/api";
 
 export interface SceneForm {
   name: string;
@@ -50,6 +51,10 @@ export class GameConfig {
     this._capsule.serializeScene(sceneId);
   }
 
+  generateGameTree() {
+    console.log("game capsule: ", this._capsule);
+  }
+
   public addScene({ name, rows, cols }: SceneForm) {
     this._capsule.add.scene(rows, cols, name);
   }
@@ -59,10 +64,18 @@ export class GameConfig {
   }
 }
 
+export interface TreeLeaf extends TreeNode {
+  name: string;
+  id: number;
+  sn: string;
+  children?: TreeLeaf[];
+}
+
 export class SceneConfig {
   private _gameFolder: string;
   private _sceneId: number;
   private _config: Capsule;
+  public tree: TreeLeaf[];
 
   constructor(gameFolder: string, sceneId: number) {
     this._gameFolder = gameFolder;
@@ -84,6 +97,33 @@ export class SceneConfig {
 
   serialize() {
     return this._config.serialize();
+  }
+
+  generateSceneTree() {
+    console.log("scene config: ", this._config);
+    function walk(node) {
+      let tree = [];
+      let leaf: TreeLeaf = {
+        label: node.name,
+        name: node.name,
+        id: node.id,
+        sn: node.sn,
+        expanded: true,
+      };
+
+      if (node.children !== undefined) {
+        leaf.children = [];
+        for (let child of node.children) {
+          leaf.children.push(...walk(child));
+        }
+      }
+
+      tree.push(leaf);
+
+      return tree;
+    }
+
+    this.tree = walk(this._config.root);
   }
 
   doCommand(command: string, args) {

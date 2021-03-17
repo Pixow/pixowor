@@ -17,6 +17,7 @@ export declare class ElectronService {
     message2Main(command: string, payload: any): void;
     readAppFile(uri: string, cb: Function): void;
     readAppDataFile(uri: string, cb: Function): void;
+    readDir(dir: string, cb: Function): void;
     readFile(filePath: string, cb: Function): void;
     readJson(filePath: string, cb: Function): void;
     writeFile(content: string, cb: Function): void;

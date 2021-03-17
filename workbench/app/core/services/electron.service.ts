@@ -75,6 +75,13 @@ export class ElectronService {
     });
   }
 
+  public readDir(dir: string, cb: Function) {
+    this.ipcRenderer.send(UI_CHANNELS.READ_DIR, { dir });
+    this.ipcRenderer.once(UI_CHANNELS.READ_DIR, (e, res) => {
+      cb(res);
+    });
+  }
+
   public readFile(filePath: string, cb: Function) {
     this.ipcRenderer.send(UI_CHANNELS.READ_FILE, { path: filePath });
     this.ipcRenderer.once(UI_CHANNELS.READ_FILE, (e, res) => {

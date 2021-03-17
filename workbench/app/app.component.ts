@@ -10,6 +10,7 @@ import {
   Injector,
   ViewContainerRef,
   ComponentFactoryResolver,
+  NgZone,
 } from "@angular/core";
 import { Subject } from "rxjs";
 import * as path from "path";
@@ -107,6 +108,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private contextService: ContextService,
     private compiler: Compiler,
     private injector: Injector,
+    private ngZone: NgZone,
     private messageService: MessageService
   ) {
     // this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
@@ -177,8 +179,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   public async createPlugin(plugin: PluginConfig) {
     const module = await loader.load(plugin.moduleBundlePath);
     const config = module.config;
+    this.contextService.registPlugin(module.config.name, module);
 
-    this.registSlotUi(config.id, config);
     console.log("🚀 ~ file: app.component.ts ~ line 153 ~ AppComponent ~ module", module);
 
     const moduleFactory = await this.compiler.compileModuleAsync(module[config.moduleName]);
@@ -187,13 +189,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     const map = new WeakMap();
     map.set(ContextService, this.contextService);
     const moduleRef = moduleFactory.create(new DynamicInjector(this.injector, map));
-
-    // 注册 entryComponent
-    const componentProvider = moduleRef.injector.get(config.entryComponent);
-    const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
-      componentProvider
-    );
-    this.contextService.registEntryComponent(config.id, componentFactory);
 
     // 注册 components
     for (const componentName of config.components) {
@@ -204,13 +199,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       this.contextService.registComponentFactory(componentName, componentFactory);
     }
 
-    // 执行plugin active 方法
-    if (module.active) {
-      module.active(this.contextService);
-    }
+    this.ngZone.run(() => {
+      this.injectToSlot(config);
+      // 执行plugin active 方法
+      if (module.active) {
+        module.active(this.contextService);
+      }
+    });
   }
 
-  registSlotUi(pluginId, config) {
+  injectToSlot(config) {
     for (const slotKey of Object.keys(config.contributes)) {
       const slot = this.contextService.puzzle.getPuzzleSlot(slotKey as WORKBENCH_PUZZLE_BLOCK);
       const slotConfig = config.contributes[slotKey];
@@ -222,15 +220,20 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       switch (slotKey) {
         case SlotKeys.WorkbenchActivitybar:
           const item = slotConfig;
-          (slot.container as ActivitybarComponent).addItems(Object.assign(item, { id: pluginId }));
+          (slot.container as ActivitybarComponent).addItems(item);
           break;
-        case SlotKeys.WorkbenchStage || SlotKeys.WorkbenchExplorer:
-          const { componentName } = slotConfig;
-          (slot.container as StageComponent).registComponent(componentName);
+        case SlotKeys.WorkbenchStage:
+        case SlotKeys.WorkbenchExplorer:
+        case SlotKeys.WorkbenchExtensions:
+          const { component } = slotConfig;
+          const factory = this.contextService.getComponentFactory(component);
+          slot.container.registComponentFactory(component, factory);
           break;
       }
     }
   }
+
+  registEvents(event) {}
 
   // registComponentEvent() {
   //   const workbenchMenu = document.querySelector("workbench-menu");

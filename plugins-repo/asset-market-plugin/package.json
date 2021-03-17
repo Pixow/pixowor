@@ -1,0 +1,8 @@
+{
+  "name": "asset-market-plugin",
+  "version": "1.0.0",
+  "author": "IvanDart",
+  "dependencies": {
+    "qing-workbench": "^0.0.6"
+  }
+}

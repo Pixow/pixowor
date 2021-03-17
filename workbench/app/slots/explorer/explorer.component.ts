@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Component, ComponentFactory, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
@@ -11,20 +11,22 @@ import { MessageService } from "primeng/api";
 })
 export class ExplorerComponent extends Slot implements OnInit {
   @ViewChild("anchor", { read: ViewContainerRef }) anchor: ViewContainerRef;
-  constructor(private contextService: ContextService, private messageService: MessageService) {
+  constructor(private contextService: ContextService) {
     super();
   }
 
+  pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
+
   ngOnInit() {
-    this.contextService.activityItem$.subscribe((item) => {
-      if (item) {
-        this.createComponent(item.id);
-      }
-    });
+    // this.contextService.activityItem$.subscribe((item) => {
+    //   if (item) {
+    //     this.renderComponent(item.id);
+    //   }
+    // });
   }
 
-  createComponent(pluginId: string) {
-    const componentFactory = this.contextService.getEntryComponent(pluginId);
+  renderComponent(componentName: string) {
+    const componentFactory = this.getComponentFactory(componentName);
     if (componentFactory) {
       this.anchor.clear();
       this.anchor.createComponent(componentFactory);

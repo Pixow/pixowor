@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
-import { EDITOR_EVENTS } from "workbench/consts";
 
 @Component({
   selector: "statusbar",
@@ -26,33 +25,20 @@ export class StatusbarComponent extends Slot implements OnInit {
     },
   ];
 
-  @ViewChild("sceneEditor", { read: ViewContainerRef }) sceneEditor: ViewContainerRef;
+  @ViewChild("statusbar", { read: ViewContainerRef }) statusbar: ViewContainerRef;
   constructor(private contextService: ContextService, private messageService: MessageService) {
     super();
   }
 
-  ngOnInit() {
-    this.contextService.eventBus.on(EDITOR_EVENTS.OPEN_SCENE_EDITOR_EVENT_NAME, () => {
-      console.log("open scene editor");
-      this.createSceneEditor();
-    });
-  }
-
-  createSceneEditor() {
-    const componentFactory = this.contextService.getComponentFactory("SceneEditorComponent");
-    if (componentFactory) {
-      this.sceneEditor.clear();
-      this.sceneEditor.createComponent(componentFactory);
-    }
-  }
+  ngOnInit() {}
 
   registComponent(componentName) {}
 
   renderComponent(componentName: string) {
-    const componentFactory = this.contextService.getComponentFactory(componentName);
+    const componentFactory = this.getComponentFactory(componentName);
     if (componentFactory) {
-      this.sceneEditor.clear();
-      this.sceneEditor.createComponent(componentFactory);
+      this.statusbar.clear();
+      this.statusbar.createComponent(componentFactory);
     }
   }
 }

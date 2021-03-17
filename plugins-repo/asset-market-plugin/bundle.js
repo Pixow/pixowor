@@ -1,6 +1,6 @@
-System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular/forms', '@ngxs/store', 'primeng/accordion', 'primeng/fileupload'], function (exports) {
+System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular/forms', 'primeng/accordion', 'primeng/fileupload'], function (exports) {
     'use strict';
-    var ContextService, WORKBENCH_PUZZLE_BLOCK, CommonModule, Injectable, Inject, Component, NgModule, FormsModule, Action, Selector, State, Select, Store, NgxsModule, AccordionModule, FileUploadModule;
+    var ContextService, WORKBENCH_PUZZLE_BLOCK, CommonModule, Injectable, Inject, Component, Input, NgModule, FormsModule, AccordionModule, FileUploadModule;
     return {
         setters: [function (module) {
             ContextService = module.ContextService;
@@ -11,16 +11,10 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
             Injectable = module.Injectable;
             Inject = module.Inject;
             Component = module.Component;
+            Input = module.Input;
             NgModule = module.NgModule;
         }, function (module) {
             FormsModule = module.FormsModule;
-        }, function (module) {
-            Action = module.Action;
-            Selector = module.Selector;
-            State = module.State;
-            Select = module.Select;
-            Store = module.Store;
-            NgxsModule = module.NgxsModule;
         }, function (module) {
             AccordionModule = module.AccordionModule;
         }, function (module) {
@@ -58,42 +52,18 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
             }
 
-            function __awaiter(thisArg, _arguments, P, generator) {
-                function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-                return new (P || (P = Promise))(function (resolve, reject) {
-                    function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-                    function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-                    function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-                    step((generator = generator.apply(thisArg, _arguments || [])).next());
+            function assetSerializer(input) {
+                var result = input.map(function (e) {
+                    var _a;
+                    return {
+                        id: e.id || "undefined",
+                        thumbnail: ((_a = e.versions[0]) === null || _a === void 0 ? void 0 : _a.resources[0]) || "undefined",
+                        author: e.owner.nickname || "未知作者",
+                        name: e.name || "未知名称",
+                        type: e.type || "undefined",
+                    };
                 });
-            }
-
-            function __generator(thisArg, body) {
-                var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-                return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-                function verb(n) { return function (v) { return step([n, v]); }; }
-                function step(op) {
-                    if (f) throw new TypeError("Generator is already executing.");
-                    while (_) try {
-                        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-                        if (y = 0, t) op = [op[0] & 2, t.value];
-                        switch (op[0]) {
-                            case 0: case 1: t = op; break;
-                            case 4: _.label++; return { value: op[1], done: false };
-                            case 5: _.label++; y = op[1]; op = [0]; continue;
-                            case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                            default:
-                                if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                                if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                                if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                                if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                                if (t[2]) _.ops.pop();
-                                _.trys.pop(); continue;
-                        }
-                        op = body.call(thisArg, _);
-                    } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-                    if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-                }
+                return result;
             }
 
             /*! *****************************************************************************
@@ -719,306 +689,216 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 return promiseCtor;
             }
 
-            /**
-             * Compare semver version numbers
-             *
-             * @param {String} a
-             * @param {String} b
-             * @api public
-             */
-
-            var compareVersion = function(a, b) {
-                var i;
-                var len;
-
-                if (typeof a + typeof b !== 'stringstring') {
-                    return false;
-                }
-
-                a = a.split('.');
-                b = b.split('.');
-                i = 0;
-                len = Math.max(a.length, b.length);
-
-                for (; i < len; i++) {
-                    if ((a[i] && !b[i] && parseInt(a[i]) > 0) || (parseInt(a[i]) > parseInt(b[i]))) {
-                        return 1;
-                    } else if ((b[i] && !a[i] && parseInt(b[i]) > 0) || (parseInt(a[i]) < parseInt(b[i]))) {
-                        return -1;
-                    }
-                }
-
-                return 0;
-            };
-
-            var ActionsType;
-            (function (ActionsType) {
-                ActionsType["LIST_PLUGINS"] = "ListPlugins";
-            })(ActionsType || (ActionsType = {}));
-            var PluginsMarketActions;
-            (function (PluginsMarketActions) {
-                var ListPlugins = /** @class */ (function () {
-                    function ListPlugins() {
-                    }
-                    ListPlugins.type = ActionsType.LIST_PLUGINS;
-                    return ListPlugins;
-                }());
-                PluginsMarketActions.ListPlugins = ListPlugins;
-            })(PluginsMarketActions || (PluginsMarketActions = {}));
-
-            var MarketState = /** @class */ (function () {
-                function MarketState(context) {
+            var AssetMarketService = /** @class */ (function () {
+                function AssetMarketService(context) {
                     this.context = context;
                 }
-                MarketState.plugins = function (state) {
-                    return state.plugins;
-                };
-                MarketState.prototype.listPlugins = function (_a) {
-                    var patchState = _a.patchState;
-                    return __awaiter(this, void 0, void 0, function () {
-                        return __generator(this, function (_b) {
-                            // patchState({
-                            //   plugins: [
-                            //     {
-                            //       name: "场景编辑器",
-                            //       logo:
-                            //         "https://osd-alpha.tooqing.com/pixelpai/SpawnPointNode/5cc42f6417553727db1d2bba/1/5cc42f6417553727db1d2bba.png",
-                            //       description: "用于编辑游戏场景，可以放置。",
-                            //       author: "moJiXiang",
-                            //       id: "sceneEditor",
-                            //     },
-                            //     {
-                            //       name: "场景编辑器",
-                            //       logo:
-                            //         "https://osd-alpha.tooqing.com/pixelpai/SpawnPointNode/5cc42f6417553727db1d2bba/1/5cc42f6417553727db1d2bba.png",
-                            //       description:
-                            //         "用于编辑游戏场景，可以放置各种物件，人物，可以给物件添加脚本逻辑。",
-                            //       author: "moJiXiang",
-                            //       id: "sceneEditor",
-                            //     },
-                            //   ],
-                            // });
-                            this.context.sdk.plugin.listPlugins().then(function (res) {
-                                var _a = res.data.data; _a.total; var list = _a.list;
-                                if (res.data) {
-                                    patchState({
-                                        plugins: list,
-                                    });
-                                }
+                AssetMarketService.prototype.fetchMarketItemData = function (query) {
+                    var _this = this;
+                    try {
+                        var observable$ = new Observable(function (observer) {
+                            _this.context.sdk.component
+                                .listMarketComponents(query)
+                                .then(function (res) {
+                                var data = res.data;
+                                observer.next(res.data.data);
+                                observer.complete();
+                            })
+                                .catch(function (e) {
+                                observer.error(e);
                             });
-                            return [2 /*return*/];
                         });
-                    });
+                        return observable$;
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
                 };
-                __decorate([
-                    Action(PluginsMarketActions.ListPlugins),
-                    __metadata("design:type", Function),
-                    __metadata("design:paramtypes", [Object]),
-                    __metadata("design:returntype", Promise)
-                ], MarketState.prototype, "listPlugins", null);
-                __decorate([
-                    Selector(),
-                    __metadata("design:type", Function),
-                    __metadata("design:paramtypes", [Object]),
-                    __metadata("design:returntype", void 0)
-                ], MarketState, "plugins", null);
-                MarketState = __decorate([
-                    State({
-                        name: "PluginsMarketStore",
-                        defaults: {
-                            plugins: [],
-                        },
-                    }),
+                AssetMarketService.prototype.fetchMyItemData = function (query) {
+                    var _this = this;
+                    try {
+                        var observable$ = new Observable(function (observer) {
+                            _this.context.sdk.component
+                                .listMyComponents(query)
+                                .then(function (res) {
+                                var data = res.data;
+                                observer.next(res.data.data);
+                                observer.complete();
+                            })
+                                .catch(function (e) {
+                                observer.error(e);
+                            });
+                        });
+                        return observable$;
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                };
+                AssetMarketService.prototype.fetchMarketFunctionPackData = function (query) {
+                    var _this = this;
+                    try {
+                        var observable$ = new Observable(function (observer) {
+                            _this.context.sdk.component
+                                .listMarketCustomNodes(query)
+                                .then(function (res) {
+                                var data = res.data;
+                                observer.next(res.data.data);
+                                observer.complete();
+                            })
+                                .catch(function (e) {
+                                observer.error(e);
+                            });
+                        });
+                        return observable$;
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                };
+                AssetMarketService.prototype.fetchMyFunctionPackData = function (query) {
+                    var _this = this;
+                    try {
+                        var observable$ = new Observable(function (observer) {
+                            _this.context.sdk.component
+                                .listMyCustomNodes(query)
+                                .then(function (res) {
+                                var data = res.data;
+                                observer.next(res.data.data);
+                                observer.complete();
+                            })
+                                .catch(function (e) {
+                                observer.error(e);
+                            });
+                        });
+                        return observable$;
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                };
+                AssetMarketService = __decorate([
                     Injectable(),
                     __param(0, Inject(ContextService)),
                     __metadata("design:paramtypes", [ContextService])
-                ], MarketState);
-                return MarketState;
+                ], AssetMarketService);
+                return AssetMarketService;
             }());
 
-            var PluginsMarketComponent = exports('PluginsMarketComponent', /** @class */ (function () {
-                function PluginsMarketComponent(store, context) {
-                    this.store = store;
+            var AssetMarketComponent = exports('AssetMarketComponent', /** @class */ (function () {
+                function AssetMarketComponent(context, assetMarketService) {
                     this.context = context;
+                    this.assetMarketService = assetMarketService;
+                    this.assets = [];
+                    this.isLoaded = false;
+                    this.query = {
+                        page: 0,
+                        pageSize: 20,
+                    };
                 }
-                PluginsMarketComponent.prototype.ngOnInit = function () {
+                AssetMarketComponent.prototype.ngOnInit = function () {
+                    var _this = this;
                     this.context.initial();
-                    this.store.dispatch(new PluginsMarketActions.ListPlugins());
-                };
-                PluginsMarketComponent.prototype._getPluginFolderName = function (name, version) {
-                    return name + ("_" + version);
-                };
-                PluginsMarketComponent.prototype.installPlugin = function (pluginName, pluginVersion) {
-                    var _this = this;
-                    this.context.installPlugin({ pluginName: pluginName, pluginVersion: pluginVersion }, function () {
-                        _this.context.success("插件安装成功！");
+                    var assetRawData = this.assetMarketService.fetchMarketItemData(this.query);
+                    console.log(assetRawData);
+                    assetRawData.subscribe(function (res) {
+                        _this.assets = assetSerializer(res);
+                        console.log("🚀 ~ file: asset-market.component.ts ~ line 33 ~ AssetMarketComponent ~ ngOnInit ~ this.assets", _this.assets);
+                        _this.isLoaded = true;
                     });
                 };
-                PluginsMarketComponent.prototype.onUpload = function (event) {
-                    var _this = this;
-                    console.log("event: ", event.files);
-                    var pkgFile = event.files.find(function (file) { return file.name === "package.json"; });
-                    this.context.readFile(pkgFile.path, function (_a) {
-                        var data = _a.data;
-                        return __awaiter(_this, void 0, void 0, function () {
-                            var pkg, folderName, res, plugin;
-                            var _this = this;
-                            return __generator(this, function (_b) {
-                                switch (_b.label) {
-                                    case 0:
-                                        pkg = JSON.parse(data);
-                                        folderName = pkg.name + ("_" + pkg.version);
-                                        return [4 /*yield*/, this.context.sdk.plugin.getPlugin(pkg.name)];
-                                    case 1:
-                                        res = _b.sent();
-                                        plugin = res.data.data.list[0];
-                                        if (plugin) {
-                                            if (compareVersion(plugin.version, pkg.version) >= 0) {
-                                                this.context.error("插件版本已存在！");
-                                            }
-                                            else {
-                                                this.context.zipFiles({ files: event.files.map(function (file) { return file.path; }), folderName: folderName }, function (_a) {
-                                                    var error = _a.error, data = _a.data;
-                                                    return __awaiter(_this, void 0, void 0, function () {
-                                                        var name_1, filePath, res_1, token;
-                                                        var _this = this;
-                                                        return __generator(this, function (_b) {
-                                                            switch (_b.label) {
-                                                                case 0:
-                                                                    if (!error) return [3 /*break*/, 1];
-                                                                    console.log("error: ", error);
-                                                                    return [3 /*break*/, 3];
-                                                                case 1:
-                                                                    name_1 = data.name, filePath = data.filePath;
-                                                                    return [4 /*yield*/, this.context.sdk.util.getQiniuToken({ name: name_1 })];
-                                                                case 2:
-                                                                    res_1 = _b.sent();
-                                                                    token = res_1.data.data.token;
-                                                                    this.context.uploadFile({ uri: filePath, key: name_1, qiniuToken: token }, function (res) {
-                                                                        console.log("uploadFile: ", res);
-                                                                        _this.context.sdk.plugin
-                                                                            .updatePlugin(plugin._id, { version: pkg.version })
-                                                                            .then(function (res) {
-                                                                            _this.context.success("插件上传成功！");
-                                                                        });
-                                                                    });
-                                                                    _b.label = 3;
-                                                                case 3: return [2 /*return*/];
-                                                            }
-                                                        });
-                                                    });
-                                                });
-                                            }
-                                        }
-                                        else {
-                                            this.context.sdk.plugin
-                                                .createPlugin({
-                                                name: pkg.name,
-                                                description: pkg.description,
-                                                version: pkg.version,
-                                            })
-                                                .then(function (res) {
-                                                _this.context.zipFiles({ files: event.files.map(function (file) { return file.path; }), folderName: folderName }, function (_a) {
-                                                    _a.error; var data = _a.data;
-                                                    return __awaiter(_this, void 0, void 0, function () {
-                                                        var name, filePath, res, token;
-                                                        var _this = this;
-                                                        return __generator(this, function (_b) {
-                                                            switch (_b.label) {
-                                                                case 0:
-                                                                    name = data.name, filePath = data.filePath;
-                                                                    console.log("name: ", name);
-                                                                    return [4 /*yield*/, this.context.sdk.util.getQiniuToken({ name: name })];
-                                                                case 1:
-                                                                    res = _b.sent();
-                                                                    token = res.data.data.token;
-                                                                    this.context.uploadFile({ uri: filePath, key: name, qiniuToken: token }, function (res) {
-                                                                        console.log("uploadFile: ", res);
-                                                                        _this.context.success("插件上传成功！");
-                                                                    });
-                                                                    return [2 /*return*/];
-                                                            }
-                                                        });
-                                                    });
-                                                });
-                                            });
-                                        }
-                                        return [2 /*return*/];
-                                }
-                            });
-                        });
-                    });
-                };
-                __decorate([
-                    Select(MarketState.plugins),
-                    __metadata("design:type", Observable)
-                ], PluginsMarketComponent.prototype, "plugins$", void 0);
-                PluginsMarketComponent = __decorate([
+                AssetMarketComponent = __decorate([
                     Component({
-                        selector: "plugins-market",
-                        template: "<div class=\"plugins-market\"><div class=\"plugins-market__header\"><h1>\u63D2\u4EF6\u5E02\u573A</h1></div><div class=\"plugins-market__search\"><input placeholder=\"\u641C\u7D22\u63D2\u4EF6\u5E02\u573A\"></div><p-accordion><p-accordionTab header=\"\u5728\u7EBF\u63D2\u4EF6\"><ul><li *ngFor=\"let plugin of plugins$ | async\"><div class=\"plugin-item\"><div class=\"plugin-logo\"><img src=\"{{ plugin.logo }}\"></div><div class=\"plugin-info\"><h3>{{ plugin.name }}</h3><p>{{ plugin.description }}</p><i>{{ plugin.author }}</i> <button (click)=\"installPlugin(plugin.name, plugin.version)\">\u5B89\u88C5</button></div></div></li></ul></p-accordionTab><p-accordionTab header=\"\u672C\u5730\u5B89\u88C5\"><ul><li *ngFor=\"let plugin of plugins$ | async\"><div class=\"plugin-item\"><div class=\"plugin-logo\"><img src=\"{{ plugin.logo }}\"></div><div class=\"plugin-info\"><h3>{{ plugin.name }}</h3><p>{{ plugin.description }}</p><i>{{ plugin.author }}</i> <button (click)=\"installPlugin(plugin.name, plugin.version)\">\u5B89\u88C5</button></div></div></li></ul></p-accordionTab></p-accordion><div class=\"plugins-market__upload\"><h1>\u63D2\u4EF6\u4E0A\u4F20</h1><div class=\"upload-filed\"><p-fileUpload name=\"myfile[]\" multiple=\"true\" customUpload=\"true\" showCancelButton=\"false\" (uploadHandler)=\"onUpload($event)\"><ng-template let-file pTemplate=\"file\"><div>{{ file.name }} - {{ file.size }} bytes</div></ng-template></p-fileUpload></div></div></div>",
-                        styles: ["::ng-deep p-accordion .p-accordion .p-accordion-header.p-highlight .p-accordion-header-link{background-color:#1b1d22!important;color:#fff!important}::ng-deep p-accordion .p-accordion .p-accordion-header:hover .p-accordion-header-link{background-color:#1b1d22!important;color:#fff!important}::ng-deep p-accordion .p-accordion .p-accordion-header .p-accordion-header-link{border:none;color:#fff;background:0 0;border-radius:0!important;padding:.5rem;font-weight:400}::ng-deep p-accordion .p-accordion .p-accordion-header .p-accordion-header-link:focus{box-shadow:none!important}::ng-deep p-accordion .p-accordion .p-accordion-tab .p-accordion-content{background:0 0;border-radius:0!important;padding:0;border:none}::ng-deep p-fileupload .p-fileupload .p-fileupload-buttonbar{background-color:transparent;border:none;padding:0}::ng-deep p-fileupload .p-fileupload .p-fileupload-buttonbar .p-button{background-color:#4164e4;padding:3px}::ng-deep p-fileupload .p-fileupload .p-fileupload-content{color:#fff;background-color:transparent;border:none}.plugins-market__header{padding:10px;padding-bottom:5px;color:#fff}.plugins-market__search{padding:10px;padding-top:5px}.plugins-market__search input{width:100%;height:30px;outline:0}.plugins-market .plugin-item{display:flex;flex-direction:row;padding:10px;color:#fff;cursor:pointer}.plugins-market .plugin-item:hover{background-color:#1b1d22}.plugins-market .plugin-item .plugin-logo{margin-right:10px}.plugins-market .plugin-item .plugin-logo img{width:80px;height:80px;object-fit:cover}.plugins-market .plugin-item .plugin-info{position:relative;display:flex;flex-direction:column;justify-content:space-around}.plugins-market .plugin-item .plugin-info h3{font-size:16px;font-weight:700;margin-bottom:10px}.plugins-market .plugin-item .plugin-info p{font-size:14px;line-height:16px}.plugins-market .plugin-item .plugin-info i{font-size:12px}.plugins-market .plugin-item button{position:absolute;bottom:0;right:0;border:none;background-color:#4164e4;color:#fff;font-size:12px;line-height:14px;border-radius:3px;cursor:pointer;outline:0}.plugins-market__upload{padding:10px;color:#fff}"],
+                        selector: "asset-market",
+                        template: "<div class=\"asset-market\"><div class=\"asset-market__header\"><h1>\u8D44\u6E90\u5E02\u573A</h1></div><div class=\"asset-market__search\"><input placeholder=\"\u641C\u7D22\u8D44\u6E90\u5E02\u573A\"></div><div class=\"main\"><div class=\"asset-market__container\"><div class=\"asset-market__banner\">\u8FD9\u91CC\u4EE5\u540E\u4F1A\u6709\u5934\u6761\u5185\u5BB9</div><ul class=\"asset-market__list\"><li *ngFor=\"let asset of assets\"><p-skeletion *ngIf=\"!isLoaded\" size=\"5rem\"></p-skeletion><asset-tile *ngIf=\"isLoaded\" [asset]=\"asset\"></asset-tile></li></ul></div><div class=\"asset-market__filter\">\u8FD9\u91CC\u4EE5\u540E\u4F1A\u6709\u7B5B\u9009\u5668</div></div></div>",
+                        styles: [""],
+                        providers: [AssetMarketService],
                     }),
-                    __param(1, Inject(ContextService)),
-                    __metadata("design:paramtypes", [Store,
-                        ContextService])
-                ], PluginsMarketComponent);
-                return PluginsMarketComponent;
+                    __param(0, Inject(ContextService)),
+                    __metadata("design:paramtypes", [ContextService,
+                        AssetMarketService])
+                ], AssetMarketComponent);
+                return AssetMarketComponent;
             }()));
 
-            var PluginsMarketPluginModule = exports('PluginsMarketPluginModule', /** @class */ (function () {
-                function PluginsMarketPluginModule() {
+            var AssetTileComponent = /** @class */ (function () {
+                function AssetTileComponent(context) {
+                    this.context = context;
                 }
-                PluginsMarketPluginModule = __decorate([
+                AssetTileComponent.prototype.ngOnInit = function () { };
+                AssetTileComponent.prototype.getThumbnail = function (thumbnail) {
+                    if (thumbnail && thumbnail !== "undefined") {
+                        return this.context.WorkbenchConfig.WEB_RESOURCE_URI + thumbnail;
+                    }
+                    else {
+                        return "data:image/png;base64,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";
+                    }
+                };
+                __decorate([
+                    Input("asset"),
+                    __metadata("design:type", Object)
+                ], AssetTileComponent.prototype, "asset", void 0);
+                AssetTileComponent = __decorate([
+                    Component({
+                        selector: "asset-tile",
+                        template: "<div class=\"asset-tile\"><div class=\"asset-tile__thumbnail\"><img src=\"getThumbnail(asset.thumbnail)\" alt=\"\"> <img #noThumbnail src=\"data:image/png;base64,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\"> <button *ngIf=\"asset.isFavorite; else notFavorite\" class=\"asset-tile__favorite\"></button> <button #notFavorite class=\"asset-tile__not-favorite\"></button></div><div *ngIf=\"!!asset.options\" class=\"asset-tile__optional-section\"></div><div class=\"asset-tile__author\">{{ asset.author }}</div><div class=\"asset-tile__name\">{{ asset.name }}/div><div class=\"asset-tile__rank\">{{ asset.rank }}</div><div *ngIf=\"!!asset.price\" class=\"asset-tile__price\">{{ asset.price.cost }}{{ asset.price.currency }}</div></div></div>",
+                        styles: [""],
+                    }),
+                    __param(0, Inject(ContextService)),
+                    __metadata("design:paramtypes", [ContextService])
+                ], AssetTileComponent);
+                return AssetTileComponent;
+            }());
+
+            var AssetMarketPluginModule = exports('AssetMarketPluginModule', /** @class */ (function () {
+                function AssetMarketPluginModule() {
+                }
+                AssetMarketPluginModule = __decorate([
                     NgModule({
-                        declarations: [PluginsMarketComponent],
-                        imports: [
-                            CommonModule,
-                            FormsModule,
-                            AccordionModule,
-                            FileUploadModule,
-                            NgxsModule.forFeature([MarketState]),
-                        ],
-                        exports: [PluginsMarketComponent],
-                        entryComponents: [PluginsMarketComponent],
+                        declarations: [AssetMarketComponent, AssetTileComponent],
+                        imports: [CommonModule, FormsModule, AccordionModule, FileUploadModule],
+                        exports: [AssetMarketComponent],
+                        entryComponents: [AssetMarketComponent],
                         providers: [
                             {
-                                provide: "PluginsMarketComponent",
-                                useValue: PluginsMarketComponent,
+                                provide: "AssetMarketComponent",
+                                useValue: AssetMarketComponent,
                             },
+                            AssetMarketService,
                         ],
                     })
-                ], PluginsMarketPluginModule);
-                return PluginsMarketPluginModule;
+                ], AssetMarketPluginModule);
+                return AssetMarketPluginModule;
             }()));
 
             var config$1 = exports('config', {
-                name: "plugins-market-plugin",
-                id: "pluginsMarket",
-                components: ["PluginsMarketComponent"],
-                moduleName: "PluginsMarketPluginModule",
-                displayName: "插件市场",
+                name: "asset-market-plugin",
+                id: "assetMarket",
+                components: ["AssetMarketComponent"],
+                dialogComponents: [],
+                moduleName: "AssetMarketPluginModule",
+                displayName: "资源市场",
                 contributes: {
                     workbenchActivitybar: {
-                        title: "插件市场 ",
-                        icon: "qing qing-plug",
+                        title: "资源市场",
+                        icon: "qing qing-modules",
                         command: function (context) {
-                            context.eventBus.emit(config$1.events.OPEN_PLUGINS_MARKET);
+                            context.eventBus.emit(config$1.events.OPEN_ASSET_MARKET);
                         },
                     },
                     workbenchExplorer: {
-                        component: "PluginsMarketComponent",
+                        component: "AssetMarketComponent",
                     },
                 },
                 events: {
-                    OPEN_PLUGINS_MARKET: "open-plugins-market",
+                    OPEN_ASSET_MARKET: "open-asset-market",
                 },
             });
             var active = exports('active', function (context) {
-                context.eventBus.on(config$1.events.OPEN_PLUGINS_MARKET, function () {
+                context.eventBus.on(config$1.events.OPEN_ASSET_MARKET, function () {
                     context.puzzle
                         .getPuzzleSlot(WORKBENCH_PUZZLE_BLOCK.WORKBENCH_EXPLORER)
-                        .container.renderComponent("PluginsMarketComponent");
+                        .container.renderComponent("AssetMarketComponent");
                 });
             });
             var deactive = exports('deactive', function (context) { });
