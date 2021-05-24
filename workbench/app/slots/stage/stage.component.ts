@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Component, NgZone, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { Slot } from "workbench/app/models/slot";
 import { ContextService } from "workbench/app/core/services";
 import { MessageService } from "primeng/api";
@@ -10,7 +10,9 @@ import { EDITOR_EVENTS } from "workbench/consts";
   styleUrls: ["./stage.component.scss"],
   providers: [MessageService],
 })
-export class StageComponent extends Slot implements OnInit {
+export class StageComponent extends Slot implements OnInit, OnDestroy {
+  private cdInterval = null;
+
   types = [
     {
       title: "场景",
@@ -37,9 +39,14 @@ export class StageComponent extends Slot implements OnInit {
     const componentFactory = this.getComponentFactory(componentName);
     if (componentFactory) {
       this.stage.clear();
-      this.ngZone.run(() => {
-        this.stage.createComponent(componentFactory);
-      });
+      const compRef = this.stage.createComponent(componentFactory);
+      this.cdInterval = setInterval(() => {
+        compRef.changeDetectorRef.detectChanges();
+      }, 50);
     }
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.cdInterval);
   }
 }

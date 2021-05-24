@@ -64,6 +64,11 @@ export class Game implements IGame {
   public get gameFolder(): string {
     return path.join(this._storePath, `${this.owner.username}/game/${this._id}`);
   }
+
+  public get gamePiFile(): string {
+    return path.join(this.gameFolder, `${this._id}.pi`);
+  }
+
   private get _storePath() {
     return path.join(remote.app.getPath("userData"));
   }
@@ -80,5 +85,9 @@ export class Game implements IGame {
 
   public getGameZipUri(version?: string): string {
     return url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.getZipFileName(version));
+  }
+
+  public getScenePiFile(sceneId: number) {
+    return path.join(this.gameFolder, `${sceneId}.pi`);
   }
 }

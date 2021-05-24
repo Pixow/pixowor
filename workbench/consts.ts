@@ -1,3 +1,4 @@
+import { op_def } from "pixelpai_proto";
 export const USER_STORAGE_KEY = "user";
 
 export const PLUGINS_CONFIG_FILE = "plugins.config.json";
@@ -11,3 +12,20 @@ export enum EDITOR_EVENTS {
   OPEN_ELEMENT_EDITOR_EVENT_NAME = "open-element-editor",
   OPEN_CODE_EDITOR_EVENT_NAME = "open-code-editor",
 }
+export const BaseNodeTypes = [
+  op_def.NodeType.TerrainCollectionType,
+  op_def.NodeType.TerrainNodeType,
+  op_def.NodeType.LocationType,
+  op_def.NodeType.MovableType,
+  op_def.NodeType.DisplayType,
+  op_def.NodeType.AttributeType,
+  op_def.NodeType.FunctionType,
+  op_def.NodeType.AnimationsType,
+  op_def.NodeType.MapSizeType,
+  op_def.NodeType.CampType,
+  op_def.NodeType.AnimationDataType,
+  op_def.NodeType.ButtonType,
+  op_def.NodeType.TextType,
+  op_def.NodeType.SettingsType,
+  op_def.NodeType.CommodityType,
+];

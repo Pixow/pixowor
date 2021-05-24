@@ -109,7 +109,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private compiler: Compiler,
     private injector: Injector,
     private ngZone: NgZone,
-    private messageService: MessageService
   ) {
     // this.user$.pipe(takeUntil(this._destroy)).subscribe((user) => {
     //   if (user) {
@@ -193,9 +192,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // 注册 components
     for (const componentName of config.components) {
       const componentProvider = moduleRef.injector.get(componentName);
-      const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
-        componentProvider
-      );
+      const componentFactory =
+        moduleRef.componentFactoryResolver.resolveComponentFactory(componentProvider);
       this.contextService.registComponentFactory(componentName, componentFactory);
     }
 

@@ -42,12 +42,12 @@ export declare class ElectronService {
         uri: string;
         output: string;
     }, cb: Function): void;
-    launchGame({ gameFolder, gameId }: {
-        gameFolder: string;
+    launchGame({ gamePiFile, gameId }: {
+        gamePiFile: string;
         gameId: string;
     }, cb: Function): void;
-    launchScene({ gameFolder, sceneId }: {
-        gameFolder: string;
+    launchScene({ scenePiFile, sceneId }: {
+        scenePiFile: string;
         sceneId: number;
     }, cb: Function): void;
 }

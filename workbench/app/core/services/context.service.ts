@@ -18,7 +18,7 @@ import { ModuleLoader } from "workbench/app/module-loader";
 import { User } from "workbench/app/models/user";
 import { Game } from "workbench/app/models/game";
 import { SocketConnection } from "workbench/app/core/socket-connection";
-import { GameConfig, SceneConfig } from "workbench/app/models";
+import { GameConfig, PluginConfig, SceneConfig } from "workbench/app/models";
 
 @Injectable({
   providedIn: "root",
@@ -30,10 +30,11 @@ export class ContextService {
   pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponents = new Map<string, Type<any>>();
   _apiService: ApiService;
-  _editedGame$: BehaviorSubject<Game> = new BehaviorSubject(null);
-  _editedGameConfig$: BehaviorSubject<GameConfig> = new BehaviorSubject(null);
+  _editedGame = null;
+  _editedGameConfig: GameConfig;
   _editedSceneConfig$: BehaviorSubject<SceneConfig> = new BehaviorSubject(null);
   plugins = new Map<string, any>();
+  _loader = new ModuleLoader();
 
   eventBus: EventBus;
 
@@ -110,8 +111,39 @@ export class ContextService {
     this.entryComponentFactories.set(pluginId, factory);
   }
 
-  // 插件系统接口
+  // public async createPlugin(plugin: PluginConfig) {
+  //   const module = await loader.load(plugin.moduleBundlePath);
+  //   const config = module.config;
+  //   this.registPlugin(module.config.name, module);
 
+  //   console.log("🚀 ~ file: app.component.ts ~ line 153 ~ AppComponent ~ module", module);
+
+  //   const moduleFactory = await this.compiler.compileModuleAsync(module[config.moduleName]);
+
+  //   // 注入context
+  //   const map = new WeakMap();
+  //   map.set(ContextService, this.contextService);
+  //   const moduleRef = moduleFactory.create(new DynamicInjector(this.injector, map));
+
+  //   // 注册 components
+  //   for (const componentName of config.components) {
+  //     const componentProvider = moduleRef.injector.get(componentName);
+  //     const componentFactory = moduleRef.componentFactoryResolver.resolveComponentFactory(
+  //       componentProvider
+  //     );
+  //     this.contextService.registComponentFactory(componentName, componentFactory);
+  //   }
+
+  //   this.ngZone.run(() => {
+  //     this.injectToSlot(config);
+  //     // 执行plugin active 方法
+  //     if (module.active) {
+  //       module.active(this.contextService);
+  //     }
+  //   });
+  // }
+
+  // 插件系统接口
   public installPlugin(
     { pluginName, pluginVersion }: { pluginName: string; pluginVersion: string },
     cb: Function
@@ -146,7 +178,7 @@ export class ContextService {
             config.push(newPlugin);
             this.writeJson({ filePath: pluginConfig, content: config }, () => {
               // create plugin
-              AppComponent.instance.createPlugin((newPlugin as unknown) as any);
+              AppComponent.instance.createPlugin(newPlugin as unknown as any);
               cb();
             });
           });
@@ -225,25 +257,38 @@ export class ContextService {
   }
 
   public setEditedGame(game: Game) {
-    this._editedGame$.next(game);
+    this._editedGame = game;
+    this._editedGameConfig = new GameConfig(game);
 
     this.launchGame(game, ({ payload }) => {
-      this._editedGameConfig$.next(payload.gameConfig);
+      this._editedGameConfig.deserialize(payload.buffer);
 
-      const scenes = payload.gameConfig._capsule._root._scenes;
+      const firstScene = this._editedGameConfig.capsule.root.scenes[0];
 
-      this.launchScene(game, scenes[0].id, ({ payload }) => {
-        this._editedSceneConfig$.next(payload.sceneConfig);
+      this.launchScene(game, firstScene.id, ({ payload }) => {
+        const sceneConfig = new SceneConfig(game);
+        sceneConfig.deserialize(payload.buffer);
+        sceneConfig.generateSceneTree();
+        this._editedSceneConfig$.next(sceneConfig);
       });
     });
   }
 
-  public get editedGame$(): BehaviorSubject<Game> {
-    return this._editedGame$;
+  public setEditedScene(sceneId: number) {
+    this.launchScene(this._editedGame, sceneId, ({ payload }) => {
+      const sceneConfig = this._editedSceneConfig$.getValue();
+      sceneConfig.deserialize(payload.buffer);
+      sceneConfig.generateSceneTree();
+      this._editedSceneConfig$.next(sceneConfig);
+    });
   }
 
-  public get editedGameConfig$(): BehaviorSubject<GameConfig> {
-    return this._editedGameConfig$;
+  public get editedGame(): Game {
+    return this._editedGame;
+  }
+
+  public get editedGameConfig(): GameConfig {
+    return this._editedGameConfig;
   }
 
   public get editedSceneConfig$(): BehaviorSubject<SceneConfig> {
@@ -251,20 +296,19 @@ export class ContextService {
   }
 
   public launchGame(game: Game, cb: Function) {
-    this.electronService.launchGame({ gameFolder: game.gameFolder, gameId: game._id }, cb);
+    this.electronService.launchGame({ gamePiFile: game.gamePiFile, gameId: game._id }, cb);
   }
 
   public launchScene(game: Game, sceneId: number, cb: Function) {
-    this.electronService.launchScene({ gameFolder: game.gameFolder, sceneId: sceneId }, cb);
+    this.electronService.launchScene(
+      { scenePiFile: game.getScenePiFile(sceneId), sceneId: sceneId },
+      cb
+    );
   }
 
   public getGameServerConfig() {
-    const {
-      TEST_GAME_CONFIG_IP_MOBILE,
-      TEST_GAME_CONFIG_PORT_MOBILE,
-      API_URL,
-      WEB_RESOURCE_URI,
-    } = WorkbenchConfig;
+    const { TEST_GAME_CONFIG_IP_MOBILE, TEST_GAME_CONFIG_PORT_MOBILE, API_URL, WEB_RESOURCE_URI } =
+      WorkbenchConfig;
 
     return {
       TEST_GAME_CONFIG_IP_MOBILE,

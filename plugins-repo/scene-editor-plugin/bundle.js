@@ -67,27 +67,33 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                     this.context = context;
                 }
                 SceneEditorComponent.prototype.ngOnInit = function () {
+                    console.log("scene editor init");
                     this.context.initial();
                 };
                 SceneEditorComponent.prototype.ngAfterViewInit = function () {
                     var _this = this;
-                    var game = this.context.editedGame$.getValue();
-                    this._game = game;
                     this.context.editedSceneConfig$.subscribe(function (sceneConfig) {
                         if (sceneConfig) {
+                            _this._scene = sceneConfig.sceneNode;
                             _this.start();
                         }
                     });
                 };
                 SceneEditorComponent.prototype.start = function () {
                     var _this = this;
+                    if (this._app) {
+                        this._app.destroy();
+                    }
+                    var game = this.context.editedGame;
+                    var gameConfig = this.context.editedGameConfig;
+                    console.log("🚀 ~ file: scene-editor.component.ts ~ line 64 ~ SceneEditorComponent ~ start ~ gameConfig", gameConfig);
                     var _a = this.sceneEditor.nativeElement, offsetWidth = _a.offsetWidth, offsetHeight = _a.offsetHeight;
                     var _b = this.context.getGameServerConfig(), TEST_GAME_CONFIG_IP_MOBILE = _b.TEST_GAME_CONFIG_IP_MOBILE, TEST_GAME_CONFIG_PORT_MOBILE = _b.TEST_GAME_CONFIG_PORT_MOBILE, API_URL = _b.API_URL, WEB_RESOURCE_URI = _b.WEB_RESOURCE_URI;
                     this._app = EditorLauncher.CreateCanvas(EditorCanvasType.Scene, {
                         width: offsetWidth,
                         height: offsetHeight,
                         connection: this.context.socket,
-                        game_id: this._game._id,
+                        game_id: game._id,
                         isEditor: true,
                         runtime: "editor",
                         api_root: API_URL,
@@ -99,10 +105,10 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                             secure: true,
                         },
                         game_created: function () {
+                            _this._app.setGameConfig(gameConfig.capsule);
                             var packet = new PBpacket(op_client.OPCODE._OP_EDITOR_REQ_CLIENT_CHANGE_TO_EDITOR_MODE);
-                            var content = packet.content;
                             var _a = _this._scene.size, rows = _a.rows, cols = _a.cols, tileWidth = _a.tileWidth, tileHeight = _a.tileHeight;
-                            content.scene = {
+                            packet.content.scene = {
                                 id: _this._scene.id,
                                 rows: rows,
                                 cols: cols,
@@ -166,7 +172,11 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 events: {
                     OPEN_SCENE_EDITOR: "open-scene-editor",
                 },
-                contributes: {},
+                contributes: {
+                    workbenchStage: {
+                        component: "SceneEditorComponent",
+                    },
+                },
             });
             var active = exports('active', function (context) {
                 // context.eventBus.on(config.events.OPEN_SCENE_EDITOR, function () {

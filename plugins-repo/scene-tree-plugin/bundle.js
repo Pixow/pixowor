@@ -1,6 +1,6 @@
-System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular/forms', 'primeng/tree'], function (exports) {
+System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular/forms', '@ngxs/store', 'primeng/tree'], function (exports) {
     'use strict';
-    var ContextService, WORKBENCH_PUZZLE_BLOCK, CommonModule, Component, Inject, ChangeDetectorRef, NgZone, NgModule, FormsModule, TreeModule;
+    var ContextService, WORKBENCH_PUZZLE_BLOCK, CommonModule, Component, Inject, ChangeDetectorRef, NgZone, Injectable, NgModule, FormsModule, Selector, State, NgxsModule, TreeModule;
     return {
         setters: [function (module) {
             ContextService = module.ContextService;
@@ -12,9 +12,14 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
             Inject = module.Inject;
             ChangeDetectorRef = module.ChangeDetectorRef;
             NgZone = module.NgZone;
+            Injectable = module.Injectable;
             NgModule = module.NgModule;
         }, function (module) {
             FormsModule = module.FormsModule;
+        }, function (module) {
+            Selector = module.Selector;
+            State = module.State;
+            NgxsModule = module.NgxsModule;
         }, function (module) {
             TreeModule = module.TreeModule;
         }],
@@ -69,8 +74,8 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 SceneTreeComponent = __decorate([
                     Component({
                         selector: "scene-tree",
-                        template: "<div class=\"scene-tree\"><p-tree [value]=\"sceneTree\" [filter]=\"true\"></p-tree></div>",
-                        styles: [""],
+                        template: "<div class=\"scene-tree scroll-box\"><p-tree [value]=\"sceneTree\" [filter]=\"true\"></p-tree></div>",
+                        styles: [".scroll-box{max-height:800px;overflow-y:auto}.scroll-box::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);background-color:#f5f5f5}.scroll-box::-webkit-scrollbar{width:5px;background-color:#f5f5f5}.scroll-box::-webkit-scrollbar-thumb{background-color:#000}"],
                     }),
                     __param(0, Inject(ContextService)),
                     __metadata("design:paramtypes", [ContextService,
@@ -80,13 +85,46 @@ System.register(['qing-workbench', '@angular/common', '@angular/core', '@angular
                 return SceneTreeComponent;
             }()));
 
+            var SceneTreeState = /** @class */ (function () {
+                function SceneTreeState(context) {
+                    this.context = context;
+                }
+                SceneTreeState.sceneTree = function (state) {
+                    return state.sceneTree;
+                };
+                SceneTreeState.prototype.ngxsOnInit = function (ctx) { };
+                __decorate([
+                    Selector(),
+                    __metadata("design:type", Function),
+                    __metadata("design:paramtypes", [Object]),
+                    __metadata("design:returntype", void 0)
+                ], SceneTreeState, "sceneTree", null);
+                SceneTreeState = __decorate([
+                    State({
+                        name: "SceneTreeStore",
+                        defaults: {
+                            sceneTree: [],
+                        },
+                    }),
+                    Injectable(),
+                    __param(0, Inject(ContextService)),
+                    __metadata("design:paramtypes", [ContextService])
+                ], SceneTreeState);
+                return SceneTreeState;
+            }());
+
             var SceneTreePluginModule = exports('SceneTreePluginModule', /** @class */ (function () {
                 function SceneTreePluginModule() {
                 }
                 SceneTreePluginModule = __decorate([
                     NgModule({
                         declarations: [SceneTreeComponent],
-                        imports: [CommonModule, FormsModule, TreeModule],
+                        imports: [
+                            CommonModule,
+                            FormsModule,
+                            TreeModule,
+                            NgxsModule.forFeature([SceneTreeState]),
+                        ],
                         exports: [SceneTreeComponent],
                         entryComponents: [SceneTreeComponent],
                         providers: [

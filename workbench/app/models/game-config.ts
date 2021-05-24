@@ -1,6 +1,8 @@
 import { Capsule, SceneNode } from "game-capsule";
 import * as path from "path";
+import { BaseNodeTypes } from "workbench/consts";
 import { TreeNode } from "primeng/api";
+import { Game } from "workbench/app/models/game";
 
 export interface SceneForm {
   name: string;
@@ -10,33 +12,31 @@ export interface SceneForm {
 
 export class GameConfig {
   private _capsule: Capsule;
-  private _gameId: string;
-  private _gameFolder: string;
+  private _game: Game;
 
   public get capsule() {
     return this._capsule;
   }
 
   public get gameId() {
-    return this._gameId;
+    return this._game._id;
   }
 
   public get gameFolder() {
-    return this._gameFolder;
+    return this._game.gameFolder;
   }
 
   public get piFilePath() {
-    return path.join(this._gameFolder, `${this._gameId}.pi`);
+    return path.join(this.gameFolder, `${this.gameId}.pi`);
   }
 
   public get packageFilePath() {
-    return path.join(this._gameFolder, "package.json");
+    return path.join(this.gameFolder, "package.json");
   }
 
-  constructor(gameFolder: string, gameId: string) {
+  constructor(game: Game) {
     this._capsule = new Capsule();
-    this._gameFolder = gameFolder;
-    this._gameId = gameId;
+    this._game = game;
   }
 
   serialize() {
@@ -72,23 +72,17 @@ export interface TreeLeaf extends TreeNode {
 }
 
 export class SceneConfig {
-  private _gameFolder: string;
-  private _sceneId: number;
+  private _game: Game;
   private _config: Capsule;
   public tree: TreeLeaf[];
 
-  constructor(gameFolder: string, sceneId: number) {
-    this._gameFolder = gameFolder;
-    this._sceneId = sceneId;
+  constructor(game: Game) {
+    this._game = game;
     this._config = new Capsule();
   }
 
-  public get scenePiFile() {
-    return path.join(this._gameFolder, `${this._sceneId}.pi`);
-  }
-
   public get sceneNode() {
-    return this._config.root;
+    return this._config.root.children[0];
   }
 
   deserialize(buffer: Uint8Array) {
@@ -101,14 +95,20 @@ export class SceneConfig {
 
   generateSceneTree() {
     console.log("scene config: ", this._config);
+    const sceneId = this.sceneNode.id;
     function walk(node) {
       let tree = [];
+
+      if (BaseNodeTypes.indexOf(node.type) >= 0) {
+        return [];
+      }
+
       let leaf: TreeLeaf = {
         label: node.name,
         name: node.name,
         id: node.id,
         sn: node.sn,
-        expanded: true,
+        expanded: node.id === sceneId ? true : false,
       };
 
       if (node.children !== undefined) {
@@ -123,7 +123,7 @@ export class SceneConfig {
       return tree;
     }
 
-    this.tree = walk(this._config.root);
+    this.tree = walk(this._config.root.children[0]);
   }
 
   doCommand(command: string, args) {

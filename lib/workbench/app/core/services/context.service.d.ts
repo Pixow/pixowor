@@ -19,8 +19,8 @@ export declare class ContextService {
     pluginComponentFactories: Map<string, ComponentFactory<unknown>>;
     pluginComponents: Map<string, Type<any>>;
     _apiService: ApiService;
-    _editedGame$: BehaviorSubject<Game>;
-    _editedGameConfig$: BehaviorSubject<GameConfig>;
+    _editedGame: any;
+    _editedGameConfig: GameConfig;
     _editedSceneConfig$: BehaviorSubject<SceneConfig>;
     plugins: Map<string, any>;
     eventBus: EventBus;
@@ -63,8 +63,9 @@ export declare class ContextService {
     setUser(user: User): void;
     getUser(): any;
     setEditedGame(game: Game): void;
-    get editedGame$(): BehaviorSubject<Game>;
-    get editedGameConfig$(): BehaviorSubject<GameConfig>;
+    setEditedScene(sceneId: number): void;
+    get editedGame(): Game;
+    get editedGameConfig(): GameConfig;
     get editedSceneConfig$(): BehaviorSubject<SceneConfig>;
     launchGame(game: Game, cb: Function): void;
     launchScene(game: Game, sceneId: number, cb: Function): void;

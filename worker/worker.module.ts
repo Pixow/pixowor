@@ -32,19 +32,19 @@ export class WorkerComponent implements OnInit {
         event,
         arg
       );
-      const { gameFolder, gameId } = arg;
+      const { gameId, gamePiFile } = arg;
 
-      this.gameConfig = new GameConfig(gameFolder, gameId);
+      // this.gameConfig = new GameConfig(gameFolder, gameId);
 
-      fs.readFile(this.gameConfig.piFilePath, (err, buffer) => {
+      fs.readFile(gamePiFile, (err, buffer) => {
         if (err) {
           console.log(err);
         }
 
-        this.gameConfig.deserialize(buffer);
-        this.gameConfig.generateGameTree();
+        // this.gameConfig.deserialize(buffer);
+        // this.gameConfig.generateGameTree();
 
-        message2UI("launch-game-back", { gameConfig: this.gameConfig });
+        message2UI("launch-game-back", { buffer });
 
         // fs.readFile(path.join(gameFolder, "custom-node.config.json"), "utf8", (err, data) => {
         //   this.customNodeConfig = JSON.parse(data);
@@ -53,25 +53,21 @@ export class WorkerComponent implements OnInit {
     });
 
     ipcRenderer.on("launch-scene", (event, arg) => {
-      const { gameFolder, sceneId } = arg;
+      const { sceneId, scenePiFile } = arg;
 
-      if (this.sceneConfigMap.get(sceneId)) {
-        message2UI("launch-scene-back", { sceneConfig: this.sceneConfigMap.get(sceneId) });
-      }
+      // const sceneConfig = new SceneConfig(gameFolder, sceneId);
 
-      const sceneConfig = new SceneConfig(gameFolder, sceneId);
-
-      fs.readFile(sceneConfig.scenePiFile, (err, buffer) => {
+      fs.readFile(scenePiFile, (err, buffer) => {
         if (err) {
           console.log(err);
         }
 
-        sceneConfig.deserialize(buffer);
-        sceneConfig.generateSceneTree();
+        // sceneConfig.deserialize(buffer);
+        // sceneConfig.generateSceneTree();
 
-        this.sceneConfigMap.set(sceneId, sceneConfig);
+        this.sceneConfigMap.set(sceneId, buffer);
 
-        message2UI("launch-scene-back", { sceneConfig: sceneConfig });
+        message2UI("launch-scene-back", { buffer });
       });
     });
 

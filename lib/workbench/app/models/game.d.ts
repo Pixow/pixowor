@@ -32,8 +32,10 @@ export declare class Game implements IGame {
     get isExists(): any;
     get lastGameVersion(): IGameVersion;
     get gameFolder(): string;
+    get gamePiFile(): string;
     private get _storePath();
     getZipFileName(version?: string): string;
     getTempZipFileName(version?: string): string;
     getGameZipUri(version?: string): string;
+    getScenePiFile(sceneId: number): string;
 }

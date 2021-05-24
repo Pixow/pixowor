@@ -1,5 +1,6 @@
 import { Capsule } from "game-capsule";
 import { TreeNode } from "primeng/api";
+import { Game } from "./game";
 export interface SceneForm {
     name: string;
     rows: number;
@@ -7,14 +8,13 @@ export interface SceneForm {
 }
 export declare class GameConfig {
     private _capsule;
-    private _gameId;
-    private _gameFolder;
+    private _game;
     get capsule(): Capsule;
     get gameId(): string;
     get gameFolder(): string;
     get piFilePath(): string;
     get packageFilePath(): string;
-    constructor(gameFolder: string, gameId: string);
+    constructor(game: Game);
     serialize(): void;
     deserialize(buffer: Uint8Array): void;
     serializeScene(sceneId: number): void;
@@ -29,12 +29,10 @@ export interface TreeLeaf extends TreeNode {
     children?: TreeLeaf[];
 }
 export declare class SceneConfig {
-    private _gameFolder;
-    private _sceneId;
+    private _game;
     private _config;
     tree: TreeLeaf[];
-    constructor(gameFolder: string, sceneId: number);
-    get scenePiFile(): string;
+    constructor(game: Game);
     get sceneNode(): import("game-capsule").GameNode;
     deserialize(buffer: Uint8Array): void;
     serialize(): Uint8Array;

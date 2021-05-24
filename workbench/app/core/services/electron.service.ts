@@ -140,18 +140,18 @@ export class ElectronService {
     });
   }
 
-  public launchGame({ gameFolder, gameId }: { gameFolder: string; gameId: string }, cb: Function) {
-    this.ipcRenderer.send(UI2WORKER_CHANNELS.LAUNCH_GAME, { gameFolder, gameId });
+  public launchGame({ gamePiFile, gameId }: { gamePiFile: string; gameId: string }, cb: Function) {
+    this.ipcRenderer.send(UI2WORKER_CHANNELS.LAUNCH_GAME, { gamePiFile, gameId });
     this.ipcRenderer.once(WORKER2UI_CHANNELS.LAUNCH_GAME_BACK, (e, res) => {
       cb(res);
     });
   }
 
   public launchScene(
-    { gameFolder, sceneId }: { gameFolder: string; sceneId: number },
+    { scenePiFile, sceneId }: { scenePiFile: string; sceneId: number },
     cb: Function
   ) {
-    this.ipcRenderer.send(UI2WORKER_CHANNELS.LAUNCH_SCENE, { gameFolder, sceneId });
+    this.ipcRenderer.send(UI2WORKER_CHANNELS.LAUNCH_SCENE, { scenePiFile, sceneId });
     this.ipcRenderer.once(WORKER2UI_CHANNELS.LAUNCH_SCENE_BACK, (e, res) => {
       cb(res);
     });

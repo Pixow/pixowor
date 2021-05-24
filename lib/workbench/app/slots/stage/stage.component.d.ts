@@ -1,9 +1,10 @@
-import { NgZone, OnInit, ViewContainerRef } from "@angular/core";
+import { NgZone, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
 import { Slot } from "../../models/slot";
 import { ContextService } from "../../core/services/index";
-export declare class StageComponent extends Slot implements OnInit {
+export declare class StageComponent extends Slot implements OnInit, OnDestroy {
     private contextService;
     private ngZone;
+    private cdInterval;
     types: {
         title: string;
         for: string;
@@ -12,4 +13,5 @@ export declare class StageComponent extends Slot implements OnInit {
     constructor(contextService: ContextService, ngZone: NgZone);
     ngOnInit(): void;
     renderComponent(componentName: string): void;
+    ngOnDestroy(): void;
 }
