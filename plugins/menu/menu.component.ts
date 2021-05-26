@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Event, LocalStorage, PluginStore, usePluginStore } from "angular-pluggable";
 import { MenuItem } from "primeng/api";
+import { User } from "workbench/app/models/user";
 
 @Component({
   selector: "menu",
@@ -13,10 +14,10 @@ export class MenuComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit() {
-    this.pluginStore.getObserver("user").subscribe((user) => {
+    this.pluginStore.getObserver("user").subscribe((user: User) => {
       let authItem = user
         ? {
-            label: "退出",
+            label: user.nickname,
             command: () => {
               LocalStorage.remove("user");
               this.pluginStore.getObserver("user").next(null);
@@ -37,12 +38,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
         {
           label: "游戏",
           items: [
+            authItem,
             {
-              label: "新建",
+              label: "新建游戏",
               icon: "pi pi-fw pi-plus",
               // items: [{ label: "Project" }, { label: "Other" }],
             },
-            authItem,
             {
               label: "打开游戏",
               command: () => {},

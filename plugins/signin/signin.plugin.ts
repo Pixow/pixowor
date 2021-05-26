@@ -1,4 +1,4 @@
-import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
+import { FunctionNames, IPlugin, LocalStorage, PluginStore } from "angular-pluggable";
 import { SigninModule } from "./signin.module";
 import { SigninComponent } from "./signin.component";
 
@@ -24,7 +24,8 @@ export class SigninPlugin implements IPlugin {
       SigninComponent
     );
 
-    this.pluginStore.registObserver("user");
+    const user = LocalStorage.get("user");
+    this.pluginStore.registObserver("user", user);
   }
 
   deactivate(): void {}
