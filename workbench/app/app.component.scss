@@ -12,6 +12,7 @@
   height: calc(100% - 20px - 30px);
   display: flex;
   flex-direction: row;
+  background-color: $explorer-bc-active;
 }
 
 .workbench__container__activitybar {
@@ -24,12 +25,10 @@
 
 .workbench__container__stage {
   width: calc(100% - 660px);
-  background-color: $explorer-bc-active;
 }
 
-.workbench__container__extensions {
+.workbench__container__attributes {
   width: 300px;
-  background-color: $explorer-bc-active;
 }
 
 .workbench__statusbar {

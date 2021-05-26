@@ -7,7 +7,6 @@ import { MessageService } from "primeng/api";
 import { ElectronService } from "./electron.service";
 
 import { LocalStorage, EventBus } from "workbench/app/utils";
-import { ApiService } from "workbench/app/utils/api-service";
 import { WorkbenchConfig } from "workbench/environments/environment";
 import { User } from "workbench/app/models/user";
 import { Game } from "workbench/app/models/game";
@@ -23,7 +22,6 @@ export class ContextService {
   entryComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponents = new Map<string, Type<any>>();
-  _apiService: ApiService;
   _editedGame = null;
   _editedGameConfig: GameConfig;
   _editedSceneConfig$: BehaviorSubject<SceneConfig> = new BehaviorSubject(null);
@@ -39,7 +37,6 @@ export class ContextService {
     private zone: NgZone
   ) {
     console.log("ContextService init");
-    this._apiService = new ApiService();
 
     this.eventBus = new EventBus();
 
@@ -48,15 +45,6 @@ export class ContextService {
 
   public initial() {
     console.log("Plugin use workbench context success.");
-  }
-
-  // 为context 提供 webapi sdk
-  public get sdk() {
-    return this._apiService.sdk;
-  }
-
-  public setInterceptors(user: User) {
-    this._apiService.setInterceptors(user);
   }
 
   public get localStorage() {
@@ -160,7 +148,6 @@ export class ContextService {
 
   public setUser(user: User) {
     this.localStorage.set(USER_STORAGE_KEY, user);
-    this._apiService.setInterceptors(user);
   }
 
   public getUser() {

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { Event, PluginStore, usePluginStore } from "angular-pluggable";
 import { MenuItem } from "primeng/api";
 
 @Component({
@@ -7,6 +8,7 @@ import { MenuItem } from "primeng/api";
   styleUrls: ["./menu.component.scss"],
 })
 export class MenuComponent implements OnInit, AfterViewInit {
+  private pluginStore: PluginStore = usePluginStore();
   items: MenuItem[] = [];
   constructor() {}
 
@@ -22,7 +24,15 @@ export class MenuComponent implements OnInit, AfterViewInit {
           },
           {
             label: "登录",
-            command: () => {},
+            command: () => {
+              this.pluginStore.dispatchEvent(new Event("Toast", { message: "登录了" }));
+              this.pluginStore.dispatchEvent(
+                new Event("ShowInDialog", {
+                  componentName: "Signin",
+                  config: {},
+                })
+              );
+            },
           },
           {
             label: "打开游戏",

@@ -2,29 +2,23 @@
   <Renderer placement="menu"></Renderer>
   <div class="workbench__container">
     <div class="workbench__container__activitybar">
-      <activitybar #workbenchActivitybar></activitybar>
+      <Renderer placement="activitybar"></Renderer>
     </div>
 
     <div class="workbench__container__explorer">
-      <explorer #workbenchExplorer></explorer>
+      <Renderer placement="explorer"></Renderer>
     </div>
 
     <div class="workbench__container__stage">
-      <stage #workbenchStage></stage>
+      <Renderer placement="stage"></Renderer>
     </div>
 
-    <div class="workbench__container__extensions">
-      <extensions #workbenchExtensions></extensions>
+    <div class="workbench__container__attributes">
+      <Renderer placement="attributes"></Renderer>
     </div>
   </div>
   <div class="workbench__statusbar">
-    <statusbar #workbenchStatusbar></statusbar>
+    <Renderer placement="statusbar"></Renderer>
   </div>
 </div>
-
-<div #content></div>
-<p-toast key="globalMessage" position="top-center"></p-toast>
-
-<p-dialog header="{{ title }}" [(visible)]="display">
-  <div #dialog></div>
-</p-dialog>
+<Renderer placement="toast"></Renderer>

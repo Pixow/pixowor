@@ -1,0 +1,80 @@
+<div class="signin-container p-grid">
+  <div class="signin-introduces p-col-8">
+    <p-carousel [value]="introduces">
+      <ng-template let-introduce pTemplate="item">
+        <div class="signin-introduces-item">
+          <h2>
+            {{ introduce.title }}
+          </h2>
+
+          <p>
+            {{ introduce.description }}
+          </p>
+
+          <img src="{{ introduce.image }}" />
+        </div>
+      </ng-template>
+    </p-carousel>
+  </div>
+  <div class="signin-form p-col-4">
+    <div class="sign-logo"></div>
+    <h1>欢迎使用图轻</h1>
+
+    <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+      <ng-container *ngIf="isSubmitted">
+        <div class="signin-form-mask">
+          <p-progressBar mode="indeterminate"></p-progressBar>
+          <div class="mask"></div>
+        </div>
+      </ng-container>
+
+      <fieldset>
+        <label for="account"> 用户名 </label>
+        <input
+          id="account"
+          [ngClass]="{ error: isAccountInvalid() }"
+          type="text"
+          formControlName="account"
+          placeholder="用户名"
+        />
+
+        <div *ngIf="isAccountInvalid()">
+          <div *ngIf="account.errors.required">
+            <p class="error-message">请填写用户名！</p>
+          </div>
+          <div *ngIf="account.errors.notFound">
+            <p class="error-message">用户名不存在！</p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="password"> 密&nbsp;&nbsp;码 </label>
+        <input
+          id="password"
+          [ngClass]="{ error: isPasswordInvalid() }"
+          type="password"
+          appPassword
+          formControlName="password"
+          placeholder="密码"
+        />
+
+        <div *ngIf="isPasswordInvalid()">
+          <div *ngIf="password.errors.required">
+            <p class="error-message">请填写密码！</p>
+          </div>
+          <div *ngIf="password.errors.incorrect">
+            <p class="error-message">密码不正确！</p>
+          </div>
+        </div>
+      </fieldset>
+
+      <button type="submit" [disabled]="!signinForm.valid">登录</button>
+    </form>
+    <p-checkbox
+      name="autoSignin"
+      value="30天内免登录"
+      [(ngModel)]="autoSignin"
+    ></p-checkbox>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { IPlugin, PluginStore } from "angular-pluggable";
+import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
 import { MenuModule } from "./menu.module";
 
 export class MenuPlugin implements IPlugin {
@@ -9,7 +9,7 @@ export class MenuPlugin implements IPlugin {
   }
 
   getDependencies(): string[] {
-    return [];
+    return ["toast@1.0.0"];
   }
 
   init(pluginStore: PluginStore): void {
@@ -17,7 +17,7 @@ export class MenuPlugin implements IPlugin {
   }
 
   activate(): void {
-    this.pluginStore.execFunction("Renderer.add", "menu", MenuModule);
+    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "menu", MenuModule);
   }
 
   deactivate(): void {}
