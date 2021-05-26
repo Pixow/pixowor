@@ -3,8 +3,7 @@ import { Environment, IQingWebApiSdk, QingWebApiSdk } from "qing-web-api-sdk";
 
 import { IUser } from "../../models/user";
 import { Router } from "@angular/router";
-import { ContextService } from "workbench/app/core/services";
-// import { AuthState } from "workbench/app/store/auth/auth.state";
+import { ContextService } from "./context.service";
 
 @Injectable({
   providedIn: "root",

@@ -12,6 +12,7 @@
     "types": ["node", "jest", "long"],
     "baseUrl": "./",
     "paths": {
+      "@angular/*": ["./node_modules/@angular/*"],
       "plugins": ["plugins/*"],
       "workbench": ["workbench/*"],
       "worker": ["worker/*"],

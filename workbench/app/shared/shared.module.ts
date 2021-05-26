@@ -9,8 +9,6 @@ import {
   UserProfileComponent,
 } from "./components/";
 
-import { TestPluginMarketComponent } from "../test-component/test-plugin-market/test-plugin-market.component";
-
 import { AppPasswordDirective, HoverActiveDirective, WebviewDirective } from "./directives/";
 import { FirstCharacterPipe } from "./pipes";
 
@@ -24,13 +22,9 @@ import { DialogModule } from "primeng/dialog";
 import { AccordionModule } from "primeng/accordion";
 import { FileUploadModule } from "primeng/fileupload";
 import { MenubarModule } from "primeng/menubar";
+import { RendererModule } from "angular-pluggable";
 
-const COMPONENTS = [
-  PageNotFoundComponent,
-  ResmanagerTabsComponent,
-  UserProfileComponent,
-  TestPluginMarketComponent,
-];
+const COMPONENTS = [PageNotFoundComponent, ResmanagerTabsComponent, UserProfileComponent];
 
 const DIRECTIVES = [WebviewDirective, AppPasswordDirective, HoverActiveDirective];
 
@@ -38,7 +32,7 @@ const PIPES = [FirstCharacterPipe];
 
 const QINGMODULES = [TabViewModule];
 
-const COMMONMODULES = [CommonModule, FormsModule, ReactiveFormsModule];
+const COMMONMODULES = [CommonModule, FormsModule, ReactiveFormsModule, RendererModule];
 
 const PRIMENGMODULES = [
   CheckboxModule,

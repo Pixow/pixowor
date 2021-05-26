@@ -76,15 +76,6 @@ export class CodeApplication {
     }
   }
 
-  private startPluginsRepoServer() {
-    const server = path.join(__dirname, "plugins_server.js");
-    console.log("server: ", server, app.getAppPath());
-    const ls = spawn("node", [server, app.getAppPath()]);
-    ls.stdout.on("data", (data) => {
-      console.log(`stdout: ${data}`);
-    });
-  }
-
   startup() {
     const args = process.argv.slice(1),
       serve = args.some((val) => val === "--serve");
@@ -114,8 +105,6 @@ export class CodeApplication {
     this.initIpcRoutes();
 
     this.initRpcServer(uiWindow);
-
-    this.startPluginsRepoServer();
 
     this.initWorker2UIRoutes(uiWindow);
     this.initUI2WorkerRoutes(workerWindow);

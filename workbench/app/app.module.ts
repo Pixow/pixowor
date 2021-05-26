@@ -8,11 +8,9 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { CoreModule } from "./core/core.module";
 import { ErrorHandlerService } from "./core/services";
-import { MenuComponent } from "workbench/app/slots/menu/menu.component";
 import { ActivitybarComponent } from "workbench/app/slots/activitybar/activitybar.component";
 import { ExplorerComponent } from "workbench/app/slots/explorer/explorer.component";
 import { HttpClientModule } from "@angular/common/http";
-import { ContextModule } from "./context.module";
 import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
 import { StageComponent } from "workbench/app/slots/stage/stage.component";
@@ -23,7 +21,6 @@ import { SharedModule } from "workbench/app/shared/shared.module";
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent,
     ActivitybarComponent,
     ExplorerComponent,
     StageComponent,
@@ -40,7 +37,6 @@ import { SharedModule } from "workbench/app/shared/shared.module";
     ReactiveFormsModule,
     ToastModule,
     NgxsModule.forRoot([]),
-    ContextModule.forRoot(),
   ],
   providers: [
     {

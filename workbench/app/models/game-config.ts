@@ -1,6 +1,5 @@
 import { Capsule, SceneNode } from "game-capsule";
 import * as path from "path";
-import { BaseNodeTypes } from "workbench/consts";
 import { TreeNode } from "primeng/api";
 import { Game } from "workbench/app/models/game";
 
@@ -99,9 +98,9 @@ export class SceneConfig {
     function walk(node) {
       let tree = [];
 
-      if (BaseNodeTypes.indexOf(node.type) >= 0) {
-        return [];
-      }
+      // if (BaseNodeTypes.indexOf(node.type) >= 0) {
+      //   return [];
+      // }
 
       let leaf: TreeLeaf = {
         label: node.name,

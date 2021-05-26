@@ -1,9 +1,0 @@
-{
-  "name": "game-explorer-plugin",
-  "version": "1.0.0",
-  "author": "moJiXiang",
-  "dependencies": {
-    "@PixelPai/game-core": "^1.0.551",
-    "qing-workbench": "0.0.7"
-  }
-}

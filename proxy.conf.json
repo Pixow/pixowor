@@ -1,9 +1,0 @@
-{
-  "/plugins-repo/*": {
-    "target": "http://localhost:4201",
-    "secure": false,
-    "pathRewrite": {
-      "^/plugins-repo": ""
-    }
-  }
-}
