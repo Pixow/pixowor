@@ -6,7 +6,7 @@ import * as path from "path";
 import { MessageService } from "primeng/api";
 import { ElectronService } from "./electron.service";
 
-import { LocalStorage, EventBus } from "workbench/app/utils";
+import { EventBus } from "workbench/app/utils";
 import { WorkbenchConfig } from "workbench/environments/environment";
 import { User } from "workbench/app/models/user";
 import { Game } from "workbench/app/models/game";
@@ -47,10 +47,6 @@ export class ContextService {
     console.log("Plugin use workbench context success.");
   }
 
-  public get localStorage() {
-    return LocalStorage;
-  }
-
   public get socket() {
     return SocketConnection.getInstance();
   }
@@ -64,7 +60,6 @@ export class ContextService {
   }
 
   public getComponentFactory(componentName: string) {
-    console.log("this.pluginComponentFactor: ", this.pluginComponentFactories);
     return this.pluginComponentFactories.get(componentName);
   }
 
@@ -142,16 +137,6 @@ export class ContextService {
     } else {
       this.electronService.readAppDataFile(configFile, cb);
     }
-  }
-
-  public getPluginsFromMarket() {}
-
-  public setUser(user: User) {
-    this.localStorage.set(USER_STORAGE_KEY, user);
-  }
-
-  public getUser() {
-    return LocalStorage.get(USER_STORAGE_KEY);
   }
 
   public setEditedGame(game: Game) {

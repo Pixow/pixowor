@@ -10,7 +10,7 @@ export class SigninPlugin implements IPlugin {
   }
 
   getDependencies(): string[] {
-    return [];
+    return ["dialog@1.0.0"];
   }
 
   init(pluginStore: PluginStore): void {
@@ -23,6 +23,8 @@ export class SigninPlugin implements IPlugin {
       "Signin",
       SigninComponent
     );
+
+    this.pluginStore.registObserver("user");
   }
 
   deactivate(): void {}

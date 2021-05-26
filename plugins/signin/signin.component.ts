@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngxs/store";
+import { Event, PluginStore, usePluginStore, LocalStorage } from "angular-pluggable";
 import { QingWebApiSdk } from "qing-web-api-sdk";
 
 interface Introduce {
@@ -19,6 +20,7 @@ export class SigninComponent {
   public signinForm: FormGroup;
   public autoSignin: boolean;
   public isSubmitted = false;
+  private pluginStore: PluginStore = usePluginStore();
   private api = QingWebApiSdk.getInstance();
 
   constructor(private store: Store) {
@@ -67,6 +69,10 @@ export class SigninComponent {
       .editorSignin(account, password)
       .then((res) => {
         this.isSubmitted = false;
+        const { data } = res.data;
+        LocalStorage.set("user", data);
+        this.pluginStore.getObserver("user").next(data);
+        this.pluginStore.dispatchEvent(new Event("CloseDialog"));
       })
       .catch((error) => {
         this.isSubmitted = false;
