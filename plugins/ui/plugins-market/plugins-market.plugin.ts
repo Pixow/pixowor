@@ -1,5 +1,7 @@
 import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
-import { PluginsMarketModule } from "plugins/ui/plugins-market/plugins-market.component";
+import { PluginsMarketComponent } from "./plugins-market";
+
+// TODO: import from "workbench/types"
 import { ActivitybarItem } from "workbench/app/models/activity";
 
 export class PluginsMarketPlugin implements IPlugin {
@@ -28,7 +30,7 @@ export class PluginsMarketPlugin implements IPlugin {
           this.pluginStore.execFunction(
             FunctionNames.RENDERER_ONCE,
             "explorer",
-            PluginsMarketModule
+            PluginsMarketComponent
           );
         },
       })

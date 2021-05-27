@@ -34,13 +34,7 @@ export class ToastPluginComponent implements OnInit {
   imports: [ToastModule],
   declarations: [ToastPluginComponent],
 })
-export class ToastPluginModule {
-  constructor(private resolver: ComponentFactoryResolver) {}
-
-  public resolveComponentFactory(): ComponentFactory<ToastPluginComponent> {
-    return this.resolver.resolveComponentFactory(ToastPluginComponent);
-  }
-}
+export class ToastPluginModule {}
 
 export class ToastPlugin implements IPlugin {
   pluginStore: PluginStore;
@@ -58,7 +52,7 @@ export class ToastPlugin implements IPlugin {
   }
 
   activate(): void {
-    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "toast", ToastPluginModule);
+    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "toast", ToastPluginComponent);
   }
 
   deactivate(): void {}

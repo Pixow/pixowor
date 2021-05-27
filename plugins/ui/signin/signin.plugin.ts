@@ -1,5 +1,4 @@
 import { FunctionNames, IPlugin, LocalStorage, PluginStore } from "angular-pluggable";
-import { SigninModule } from "./signin.module";
 import { SigninComponent } from "./signin.component";
 
 export class SigninPlugin implements IPlugin {

@@ -8,10 +8,4 @@ import { MenuComponent } from "./menu.component";
   declarations: [MenuComponent],
   imports: [CommonModule, MenubarModule],
 })
-export class MenuModule {
-  constructor(private resolver: ComponentFactoryResolver) {}
-
-  public resolveComponentFactory(): ComponentFactory<MenuComponent> {
-    return this.resolver.resolveComponentFactory(MenuComponent);
-  }
-}
+export class MenuModule {}

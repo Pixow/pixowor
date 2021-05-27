@@ -11,6 +11,9 @@ import compareVersions from "compare-version";
 import { AccordionModule } from "primeng/accordion";
 import { FileUploadModule } from "primeng/fileupload";
 import { CommonModule } from "@angular/common";
+import { PluginStore, usePluginStore } from "angular-pluggable";
+import { WorkbenchConfig } from "workbench/environments/environment";
+import { ContextService } from "workbench/app/core/services/context.service";
 
 @Component({
   selector: "plugins-market",
@@ -18,16 +21,70 @@ import { CommonModule } from "@angular/common";
   styleUrls: ["./plugins-market.component.scss"],
 })
 export class PluginsMarketComponent implements OnInit {
+  private pluginStore: PluginStore = usePluginStore();
   plugins$ = new BehaviorSubject([]);
   constructor() {}
 
   ngOnInit() {}
 
-  installPlugin(pluginName: string, pluginVersion: string) {
-    // this.context.installPlugin({ pluginName, pluginVersion }, () => {
-    //   this.context.success("插件安装成功！");
-    // });
+  public installPlugin(pluginName: string, pluginVersion: string) {
+    // 下载插件
+    // 安装插件
   }
+
+  // 显示插件详情
+  public showPluginDetail(pluginName: string) {}
+
+  // 禁用插件
+  public disable(pluginName: string) {}
+
+  // 卸载插件
+  public uninstall(pluginName: string) {}
+
+  // 更新插件
+  public update(pluginName: string) {}
+
+  // public installPlugin(pluginName: string, pluginVersion: string) {
+  //   const zipFileName = `${pluginName}_${pluginVersion}.zip`;
+  //   const uri = this.pluginStore
+  //     .getContext<ContextService>()
+  //     .url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, zipFileName);
+  //   const output = url.resolve(this.electronService.tempPath, zipFileName);
+
+  //   // TODO: 只使用appDataPath
+  //   const appPath =
+  //     WorkbenchConfig.environment === "DEVELOPMENT"
+  //       ? this.electronService.appPath
+  //       : this.electronService.userDataPath;
+
+  //   this.downloadFile({ uri, output }, () => {
+  //     const pluginFolder = path.join(appPath, `${PLUGINS_FOLDER}/${pluginName}`);
+  //     const pluginConfig = path.join(appPath, PLUGINS_CONFIG_FILE);
+  //     this.unzipFile({ source: output, dest: pluginFolder }, () => {
+  //       this.readFile(path.join(pluginFolder, "package.json"), (res) => {
+  //         const pkg = JSON.parse(res.data);
+
+  //         const newPlugin = {
+  //           name: pkg.name,
+  //           moduleBundlePath: url.resolve(
+  //             PLUGINS_WEB_URI,
+  //             `${PLUGINS_FOLDER}/${pluginName}/bundle.js`
+  //           ),
+  //         };
+
+  //         this.getConfigData(PLUGINS_CONFIG_FILE, ({ data }) => {
+  //           const config = JSON.parse(data);
+  //           config.push(newPlugin);
+  //           this.writeJson({ filePath: pluginConfig, content: config }, () => {
+  //             // create plugin
+  //             AppComponent.instance.createPlugin(newPlugin as unknown as any);
+  //             cb();
+  //           });
+  //         });
+  //       });
+  //     });
+  //   });
+  // }
 
   onUpload(event) {
     //   console.log("event: ", event.files);
@@ -93,10 +150,4 @@ export class PluginsMarketComponent implements OnInit {
   imports: [CommonModule, AccordionModule, FileUploadModule],
   declarations: [PluginsMarketComponent],
 })
-export class PluginsMarketModule {
-  constructor(private resolver: ComponentFactoryResolver) {}
-
-  public resolveComponentFactory(): ComponentFactory<PluginsMarketComponent> {
-    return this.resolver.resolveComponentFactory(PluginsMarketComponent);
-  }
-}
+export class PluginsMarketModule {}

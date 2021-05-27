@@ -1,16 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  Type,
-  ViewChild,
-  Compiler,
-  Injector,
-  ViewContainerRef,
-  NgZone,
-} from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { ContextService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";

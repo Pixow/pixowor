@@ -1,5 +1,5 @@
 import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
-import { ActivitybarModule } from "./activitybar.component";
+import { ActivitybarComponent } from "./activitybar";
 
 export class ActivitybarPlugin implements IPlugin {
   pluginStore: PluginStore;
@@ -17,7 +17,7 @@ export class ActivitybarPlugin implements IPlugin {
   }
 
   activate(): void {
-    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "activitybar", ActivitybarModule);
+    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "activitybar", ActivitybarComponent);
 
     this.pluginStore.registObserver("activitybar", []);
   }

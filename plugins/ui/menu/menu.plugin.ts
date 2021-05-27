@@ -1,5 +1,5 @@
 import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
-import { MenuModule } from "./menu.module";
+import { MenuComponent } from "./menu.component";
 
 export class MenuPlugin implements IPlugin {
   pluginStore: PluginStore;
@@ -17,7 +17,7 @@ export class MenuPlugin implements IPlugin {
   }
 
   activate(): void {
-    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "menu", MenuModule);
+    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "menu", MenuComponent);
   }
 
   deactivate(): void {}

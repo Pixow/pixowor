@@ -18,10 +18,4 @@ import { SigninComponent } from "./signin.component";
     CheckboxModule,
   ],
 })
-export class SigninModule {
-  constructor(private resolver: ComponentFactoryResolver) {}
-
-  public resolveComponentFactory(): ComponentFactory<SigninComponent> {
-    return this.resolver.resolveComponentFactory(SigninComponent);
-  }
-}
+export class SigninModule {}

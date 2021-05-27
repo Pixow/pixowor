@@ -1,6 +1,5 @@
 import { CommonModule } from "@angular/common";
 import {
-  AfterViewInit,
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
@@ -9,7 +8,7 @@ import {
 } from "@angular/core";
 import { PluginStore, usePluginStore } from "angular-pluggable";
 import { TooltipModule } from "primeng/tooltip";
-import { ContextService } from "workbench/app/core/services/context.service";
+// TODO: import from "workbench/types"
 import { ActivitybarItem } from "workbench/app/models/activity";
 
 @Component({
@@ -17,7 +16,7 @@ import { ActivitybarItem } from "workbench/app/models/activity";
   templateUrl: "./activitybar.component.html",
   styleUrls: ["./activitybar.component.scss"],
 })
-export class ActivitybarComponent implements OnInit, AfterViewInit {
+export class ActivitybarComponent implements OnInit {
   private pluginStore: PluginStore = usePluginStore();
 
   items: ActivitybarItem[];
@@ -34,18 +33,10 @@ export class ActivitybarComponent implements OnInit, AfterViewInit {
     //   this.items = items.sort((a, b) => (a.index > b.index ? 1 : -1));
     // });
   }
-
-  ngAfterViewInit() {}
 }
 
 @NgModule({
   declarations: [ActivitybarComponent],
   imports: [CommonModule, TooltipModule],
 })
-export class ActivitybarModule {
-  constructor(private resolver: ComponentFactoryResolver) {}
-
-  public resolveComponentFactory(): ComponentFactory<ActivitybarComponent> {
-    return this.resolver.resolveComponentFactory(ActivitybarComponent);
-  }
-}
+export class ActivitybarModule {}
