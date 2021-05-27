@@ -1,24 +1,29 @@
-import { IUser } from "./user";
+import { User } from "./user";
 
-export interface ILuaPackageVersion {
+export class LuaPackageVersion {
   version: string;
   resources: string[];
   created_at: Date;
   log: string; // 改动日志
+
+  constructor(data: LuaPackageVersion) {
+    Object.assign(this, data);
+  }
 }
 
-export interface ILuaPackage {
+export class LuaPackage {
   _id: string;
   name: string;
   desc: string;
-  owner: Partial<IUser>;
-  versions: ILuaPackageVersion[];
-  publishVersions: ILuaPackageVersion[];
+  owner: Partial<User>;
+  versions: LuaPackageVersion[];
+  publishVersions: LuaPackageVersion[];
   current_version: string;
   is_private: boolean; // 是否是私有包
 
-  releaseVersions: ILuaPackageVersion[];
-  prepare: () => Promise<any>;
-  upload: (newVersion: string, log: string) => Promise<any>;
-  destroy: () => Promise<any>;
+  releaseVersions: LuaPackageVersion[];
+
+  constructor(data: LuaPackage) {
+    Object.assign(this, data);
+  }
 }

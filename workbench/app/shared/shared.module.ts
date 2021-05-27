@@ -2,13 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-import {
-  PageNotFoundComponent,
-  ResmanagerTabsComponent,
-  TabViewModule,
-  UserProfileComponent,
-} from "./components/";
-
 import { AppPasswordDirective, HoverActiveDirective, WebviewDirective } from "./directives/";
 import { FirstCharacterPipe } from "./pipes";
 
@@ -24,13 +17,13 @@ import { FileUploadModule } from "primeng/fileupload";
 import { MenubarModule } from "primeng/menubar";
 import { RendererModule } from "angular-pluggable";
 
-const COMPONENTS = [PageNotFoundComponent, ResmanagerTabsComponent, UserProfileComponent];
+const COMPONENTS = [];
 
 const DIRECTIVES = [WebviewDirective, AppPasswordDirective, HoverActiveDirective];
 
 const PIPES = [FirstCharacterPipe];
 
-const QINGMODULES = [TabViewModule];
+const QINGMODULES = [];
 
 const COMMONMODULES = [CommonModule, FormsModule, ReactiveFormsModule, RendererModule];
 

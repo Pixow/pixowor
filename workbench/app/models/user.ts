@@ -1,33 +1,13 @@
-export interface IUser {
-  id: string;
-  username: string;
-  nickname: string;
-  password: string;
-  token: string;
-  refreshToken: string;
-  avatar: string;
-
-  // avatarUrl: string | null;
-}
-
-export class User implements IUser {
+export class User {
   public id: string;
   public username: string;
   public nickname: string;
   public password: string;
-  token: string;
-  refreshToken: string;
-  avatar: string;
+  public token: string;
+  public refreshToken: string;
+  public avatar: string;
 
-  constructor(data: Partial<IUser>) {
+  constructor(data: Partial<User>) {
     Object.assign(this, data);
   }
-
-  // public get avatarUrl() {
-  //   if (this.avatar) {
-  //     return url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.avatar);
-  //   } else {
-  //     return null;
-  //   }
-  // }
 }

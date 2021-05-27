@@ -22,11 +22,13 @@ import {
   RendererPlugin,
   FunctionNames,
 } from "angular-pluggable";
-import { AlertPlugin } from "plugins/alert.plugin";
-import { MenuPlugin } from "plugins/menu/menu.plugin";
-import { ToastPlugin } from "plugins/toast.plugin";
-import { SigninPlugin } from "plugins/signin/signin.plugin";
-import { DialogPlugin } from "plugins/dialog.plugin";
+import { AlertPlugin } from "plugins/common/alert.plugin";
+import { ToastPlugin } from "plugins/common/toast.plugin";
+import { DialogPlugin } from "plugins/common/dialog.plugin";
+import { MenuPlugin } from "plugins/ui/menu/menu.plugin";
+import { SigninPlugin } from "plugins/ui/signin/signin.plugin";
+import { ActivitybarPlugin } from "plugins/ui/activitybar/activitybar.plugin";
+import { PluginsMarketPlugin } from "plugins/ui/plugins-market/plugins-market.plugin";
 
 @Component({
   selector: "app-root",
@@ -35,9 +37,11 @@ import { DialogPlugin } from "plugins/dialog.plugin";
   providers: [DialogService],
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
-  private pluginStore: PluginStore = createPluginStore();
+  private pluginStore: PluginStore;
 
-  constructor(private dialogService: DialogService) {}
+  constructor(private dialogService: DialogService, public context: ContextService) {
+    this.pluginStore = createPluginStore<ContextService>(context);
+  }
 
   ngOnInit() {}
 
@@ -47,7 +51,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pluginStore.install(new AlertPlugin());
     this.pluginStore.install(new DialogPlugin(this.dialogService));
     this.pluginStore.install(new MenuPlugin());
+    this.pluginStore.install(new ActivitybarPlugin());
     this.pluginStore.install(new SigninPlugin());
+
+    this.pluginStore.install(new PluginsMarketPlugin());
   }
 
   public handleClick() {

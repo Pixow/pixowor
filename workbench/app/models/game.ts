@@ -3,57 +3,40 @@ import * as path from "path";
 import * as fsa from "fs-extra";
 import { remote } from "electron";
 
-import { IUser } from "./user";
 import { WorkbenchConfig } from "workbench/environments/environment";
 import { isEmpty, last } from "lodash-es";
+import { User } from "./user";
 
-export interface IGameVersion {
+export class GameVersion {
   gameConfig: string;
   createdAt: string;
   version: string;
   commit: string;
 }
 
-export interface IGame {
+export class Game {
   _id: string;
-  owner: Partial<IUser>;
-  name: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  releaseVersions: IGameVersion[];
-  pastVersions: IGameVersion[];
-}
-
-export class Game implements IGame {
-  _id: string;
-  owner: Partial<IUser>;
+  owner: User;
   name: string;
   cover: string; // 封面图
   description: string;
   createdAt: string;
   updatedAt: string;
   lastVersion: string; // 最后修改版本
-  releaseVersions: IGameVersion[];
-  pastVersions: IGameVersion[];
+  releaseVersions: GameVersion[];
+  pastVersions: GameVersion[];
 
   isDownload: boolean = false;
 
-  constructor(data?: Partial<IGame>) {
+  constructor(data?: Partial<Game>) {
     Object.assign(this, data);
-  }
-
-  public get gameCover() {
-    return this.cover
-      ? url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.cover)
-      : "./assets/images/game_thumb.png";
   }
 
   public get isExists() {
     return fsa.pathExistsSync(this.gameFolder);
   }
 
-  public get lastGameVersion(): IGameVersion {
+  public get lastGameVersion(): GameVersion {
     if (this.lastVersion) {
       return this.pastVersions.find((item) => item.version === this.lastVersion);
     } else {

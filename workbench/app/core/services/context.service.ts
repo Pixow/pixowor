@@ -11,7 +11,6 @@ import { WorkbenchConfig } from "workbench/environments/environment";
 import { User } from "workbench/app/models/user";
 import { Game } from "workbench/app/models/game";
 import { SocketConnection } from "workbench/app/core/socket-connection";
-import { GameConfig, PluginConfig, SceneConfig } from "workbench/app/models";
 import { USER_STORAGE_KEY } from "workbench/consts";
 
 @Injectable({
@@ -23,8 +22,6 @@ export class ContextService {
   pluginComponentFactories = new Map<string, ComponentFactory<unknown>>();
   pluginComponents = new Map<string, Type<any>>();
   _editedGame = null;
-  _editedGameConfig: GameConfig;
-  _editedSceneConfig$: BehaviorSubject<SceneConfig> = new BehaviorSubject(null);
   plugins = new Map<string, any>();
 
   eventBus: EventBus;
@@ -139,44 +136,44 @@ export class ContextService {
     }
   }
 
-  public setEditedGame(game: Game) {
-    this._editedGame = game;
-    this._editedGameConfig = new GameConfig(game);
+  // public setEditedGame(game: Game) {
+  //   this._editedGame = game;
+  //   this._editedGameConfig = new GameConfig(game);
 
-    this.launchGame(game, ({ payload }) => {
-      this._editedGameConfig.deserialize(payload.buffer);
+  //   this.launchGame(game, ({ payload }) => {
+  //     this._editedGameConfig.deserialize(payload.buffer);
 
-      const firstScene = this._editedGameConfig.capsule.root.scenes[0];
+  //     const firstScene = this._editedGameConfig.capsule.root.scenes[0];
 
-      this.launchScene(game, firstScene.id, ({ payload }) => {
-        const sceneConfig = new SceneConfig(game);
-        sceneConfig.deserialize(payload.buffer);
-        sceneConfig.generateSceneTree();
-        this._editedSceneConfig$.next(sceneConfig);
-      });
-    });
-  }
+  //     this.launchScene(game, firstScene.id, ({ payload }) => {
+  //       const sceneConfig = new SceneConfig(game);
+  //       sceneConfig.deserialize(payload.buffer);
+  //       sceneConfig.generateSceneTree();
+  //       this._editedSceneConfig$.next(sceneConfig);
+  //     });
+  //   });
+  // }
 
-  public setEditedScene(sceneId: number) {
-    this.launchScene(this._editedGame, sceneId, ({ payload }) => {
-      const sceneConfig = this._editedSceneConfig$.getValue();
-      sceneConfig.deserialize(payload.buffer);
-      sceneConfig.generateSceneTree();
-      this._editedSceneConfig$.next(sceneConfig);
-    });
-  }
+  // public setEditedScene(sceneId: number) {
+  //   this.launchScene(this._editedGame, sceneId, ({ payload }) => {
+  //     const sceneConfig = this._editedSceneConfig$.getValue();
+  //     sceneConfig.deserialize(payload.buffer);
+  //     sceneConfig.generateSceneTree();
+  //     this._editedSceneConfig$.next(sceneConfig);
+  //   });
+  // }
 
-  public get editedGame(): Game {
-    return this._editedGame;
-  }
+  // public get editedGame(): Game {
+  //   return this._editedGame;
+  // }
 
-  public get editedGameConfig(): GameConfig {
-    return this._editedGameConfig;
-  }
+  // public get editedGameConfig(): GameConfig {
+  //   return this._editedGameConfig;
+  // }
 
-  public get editedSceneConfig$(): BehaviorSubject<SceneConfig> {
-    return this._editedSceneConfig$;
-  }
+  // public get editedSceneConfig$(): BehaviorSubject<SceneConfig> {
+  //   return this._editedSceneConfig$;
+  // }
 
   public launchGame(game: Game, cb: Function) {
     this.electronService.launchGame({ gamePiFile: game.gamePiFile, gameId: game._id }, cb);

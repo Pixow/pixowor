@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { Component, NgModule, OnInit } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { GameConfig, SceneConfig } from "../workbench/app/models/game-config";
+import { GameConfig } from "../workbench/app/models/game-config";
 import { IConfigObject } from "game-capsule";
 
 @Component({
