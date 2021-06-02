@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { Event, LocalStorage, PluginStore, usePluginStore } from "angular-pluggable";
+import { Event, PluginStore, usePluginStore } from "angular-pluggable";
 import { MenuItem } from "primeng/api";
 import { User } from "workbench/app/models/user";
+import { LocalStorage } from "workbench/app/utils/localstorage";
 
 @Component({
   selector: "menu",

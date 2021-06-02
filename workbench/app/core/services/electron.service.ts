@@ -8,7 +8,7 @@ import * as fs from "fs";
 import * as url from "url";
 import * as path from "path";
 import { UI_CHANNELS, WORKER2UI_CHANNELS, UI2WORKER_CHANNELS } from "launcher/code/ipc_channel";
-import { WorkbenchConfig } from "workbench/environments/environment";
+import { Environment } from "workbench/environments/environment";
 
 @Injectable()
 export class ElectronService {

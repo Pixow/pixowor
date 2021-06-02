@@ -1,11 +1,11 @@
 import * as path from "path";
 import { app } from "electron";
 import { CodeApplication } from "./app";
+import { startPluginHostProcess } from "./plugin-process";
 
 export class CodeMain {
   main(): void {
     this.startup();
-    console.log("app apth: ", app.getAppPath());
   }
 
   private async startup(): Promise<void> {
@@ -15,6 +15,8 @@ export class CodeMain {
     try {
       const app = new CodeApplication();
       app.startup();
+
+      startPluginHostProcess();
     } catch (error) {
       // instantiationService.invokeFunction(this.quit, error)
     }

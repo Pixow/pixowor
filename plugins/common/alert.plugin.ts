@@ -2,6 +2,8 @@ import { IPlugin, PluginStore } from "angular-pluggable";
 
 export class AlertPlugin implements IPlugin {
   pluginStore: PluginStore;
+  title = "alert";
+  id = "alert";
 
   getPluginName(): string {
     return "alert@1.0.0";

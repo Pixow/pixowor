@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
@@ -15,17 +16,18 @@ import { ToastModule } from "primeng/toast";
 })
 export class ToastPluginComponent implements OnInit {
   private pluginStore: PluginStore = usePluginStore();
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService, private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.pluginStore.addEventListener("Toast", (event: Event) => {
       console.log(">> event: ", event);
       this.messageService.add({
         key: "globalMessage",
-        severity: "success",
-        summary: "Service Message",
+        severity: (event.data as any).severity || "success",
         detail: (event.data as any).message,
       });
+
+      this.ref.detectChanges();
     });
   }
 }
@@ -38,6 +40,8 @@ export class ToastPluginModule {}
 
 export class ToastPlugin implements IPlugin {
   pluginStore: PluginStore;
+  title = "toast";
+  id = "toast";
 
   getPluginName(): string {
     return "toast@1.0.0";

@@ -3,6 +3,8 @@ import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 
 export class DialogPlugin implements IPlugin {
   pluginStore: PluginStore;
+  title = "dialog";
+  id = "dialog";
   ref: DynamicDialogRef;
 
   constructor(private dialogService: DialogService) {}

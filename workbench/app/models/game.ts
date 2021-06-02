@@ -3,7 +3,7 @@ import * as path from "path";
 import * as fsa from "fs-extra";
 import { remote } from "electron";
 
-import { WorkbenchConfig } from "workbench/environments/environment";
+import { Environment } from "workbench/environments/environment";
 import { isEmpty, last } from "lodash-es";
 import { User } from "./user";
 
@@ -67,7 +67,7 @@ export class Game {
   }
 
   public getGameZipUri(version?: string): string {
-    return url.resolve(WorkbenchConfig.WEB_RESOURCE_URI, this.getZipFileName(version));
+    return url.resolve(Environment.WEB_RESOURCE_URI, this.getZipFileName(version));
   }
 
   public getScenePiFile(sceneId: number) {

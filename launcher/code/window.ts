@@ -27,6 +27,7 @@ export class CodeWindow extends Disposable implements ICodeWindow {
       width: config.width || size.width,
       height: config.height || size.height,
       webPreferences: {
+        webSecurity: false,
         nodeIntegration: true,
         allowRunningInsecureContent: false,
         contextIsolation: false, // false if you want to run 2e2 test with Spectron

@@ -1,11 +1,13 @@
-import { FunctionNames, IPlugin, LocalStorage, PluginStore } from "angular-pluggable";
+import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
 import { SigninComponent } from "./signin.component";
-
+import { LocalStorage } from "workbench/app/utils/localstorage";
 export class SigninPlugin implements IPlugin {
   pluginStore: PluginStore;
+  title = "登录工具";
+  id = "signin";
 
   getPluginName(): string {
-    return "sign@1.0.0";
+    return "signin-plugin@1.0.0";
   }
 
   getDependencies(): string[] {

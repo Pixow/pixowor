@@ -6,8 +6,10 @@ export const UI_CHANNELS = {
   WRITE_JSON: "write-json",
   WRITE_FILE: "write-file",
   UPLOAD_FILE: "upload-file",
+  DELETE_QINIU_FILE: "delete-qiniu-file",
   DOWNLOAD_FILE: "download-file",
   UNZIP_FILE: "unzip-file",
+  REMOVE_FILE: "remove-file",
 };
 
 export const UI2WORKER_CHANNELS = {

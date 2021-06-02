@@ -1,8 +1,10 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngxs/store";
-import { Event, PluginStore, usePluginStore, LocalStorage } from "angular-pluggable";
+import { Event, PluginStore, usePluginStore } from "angular-pluggable";
 import { QingWebApiSdk } from "qing-web-api-sdk";
+import { LocalStorage } from "workbench/app/utils/localstorage";
+import { ContextService } from "workbench/app/core/services/context.service";
 
 interface Introduce {
   title: string;
@@ -21,7 +23,7 @@ export class SigninComponent {
   public autoSignin: boolean;
   public isSubmitted = false;
   private pluginStore: PluginStore = usePluginStore();
-  private api = QingWebApiSdk.getInstance();
+  private context: ContextService = this.pluginStore.getContext<ContextService>();
 
   constructor(private store: Store) {
     this.introduces = [
@@ -65,13 +67,15 @@ export class SigninComponent {
     this.isSubmitted = true;
 
     const { account, password } = this.signinForm.value;
-    this.api.auth
+
+    this.context.sdk.auth
       .editorSignin(account, password)
       .then((res) => {
         this.isSubmitted = false;
         const { data } = res.data;
         LocalStorage.set("user", data);
         this.pluginStore.getObserver("user").next(data);
+        this.context.sdk.setToken(data.token);
         this.pluginStore.dispatchEvent(new Event("CloseDialog"));
       })
       .catch((error) => {

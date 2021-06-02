@@ -59,9 +59,15 @@
 }
 .plugins-market {
   &__header {
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
     padding-bottom: 5px;
     color: #fff;
+
+    i {
+      cursor: pointer;
+    }
   }
 
   &__search {
@@ -72,64 +78,5 @@
       height: 30px;
       outline: none;
     }
-  }
-
-  .plugin-item {
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    color: #fff;
-    cursor: pointer;
-    &:hover {
-      background-color: #1b1d22;
-    }
-
-    .plugin-logo {
-      margin-right: 10px;
-      img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-      }
-    }
-    .plugin-info {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-
-      h3 {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      p {
-        font-size: 14px;
-        line-height: 16px;
-      }
-
-      i {
-        font-size: 12px;
-      }
-    }
-
-    button {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      border: none;
-      background-color: #4164e4;
-      color: #fff;
-      font-size: 12px;
-      line-height: 14px;
-      border-radius: 3px;
-      cursor: pointer;
-      outline: none;
-    }
-  }
-  &__upload {
-    padding: 10px;
-    color: #fff;
   }
 }

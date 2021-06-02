@@ -21,6 +21,6 @@
     "lib": ["ES2017", "ES2016", "ES2015", "DOM", "DOM.Iterable"]
   },
   "files": ["main.ts"],
-  "include": ["launcher/**/*", "workbench/**/*", "worker/*", "plugins/**/*"],
+  "include": ["launcher/**/*", "workbench/**/*", "worker/*", "plugins/**/*", "./global.d.ts"],
   "exclude": ["node_modules"]
 }

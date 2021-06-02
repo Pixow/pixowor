@@ -8,11 +8,7 @@ import routes from "./routes";
 import { UI2WORKER_CHANNELS, WORKER2UI_CHANNELS } from "./ipc_channel";
 const { spawn } = require("child_process");
 export class CodeApplication {
-  constructor() {
-    this.registListeners();
-  }
-
-  private registListeners(): void {}
+  constructor() {}
 
   private initRpcServer(window) {
     const app = new Server();

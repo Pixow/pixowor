@@ -3,9 +3,11 @@ import { MenuComponent } from "./menu.component";
 
 export class MenuPlugin implements IPlugin {
   pluginStore: PluginStore;
+  title = "菜单";
+  id = "menu";
 
   getPluginName(): string {
-    return "helloworld@1.0.0";
+    return "menu@1.0.0";
   }
 
   getDependencies(): string[] {

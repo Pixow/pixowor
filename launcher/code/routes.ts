@@ -83,7 +83,6 @@ export default {
   },
   [UI_CHANNELS.UPLOAD_FILE]: ({ params, cb }) => {
     const { uri, key, qiniuToken } = params;
-    console.log("uri, qiniuToken: ", uri, key, qiniuToken);
 
     const config = new qiniu.conf.Config();
     const formUploader = new qiniu.form_up.FormUploader(config);
@@ -98,6 +97,30 @@ export default {
       } else {
         console.log(respInfo.statusCode);
         console.log(respBody);
+        cb({
+          error: `上传失败，错误代码${respInfo.statusCode}`,
+        });
+      }
+    });
+  },
+  [UI_CHANNELS.DELETE_QINIU_FILE]: ({ params, cb }) => {
+    const { bucket, key, qiniuToken } = params;
+
+    var config = new qiniu.conf.Config();
+    //config.useHttpsDomain = true;
+    config.zone = qiniu.zone.Zone_z0;
+    const bucketManager = new qiniu.rs.BucketManager(qiniuToken, config);
+
+    bucketManager.stat(bucket, key, function (err, respBody, respInfo) {
+      if (err) {
+        cb({ error: err });
+      } else {
+        if (respInfo.statusCode == 200) {
+          cb({ data: respBody });
+        } else {
+          console.log(respInfo.statusCode);
+          console.log(respBody.error);
+        }
       }
     });
   },

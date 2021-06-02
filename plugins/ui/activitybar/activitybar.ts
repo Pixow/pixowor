@@ -1,5 +1,7 @@
 import { CommonModule } from "@angular/common";
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
@@ -22,16 +24,22 @@ export class ActivitybarComponent implements OnInit {
   items: ActivitybarItem[];
   active: number = 0;
 
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.pluginStore.getObserver("activitybar").subscribe((items: any) => {
       this.items = items.sort((a, b) => (a.index > b.index ? 1 : -1));
-    });
 
-    // this.pluginStore.getContext<ContextService>().activityItem$.subscribe((items) => {
-    //   this.items = items.sort((a, b) => (a.index > b.index ? 1 : -1));
-    // });
+      const pluginsMarketItem = this.items.find((item) => item.title === "插件市场");
+      if (this.active === 0) {
+        this.doCommand(pluginsMarketItem);
+      }
+    });
+  }
+
+  doCommand(item) {
+    this.active = item.index;
+    item.command();
   }
 }
 

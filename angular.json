@@ -41,14 +41,15 @@
             },
             "scripts": [
               "node_modules/systemjs/dist/system.js",
-              "node_modules/systemjs/dist/extras/amd.js"
+              "node_modules/systemjs/dist/extras/amd.js",
+              "node_modules/systemjs/dist/extras/named-register.js"
             ],
             "customWebpackConfig": {
               "path": "./angular.webpack.js"
             }
           },
           "configurations": {
-            "dev": {
+            "develop": {
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
@@ -62,6 +63,23 @@
                 {
                   "replace": "workbench/environments/environment.ts",
                   "with": "workbench/environments/environment.dev.ts"
+                }
+              ]
+            },
+            "release": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "fileReplacements": [
+                {
+                  "replace": "workbench/environments/environment.ts",
+                  "with": "workbench/environments/environment.release.ts"
                 }
               ]
             },
@@ -90,8 +108,11 @@
             "browserTarget": "workbench:build"
           },
           "configurations": {
-            "dev": {
-              "browserTarget": "workbench:build:dev"
+            "develop": {
+              "browserTarget": "workbench:build:develop"
+            },
+            "release": {
+              "browserTarget": "workbench:build:release"
             },
             "production": {
               "browserTarget": "workbench:build:production"
@@ -143,7 +164,7 @@
             }
           },
           "configurations": {
-            "dev": {
+            "develop": {
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
@@ -157,6 +178,23 @@
                 {
                   "replace": "workbench/environments/environment.ts",
                   "with": "workbench/environments/environment.dev.ts"
+                }
+              ]
+            },
+            "release": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "fileReplacements": [
+                {
+                  "replace": "workbench/environments/environment.ts",
+                  "with": "workbench/environments/environment.release.ts"
                 }
               ]
             },
@@ -185,8 +223,11 @@
             "browserTarget": "worker:build"
           },
           "configurations": {
-            "dev": {
-              "browserTarget": "worker:build:dev"
+            "develop": {
+              "browserTarget": "worker:build:develop"
+            },
+            "release": {
+              "browserTarget": "worker:build:release"
             },
             "production": {
               "browserTarget": "worker:build:production"

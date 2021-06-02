@@ -3,6 +3,8 @@ import { ActivitybarComponent } from "./activitybar";
 
 export class ActivitybarPlugin implements IPlugin {
   pluginStore: PluginStore;
+  title = "活动栏";
+  id = "activitybar";
 
   getPluginName(): string {
     return "activitybar@1.0.0";
