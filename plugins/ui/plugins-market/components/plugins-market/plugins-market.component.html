@@ -11,14 +11,14 @@
   <p-accordion (onOpen)="onTabOpen($event)">
     <p-accordionTab header="在线插件">
       <ul>
-        <li *ngFor="let plugin of plugins$ | async">
+        <li *ngFor="let plugin of plugins">
           <plugin-item [plugin]="plugin" (install)="installPlugin($event)"></plugin-item>
         </li>
       </ul>
     </p-accordionTab>
     <p-accordionTab header="本地插件">
       <ul>
-        <li *ngFor="let plugin of installedPlugins$ | async">
+        <li *ngFor="let plugin of installedPlugins">
           <plugin-item
             [plugin]="plugin"
             (install)="installPlugin($event)"

@@ -48,6 +48,14 @@ export class ContextService {
     return path.join(this.userDataPath, "plugins/plugin-conf.json");
   }
 
+  public get pluginServer() {
+    return `http://localhost:45326/plugins`
+  }
+
+  public get pluginDirectory() {
+    return path.join(this.userDataPath, "plugins");
+  }
+
   constructor(private electronService: ElectronService) {
     console.log("ContextService init");
     // Conditional imports
@@ -114,6 +122,13 @@ export class ContextService {
   zipFiles(params: { files: string[]; folderName: string }, cb: Function) {
     this.ipcRenderer.send(UI_CHANNELS.ZIP_FILES, params);
     this.ipcRenderer.once(UI_CHANNELS.ZIP_FILES, (e, res) => {
+      cb(res);
+    });
+  }
+
+  copyFiles(files: File[], destDir: string, cb: Function) {
+    this.ipcRenderer.send(UI_CHANNELS.COPY_FILES, { files, destDir });
+    this.ipcRenderer.once(UI_CHANNELS.COPY_FILES, (e, res) => {
       cb(res);
     });
   }

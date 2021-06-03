@@ -11,13 +11,14 @@ import { Plugin } from "../../types";
 import * as url from "url";
 import { Environment } from "workbench/environments/environment";
 import { MenuItem } from "primeng/api";
+import { PluginsMarketService } from "../../plugins-market.service";
 
 @Component({
   selector: "plugin-item",
   template: `
     <div class="plugin-item">
       <div class="plugin-logo">
-        <img src="{{ getPluginLogo(plugin) }}" />
+        <img src="{{ getPluginLogo() }}" />
       </div>
 
       <p-tieredMenu #menu [model]="items" [popup]="true"></p-tieredMenu>
@@ -42,16 +43,8 @@ import { MenuItem } from "primeng/api";
 export class PluginItemComponent implements OnInit {
   items: MenuItem[];
 
-  private _plugin: Plugin;
 
-  @Input()
-  set plugin(value: Plugin) {
-    console.log(">> plugin item value: ", value);
-    this._plugin = value;
-  }
-  get plugin() {
-    return this._plugin;
-  }
+  @Input() plugin: Plugin;
 
   @Input() installed: boolean = false;
 
@@ -60,6 +53,8 @@ export class PluginItemComponent implements OnInit {
   @Output() active = new EventEmitter();
 
   @Output() deactive = new EventEmitter();
+
+  constructor(private ctrl: PluginsMarketService) {}
 
   ngOnInit() {
     console.log(">> init");
@@ -95,11 +90,15 @@ export class PluginItemComponent implements OnInit {
     }
   }
 
-  public getPluginLogo(plugin) {
-    return url.resolve(
-      Environment.WEB_RESOURCE_URI,
-      `${plugin.name}/${plugin.version}/${plugin.icon}`
-    );
+  public getPluginLogo() {
+    if (this.plugin.hasOwnProperty("active")) {
+      return url.resolve(this.ctrl.context.pluginServer, `plugins/${this.plugin.name}/logo.png`)
+    } else {
+      return url.resolve(
+        Environment.WEB_RESOURCE_URI,
+        `${this.plugin.name}/${this.plugin.version}/${this.plugin.icon}`
+      );
+    }
   }
 
   handleInstall(plugin: Plugin) {

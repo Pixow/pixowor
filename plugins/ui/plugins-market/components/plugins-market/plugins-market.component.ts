@@ -14,6 +14,7 @@ import { ContextService } from "workbench/app/core/services/context.service";
 import { Environment } from "workbench/environments/environment";
 
 import { Plugin } from "../../types";
+import { PluginsMarketService } from "../../plugins-market.service";
 @Component({
   selector: "plugins-market",
   templateUrl: "./plugins-market.component.html",
@@ -26,7 +27,6 @@ export class PluginsMarketComponent implements OnInit {
   installedPlugins: Plugin[] = [];
 
   plugins$ = new BehaviorSubject([]);
-  installedPlugins$ = new BehaviorSubject([]);
 
   items = [
     {
@@ -43,43 +43,20 @@ export class PluginsMarketComponent implements OnInit {
     },
   ];
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef, private ctrl: PluginsMarketService) {}
 
   ngOnInit() {
-    this.listPlugins();
-    this.listInstalledPlugins();
+    this.plugins$.subscribe((data) => {
+      this.plugins = data;
+    });
 
-    // this.plugins$.subscribe((data) => {
-    //   this.plugins = data;
-    // });
-
-    // this.installedPlugins$.subscribe((data) => {
-    //   this.installedPlugins = data;
-    // });
+    this.ctrl.installedPlugins$.subscribe((data) => {
+      this.installedPlugins = data;
+    });
   }
 
   public onTabOpen(e) {
     const index = e.index;
-
-    if (index === 0) {
-      this.listPlugins();
-    }
-  }
-
-  public listPlugins() {
-    this.context.sdk.plugin.listPlugins().then((res) => {
-      const { code, data } = res.data;
-      this.plugins$.next(data.list);
-      console.log(">> list plugins: ", data);
-    });
-  }
-
-  public listInstalledPlugins() {
-    this.context.readFile(this.context.pluginConf, (res) => {
-      const plugins = JSON.parse(res.data);
-
-      this.installedPlugins$.next(plugins);
-    });
   }
 
   // 显示插件详情
@@ -89,9 +66,9 @@ export class PluginsMarketComponent implements OnInit {
   public activePlugin(event) {
     const { plugin } = event;
     const { name } = plugin;
-    const installedPlugins = cloneDeep(this.installedPlugins$.getValue());
+    const installedPlugins = cloneDeep(this.ctrl.installedPlugins$.getValue());
 
-    (window as any).System.import(`http://localhost:45326/plugins/${name}/index.js`).then(
+    (window as any).System.import(`${this.context.pluginServer}/${name}/index.js`).then(
       (module) => {
         console.log(">> active: ", new module.default());
         this.pluginStore.install(new module.default());
@@ -104,7 +81,7 @@ export class PluginsMarketComponent implements OnInit {
           plugin.active = true;
           installedPlugins.push(plugin);
         }
-        this.installedPlugins$.next(installedPlugins);
+        this.ctrl.installedPlugins$.next(installedPlugins);
         this.context.writeJson(this.context.pluginConf, installedPlugins, () => {});
       }
     );
@@ -116,10 +93,10 @@ export class PluginsMarketComponent implements OnInit {
 
     this.pluginStore.uninstall(plugin.name);
 
-    const installedPlugins = cloneDeep(this.installedPlugins$.getValue());
+    const installedPlugins = cloneDeep(this.ctrl.installedPlugins$.getValue());
     const idx = installedPlugins.findIndex((p) => p.name === plugin.name);
     installedPlugins[idx].active = false;
-    this.installedPlugins$.next(installedPlugins);
+    this.ctrl.installedPlugins$.next(installedPlugins);
     this.context.writeJson(this.context.pluginConf, installedPlugins, () => {});
   }
 
@@ -132,7 +109,7 @@ export class PluginsMarketComponent implements OnInit {
   public installPlugin(event) {
     const { plugin } = event;
     const { name, version } = plugin;
-    const installedPlugins = this.installedPlugins$.getValue();
+    const installedPlugins = this.ctrl.installedPlugins$.getValue();
 
     if (installedPlugins.findIndex((p) => p.name === name && p.version === version) >= 0) {
       return;

@@ -5,6 +5,7 @@ import { PluginsMarketComponent } from "./components/plugins-market/plugins-mark
 import { ActivitybarItem } from "workbench/app/models/activity";
 import { UploadPluginComponent } from "./components/upload-plugin/upload-plugin.component";
 import { ContextService } from "workbench/app/core/services/context.service";
+import { TestPluginComponent } from "./components/test-plugin/test-plugin.component";
 
 export class PluginsMarketPlugin implements IPlugin {
   pluginStore: PluginStore;
@@ -47,7 +48,11 @@ export class PluginsMarketPlugin implements IPlugin {
       UploadPluginComponent
     );
 
-    this.pluginStore.execFunction(FunctionNames.RENDERER_REGIST_DIALOG_COMPONENT, "TestPlugin");
+    this.pluginStore.execFunction(
+      FunctionNames.RENDERER_REGIST_DIALOG_COMPONENT,
+      "TestPlugin",
+      TestPluginComponent
+    );
   }
 
   deactivate(): void {}

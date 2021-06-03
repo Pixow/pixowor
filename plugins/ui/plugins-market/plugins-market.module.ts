@@ -8,6 +8,7 @@ import { PluginsMarketComponent } from "./components/plugins-market/plugins-mark
 import { UploadPluginComponent } from "./components/upload-plugin/upload-plugin.component";
 import { PluginItemComponent } from "./components/plugin-item/plugin-item.component";
 import { TestPluginComponent } from "./components/test-plugin/test-plugin.component";
+import { PluginsMarketService } from "./plugins-market.service";
 
 @NgModule({
   imports: [CommonModule, AccordionModule, FileUploadModule, TieredMenuModule],
@@ -17,5 +18,6 @@ import { TestPluginComponent } from "./components/test-plugin/test-plugin.compon
     UploadPluginComponent,
     TestPluginComponent,
   ],
+  providers: [PluginsMarketService]
 })
 export class PluginsMarketModule {}

@@ -9,6 +9,7 @@ export const UI_CHANNELS = {
   DELETE_QINIU_FILE: "delete-qiniu-file",
   DOWNLOAD_FILE: "download-file",
   UNZIP_FILE: "unzip-file",
+  COPY_FILES: "copy-files",
   REMOVE_FILE: "remove-file",
 };
 

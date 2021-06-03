@@ -81,6 +81,21 @@ export default {
       });
     });
   },
+  [UI_CHANNELS.COPY_FILES]: ({ params, cb }) => {
+    const { files, destDir } = params;
+    const copyFilePromise = util.promisify(fs.copyFile);
+
+    fs.mkdir(destDir, () => {
+
+      Promise.all(
+        files.map((file) => {
+          return copyFilePromise(file.path, path.join(destDir, file.name));
+        })
+      ).then(() => {
+        cb({ data: "success" });
+      });
+    })
+  },
   [UI_CHANNELS.UPLOAD_FILE]: ({ params, cb }) => {
     const { uri, key, qiniuToken } = params;
 
