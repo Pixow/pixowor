@@ -4,11 +4,13 @@ import {
   Component,
   Inject,
   NgModule,
+  Injector,
   OnInit,
+  NgZone,
 } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { cloneDeep } from "lodash";
-
+const shortid = require("shortid");
 import { Event, IPlugin, PluginStore, usePluginStore } from "angular-pluggable";
 import { ContextService } from "workbench/app/core/services/context.service";
 import { Environment } from "workbench/environments/environment";
@@ -26,8 +28,6 @@ export class PluginsMarketComponent implements OnInit {
   plugins: Plugin[] = [];
   installedPlugins: Plugin[] = [];
 
-  plugins$ = new BehaviorSubject([]);
-
   items = [
     {
       label: "上传插件",
@@ -43,21 +43,23 @@ export class PluginsMarketComponent implements OnInit {
     },
   ];
 
-  constructor(private cd: ChangeDetectorRef, private ctrl: PluginsMarketService) {}
+  constructor(
+    private cd: ChangeDetectorRef,
+    private pluginsMarketService: PluginsMarketService,
+    private zone: NgZone
+  ) {}
 
   ngOnInit() {
-    this.plugins$.subscribe((data) => {
+    this.pluginsMarketService.plugins$.subscribe((data) => {
       this.plugins = data;
     });
 
-    this.ctrl.installedPlugins$.subscribe((data) => {
+    this.pluginsMarketService.installedPlugins$.subscribe((data) => {
       this.installedPlugins = data;
     });
   }
 
-  public onTabOpen(e) {
-    const index = e.index;
-  }
+  public refreshPluginsList() {}
 
   // 显示插件详情
   public showPluginDetail(pluginName: string) {}
@@ -66,7 +68,7 @@ export class PluginsMarketComponent implements OnInit {
   public activePlugin(event) {
     const { plugin } = event;
     const { name } = plugin;
-    const installedPlugins = cloneDeep(this.ctrl.installedPlugins$.getValue());
+    const installedPlugins = cloneDeep(this.pluginsMarketService.installedPlugins$.getValue());
 
     (window as any).System.import(`${this.context.pluginServer}/${name}/index.js`).then(
       (module) => {
@@ -76,12 +78,15 @@ export class PluginsMarketComponent implements OnInit {
         // record install plugin into plugin-conf.json
         const idx = installedPlugins.findIndex((p) => p.name === plugin.name);
         if (idx >= 0) {
+          installedPlugins[idx].version = plugin.version;
           installedPlugins[idx].active = true;
         } else {
           plugin.active = true;
           installedPlugins.push(plugin);
         }
-        this.ctrl.installedPlugins$.next(installedPlugins);
+        this.zone.run(() => {
+          this.pluginsMarketService.installedPlugins$.next(installedPlugins);
+        });
         this.context.writeJson(this.context.pluginConf, installedPlugins, () => {});
       }
     );
@@ -90,18 +95,19 @@ export class PluginsMarketComponent implements OnInit {
   // 禁用插件
   public deactivePlugin(event) {
     const { plugin } = event;
+    console.log(
+      "🚀 ~ file: plugins-market.component.ts ~ line 97 ~ PluginsMarketComponent ~ deactivePlugin ~ plugin",
+      plugin
+    );
 
     this.pluginStore.uninstall(plugin.name);
 
-    const installedPlugins = cloneDeep(this.ctrl.installedPlugins$.getValue());
+    const installedPlugins = cloneDeep(this.pluginsMarketService.installedPlugins$.getValue());
     const idx = installedPlugins.findIndex((p) => p.name === plugin.name);
     installedPlugins[idx].active = false;
-    this.ctrl.installedPlugins$.next(installedPlugins);
+    this.pluginsMarketService.installedPlugins$.next(installedPlugins);
     this.context.writeJson(this.context.pluginConf, installedPlugins, () => {});
   }
-
-  // 卸载插件
-  public uninstallPlugin(pluginName: string) {}
 
   // 更新插件
   public updatePlugin(pluginName: string) {}
@@ -109,7 +115,7 @@ export class PluginsMarketComponent implements OnInit {
   public installPlugin(event) {
     const { plugin } = event;
     const { name, version } = plugin;
-    const installedPlugins = this.ctrl.installedPlugins$.getValue();
+    const installedPlugins = this.pluginsMarketService.installedPlugins$.getValue();
 
     if (installedPlugins.findIndex((p) => p.name === name && p.version === version) >= 0) {
       return;
@@ -118,7 +124,7 @@ export class PluginsMarketComponent implements OnInit {
     const zipFileName = `${name}_${version}.zip`;
 
     const uri = this.context.url.resolve(Environment.WEB_RESOURCE_URI, zipFileName);
-    const output = this.context.path.join(this.context.tempPath, zipFileName);
+    const output = this.context.path.join(this.context.userDataPath, zipFileName);
 
     // 下载
     this.context.downloadFile(uri, output, ({ error, data }) => {
@@ -133,11 +139,39 @@ export class PluginsMarketComponent implements OnInit {
       );
 
       this.context.unzipFile(output, pluginInstallFolder, () => {
-        if (installedPlugins.findIndex((p) => p.name === plugin.name) < 0) {
-          this.activePlugin({ plugin });
-        }
+        this.activePlugin({ plugin });
       });
     });
+  }
+
+  public uninstallPlugin(event) {
+    const { plugin } = event;
+
+    console.log("userDataPath >>>", this.context.userDataPath);
+
+    const pluginInstallFolder = this.context.path.join(
+      this.context.userDataPath,
+      `plugins/${plugin.name}`
+    );
+
+    this.context.removeDir(pluginInstallFolder, () => {
+      this.deletePluginConfig({ plugin });
+    });
+  }
+
+  public deletePluginConfig(event) {
+    const { plugin } = event;
+
+    this.pluginStore.uninstall(plugin.name);
+
+    const installedPlugins = cloneDeep(this.pluginsMarketService.installedPlugins$.getValue());
+    const idx = installedPlugins.findIndex((p) => p.name === plugin.name);
+    installedPlugins.splice(idx, 1);
+    console.log(">> installedPlugins: ", installedPlugins);
+    this.zone.run(() => {
+      this.pluginsMarketService.installedPlugins$.next(installedPlugins);
+    });
+    this.context.writeJson(this.context.pluginConf, installedPlugins, () => {});
   }
 
   handleUploadPlugin() {

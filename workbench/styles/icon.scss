@@ -14,6 +14,32 @@
   width: 100%;
 }
 
+.qing-resmanager::after {
+  @extend .qing-after;
+  background: url("/assets/images/resmanager.svg") center center;
+  background-size: 100%;
+}
+
+.qing-resmanager:hover,
+.qing-resmanager.active,
+.qing-resmanager.focus {
+  background: url("/assets/images/resmanager-active.svg") center center;
+  background-size: 100%;
+}
+
+.qing-editor::after {
+  @extend .qing-after;
+  background: url("/assets/images/editor.svg") center center;
+  background-size: 100%;
+}
+
+.qing-editor:hover,
+.qing-editor.active,
+.qing-editor.focus {
+  background: url("/assets/images/editor-active.svg") center center;
+  background-size: 100%;
+}
+
 .qing-game::after {
   @extend .qing-after;
   background: url("/assets/images/game.svg") center center;

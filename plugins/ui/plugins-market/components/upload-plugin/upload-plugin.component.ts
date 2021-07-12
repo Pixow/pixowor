@@ -38,11 +38,15 @@ export class UploadPluginComponent {
     console.log("event: ", event.files);
     const pkgFile = event.files.find((file) => file.name === "package.json");
     let iconFile;
-    this.context.readFile(pkgFile.path, async ({ data }) => {
+    this.context.readFile(pkgFile.path, { encoding: "utf8" }, async ({ data }) => {
       const pkg = JSON.parse(data);
       const folderName = pkg.name + `_${pkg.version}`;
       const res = await this.context.sdk.plugin.getPlugin(pkg.name);
       const plugin = res.data.data.list[0];
+      console.log(
+        "🚀 ~ file: upload-plugin.component.ts ~ line 46 ~ UploadPluginComponent ~ this.context.readFile ~ plugin",
+        plugin
+      );
 
       iconFile = event.files.find((file) => file.name === pkg.icon);
 

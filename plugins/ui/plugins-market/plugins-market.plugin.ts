@@ -31,7 +31,7 @@ export class PluginsMarketPlugin implements IPlugin {
     items.push({
       title: "插件市场",
       icon: "qing qing-plug",
-      index: 2,
+      id: this.id,
       command: () => {
         this.pluginStore.execFunction(
           FunctionNames.RENDERER_ONCE,

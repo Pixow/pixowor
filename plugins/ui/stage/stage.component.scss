@@ -1,0 +1,9 @@
+::ng-deep {
+  .p-tabview {
+    height: 100%;
+  }
+
+  .p-tabview-panels {
+    height: calc(100% - 42px);
+  }
+}

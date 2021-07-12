@@ -1,6 +1,6 @@
 <div class="activitybar">
   <ng-container *ngFor="let item of items">
-    <div class="activitybar-item" [class.active]="item.index === active">
+    <div class="activitybar-item" [class.active]="item.id === activeItem.id">
       <i [ngClass]="item.icon" pTooltip="{{ item.title }}" (click)="doCommand(item)"></i>
     </div>
   </ng-container>

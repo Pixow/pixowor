@@ -22,23 +22,28 @@ export class ActivitybarComponent implements OnInit {
   private pluginStore: PluginStore = usePluginStore();
 
   items: ActivitybarItem[];
-  active: number = 0;
+  activeItem: ActivitybarItem;
 
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.pluginStore.getObserver("activitybar").subscribe((items: any) => {
-      this.items = items.sort((a, b) => (a.index > b.index ? 1 : -1));
+      console.log(
+        "🚀 ~ file: activitybar.ts ~ line 31 ~ ActivitybarComponent ~ this.pluginStore.getObserver ~ items",
+        items
+      );
+      this.items = items;
 
-      const pluginsMarketItem = this.items.find((item) => item.title === "插件市场");
-      if (this.active === 0) {
+      const pluginsMarketItem = this.items.find((item) => item.id === "plugins-market");
+      if (!this.activeItem) {
         this.doCommand(pluginsMarketItem);
       }
     });
   }
 
   doCommand(item) {
-    this.active = item.index;
+    console.log(">> do command: ", this.items, item);
+    this.activeItem = this.items.find((it) => it.id === item.id);
     item.command();
   }
 }

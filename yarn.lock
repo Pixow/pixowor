@@ -2,17 +2,16 @@
 # yarn lockfile v1
 
 
-"@PixelPai/game-core@^1.0.551":
-  version "1.0.551"
-  resolved "https://code.apowo.com/api/v4/projects/4/packages/npm/@PixelPai/game-core/-/@PixelPai/game-core-1.0.551.tgz#de8856579f7690853007e2df1e410597bdee183f"
-  integrity sha1-3ohWV592kIUwB+LfHkEFl73uGD8=
+"@PixelPai/game-core@^1.0.729":
+  version "1.0.729"
+  resolved "https://code.apowo.com/api/v4/projects/4/packages/npm/@PixelPai/game-core/-/@PixelPai/game-core-1.0.729.tgz#4ca311b14d574804df4f6469c368f32f741cc4a8"
+  integrity sha1-TKMRsU1XSATfT2Rpw2jzL3QcxKg=
   dependencies:
-    apowophaserui "^0.9.6"
-    buffer "^5.2.1"
+    apowophaserui "^1.0.7"
     chance "^1.1.3"
     copy-text-to-clipboard "^2.1.1"
+    custom_proto "git+ssh://git@code.apowo.com:PixelPai/custom_proto.git#typescriptdev"
     game-capsule "git+ssh://git@code.apowo.com:PixelPai/game-capsule.git#dev"
-    git "^0.1.5"
     html-webpack-plugin "^4.3.0"
     i18next "^19.0.3"
     i18next-browser-languagedetector "^4.0.1"
@@ -21,11 +20,10 @@
     monotone-convex-hull-2d "^1.0.1"
     net-socket-packet "git+ssh://git@code.apowo.com:PixelPai/net-socket-packet.git"
     pathfinding "git+ssh://git@code.apowo.com/opensource/PathFinding-js"
-    poly-decomp "^0.3.0"
+    sat "^0.9.0"
     simple-sha1 "^3.0.1"
     sort-display-object "git+ssh://git@code.apowo.com:PixelPai/sort-display-object.git"
-    tooqinggamephaser "^0.2.8"
-    tooqingmatter-js "0.1.1"
+    tooqinggamephaser "^0.3.1"
     webworker-rpc "git+ssh://git@code.apowo.com/opensource/webworker-rpc"
     worker-loader "^3.0.2"
 
@@ -1506,6 +1504,13 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.7.0"
 
+"@materia-ui/ngx-monaco-editor@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.nlark.com/@materia-ui/ngx-monaco-editor/download/@materia-ui/ngx-monaco-editor-5.1.0.tgz#76c2f7ec3654f4ad30fa4a5b8439dcf0fa0f47f4"
+  integrity sha1-dsL37DZU9K0w+kpbhDnc8PoPR/Q=
+  dependencies:
+    tslib "^1.10.0"
+
 "@ngtools/webpack@10.2.1":
   version "10.2.1"
   resolved "https://registry.npm.taobao.org/@ngtools/webpack/download/@ngtools/webpack-10.2.1.tgz#4b360993f784244c7d7a62f40312e9eee2a24cc5"
@@ -2408,10 +2413,10 @@ anymatch@~3.1.1:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apowophaserui@^0.9.6:
-  version "0.9.6"
-  resolved "https://registry.yarnpkg.com/apowophaserui/-/apowophaserui-0.9.6.tgz#323649e152657535990d7387aa383dcf9e74bbdb"
-  integrity sha512-RkvaxnL4N80LnIwpAPI0FofWt4jEpdu1sD/VrQUuVTIHqYMGhn3sqPRp+dD6kWY8rj+uM/U0XBbewFEvPz4Zug==
+apowophaserui@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.nlark.com/apowophaserui/download/apowophaserui-1.0.7.tgz#07e3a856601660ecdfea6584134f3ab7f608587a"
+  integrity sha1-B+OoVmAWYOzf6mWEE086t/YIWHo=
   dependencies:
     "@types/node" "^14.0.13"
     eventemitter3 "^3.1.2"
@@ -2419,7 +2424,6 @@ apowophaserui@^0.9.6:
     lokijs "^1.5.8"
     node-gyp "^6.1.0"
     papaparse "^4.6.3"
-    phaser "^3.24.1"
     webfontloader "^1.6.28"
 
 aproba@^1.0.3, aproba@^1.1.1:
@@ -4077,6 +4081,12 @@ cuint@^0.2.2:
   resolved "https://registry.npm.taobao.org/cuint/download/cuint-0.2.2.tgz#408086d409550c2631155619e9fa7bcadc3b991b"
   integrity sha1-QICG1AlVDCYxFVYZ6fp7ytw7mRs=
 
+"custom_proto@git+ssh://git@code.apowo.com:PixelPai/custom_proto.git#typescriptdev":
+  version "1.0.23"
+  resolved "git+ssh://git@code.apowo.com:PixelPai/custom_proto.git#00c59ffcc06b0b5d237814b9e6e1b962486fa4f1"
+  dependencies:
+    protobufjs "^6.8.8"
+
 cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/cyclist/download/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
@@ -5474,13 +5484,6 @@ getpass@^0.1.1:
   integrity sha1-Xv+OPmhNVprkyysSgmBOi6YhSfo=
   dependencies:
     assert-plus "^1.0.0"
-
-git@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/git/-/git-0.1.5.tgz#9ef62df93f851c27542143bf52d1c68b1017ca15"
-  integrity sha1-nvYt+T+FHCdUIUO/UtHGixAXyhU=
-  dependencies:
-    mime "1.2.9"
 
 glob-parent@^3.1.0:
   version "3.1.0"
@@ -7553,11 +7556,6 @@ mime-types@^2.1.12, mime-types@~2.1.17, mime-types@~2.1.19, mime-types@~2.1.24:
   dependencies:
     mime-db "1.45.0"
 
-mime@1.2.9:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/mime/-/mime-1.2.9.tgz#009cd40867bd35de521b3b966f04e2f8d4d13d09"
-  integrity sha1-AJzUCGe9Nd5SGzuWbwTi+NTRPQk=
-
 mime@1.6.0, mime@^1.3.4, mime@^1.4.1:
   version "1.6.0"
   resolved "https://registry.npm.taobao.org/mime/download/mime-1.6.0.tgz?cache=0&sync_timestamp=1610756443337&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmime%2Fdownload%2Fmime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
@@ -7774,6 +7772,16 @@ module-alias@^2.2.2:
   resolved "https://registry.npm.taobao.org/module-alias/download/module-alias-2.2.2.tgz#151cdcecc24e25739ff0aa6e51e1c5716974c0e0"
   integrity sha1-FRzc7MJOJXOf8KpuUeHFcWl0wOA=
 
+moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.npm.taobao.org/moment/download/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
+
+monaco-editor@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.nlark.com/monaco-editor/download/monaco-editor-0.25.0.tgz#4cbbe25adb4661a1673e4893cdc13dfa406b665e"
+  integrity sha1-TLviWttGYaFnPkiTzcE9+kBrZl4=
+
 monotone-convex-hull-2d@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/monotone-convex-hull-2d/-/monotone-convex-hull-2d-1.0.1.tgz#47f5daeadf3c4afd37764baa1aa8787a40eee08c"
@@ -7844,6 +7852,11 @@ nan@^2.12.1:
   version "2.14.2"
   resolved "https://registry.npm.taobao.org/nan/download/nan-2.14.2.tgz?cache=0&sync_timestamp=1602591931869&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnan%2Fdownload%2Fnan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha1-9TdkAGlRaPTMaUrJOT0MlYXu6hk=
+
+nanoid@^2.1.0:
+  version "2.1.11"
+  resolved "https://registry.nlark.com/nanoid/download/nanoid-2.1.11.tgz?cache=0&sync_timestamp=1620673983269&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnanoid%2Fdownload%2Fnanoid-2.1.11.tgz#ec24b8a758d591561531b4176a01e3ab4f0f0280"
+  integrity sha1-7CS4p1jVkVYVMbQXagHjq08PAoA=
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -8842,7 +8855,7 @@ performance-now@^2.1.0:
   resolved "https://registry.npm.taobao.org/performance-now/download/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-phaser@^3.23.0, phaser@^3.24.1:
+phaser@^3.23.0:
   version "3.53.1"
   resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.53.1.tgz#1ba603ce5e4e6d5028cdd411a5a5c0ef0f75fc86"
   integrity sha512-yvzKotQLhdsaEfS7EdQodosUV9pvcNPcqgjh7mPzVPPZXeaUfwWu4spwgGxU4ohTckVMd2JXbOrTymXF5Qs1Dg==
@@ -8920,11 +8933,6 @@ pnp-webpack-plugin@1.6.4:
   integrity sha1-yXEaxNxIpoXauvyG+Lbdn434QUk=
   dependencies:
     ts-pnp "^1.1.6"
-
-poly-decomp@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/poly-decomp/-/poly-decomp-0.3.0.tgz#aa499289bbc1a4ca2213e966587fa5bffc1ca5f5"
-  integrity sha512-hWeBxGzPYiybmI4548Fca7Up/0k1qS5+79cVHI9+H33dKya5YNb9hxl0ZnDaDgvrZSuYFBhkCK/HOnqN7gefkQ==
 
 portfinder@^1.0.26:
   version "1.0.28"
@@ -10382,6 +10390,11 @@ sass@^1.32.5:
   dependencies:
     chokidar ">=2.0.0 <4.0.0"
 
+sat@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.npm.taobao.org/sat/download/sat-0.9.0.tgz#02091260513c8f2482da7db9377ddfeca80f5982"
+  integrity sha1-AgkSYFE8jySC2n25N33f7KgPWYI=
+
 saucelabs@^1.5.0:
   version "1.5.0"
   resolved "https://registry.npm.taobao.org/saucelabs/download/saucelabs-1.5.0.tgz?cache=0&sync_timestamp=1610417064142&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsaucelabs%2Fdownload%2Fsaucelabs-1.5.0.tgz#9405a73c360d449b232839919a86c396d379fd9d"
@@ -10637,6 +10650,13 @@ shell-quote@^1.6.1:
   version "1.7.2"
   resolved "https://registry.npm.taobao.org/shell-quote/download/shell-quote-1.7.2.tgz#67a7d02c76c9da24f99d20808fcaded0e0e04be2"
   integrity sha1-Z6fQLHbJ2iT5nSCAj8re0ODgS+I=
+
+shortid@^2.2.16:
+  version "2.2.16"
+  resolved "https://registry.npm.taobao.org/shortid/download/shortid-2.2.16.tgz#b742b8f0cb96406fd391c76bfc18a67a57fe5608"
+  integrity sha1-t0K48MuWQG/Tkcdr/Bimelf+Vgg=
+  dependencies:
+    nanoid "^2.1.0"
 
 sigmund@~1.0.0:
   version "1.0.1"
@@ -11553,21 +11573,16 @@ toidentifier@1.0.0:
   resolved "https://registry.npm.taobao.org/toidentifier/download/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha1-fhvjRw8ed5SLxD2Uo8j013UrpVM=
 
-tooqinggamephaser@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/tooqinggamephaser/-/tooqinggamephaser-0.2.8.tgz#01533ebd2cace5ada9989656a3683790c73b14e6"
-  integrity sha512-6oU3+M0Ul28z1rBb+ZtefdjKdglcfQ8WCW7JzgBXFCu2FemdAiODOmgZVWa8hUUXh5vV+gor13VDqMgLt+I42Q==
+tooqinggamephaser@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.nlark.com/tooqinggamephaser/download/tooqinggamephaser-0.3.1.tgz#3ea89b4c8231d8dd3033c6e723389537d4577eae"
+  integrity sha1-PqibTIIx2N0wM8bnIziVN9RXfq4=
   dependencies:
     eventemitter3 "^4.0.4"
     exports-loader "^1.0.0"
     imports-loader "^0.8.0"
     path "^0.12.7"
     uglifyjs-webpack-plugin "^1.3.0"
-
-tooqingmatter-js@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/tooqingmatter-js/-/tooqingmatter-js-0.1.1.tgz#5c1625bc9846bef9272d66063430812d88d7693d"
-  integrity sha512-D1G4nJHNB+JThhXoWa9MVzcsKsFCaLbciTgmJKemxZP9lJx4VPa646m4g/DQplTtER4kNXLjMdtfN2woPJRd3w==
 
 toposort@^2.0.2:
   version "2.0.2"

@@ -5,30 +5,32 @@ const qiniu = require("qiniu");
 import { app } from "electron";
 import * as path from "path";
 import * as fs from "fs";
+import * as fsa from "fs-extra";
 import * as util from "util";
 import * as url from "url";
 import * as wget from "wget-improved";
-import * as fsa from "fs-extra";
 
 import { UI_CHANNELS } from "./ipc_channel";
-import { isFileExists, readAFile } from "../base/node/file";
+import { getAllFiles, isFileExists, readAFile } from "../base/node/file";
 
 export default {
   [UI_CHANNELS.READ_DIR]: ({ params, cb }) => {
     const { dir } = params;
 
-    fs.readdir(dir, (err, files) => {
-      if (err) {
-        cb({ error: err });
-      } else {
-        cb({ data: files });
-      }
-    });
+    const files = getAllFiles(dir);
+
+    cb({ data: files });
   },
   [UI_CHANNELS.READ_FILE]: ({ params, cb }) => {
-    const { path } = params;
+    const { path, options } = params;
 
-    readAFile({ path, cb });
+    fs.readFile(path, options, (error, data) => {
+      if (error) {
+        cb({ error });
+      } else {
+        cb({ data });
+      }
+    });
   },
   [UI_CHANNELS.READ_JSON]: ({ params, cb }) => {
     const { filePath } = params;
@@ -86,7 +88,6 @@ export default {
     const copyFilePromise = util.promisify(fs.copyFile);
 
     fs.mkdir(destDir, () => {
-
       Promise.all(
         files.map((file) => {
           return copyFilePromise(file.path, path.join(destDir, file.name));
@@ -94,7 +95,7 @@ export default {
       ).then(() => {
         cb({ data: "success" });
       });
-    })
+    });
   },
   [UI_CHANNELS.UPLOAD_FILE]: ({ params, cb }) => {
     const { uri, key, qiniuToken } = params;
@@ -163,7 +164,7 @@ export default {
   },
   [UI_CHANNELS.UNZIP_FILE]: ({ params, cb }) => {
     const { source, dest } = params;
-
+    fsa.ensureDirSync(dest);
     const inp = fs.createReadStream(source);
     const extract = unzip.Extract({
       path: dest,
@@ -177,6 +178,26 @@ export default {
           cb({ data: "done" });
         }
       });
+    });
+  },
+  [UI_CHANNELS.REMOVE_FILE]: ({ params, cb }) => {
+    const { filePath } = params;
+    fsa.remove(filePath, (err) => {
+      if (err) {
+        cb({ error: err });
+      } else {
+        cb({ data: "done" });
+      }
+    });
+  },
+  [UI_CHANNELS.REMOVE_DIR]: ({ params, cb }) => {
+    const { directory } = params;
+    fsa.remove(directory, (err) => {
+      if (err) {
+        cb({ error: err });
+      } else {
+        cb({ data: "done" });
+      }
     });
   },
 };

@@ -27,7 +27,7 @@ export class PluginsMarketService {
   }
 
   public listInstalledPlugins() {
-    this.context.readFile(this.context.pluginConf, (res) => {
+    this.context.readFile(this.context.pluginConf, {}, (res) => {
       const plugins = JSON.parse(res.data);
 
       this.installedPlugins$.next(plugins);

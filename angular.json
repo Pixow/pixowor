@@ -26,7 +26,15 @@
             "tsConfig": "workbench/tsconfig.app.json",
             "polyfills": "workbench/polyfills.ts",
             "preserveSymlinks": true,
-            "assets": ["workbench/assets"],
+            "assets": [
+              "workbench/assets",
+
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor",
+                "output": "assets/monaco-editor/"
+              }
+            ],
             "styles": [
               "workbench/styles/reset.scss",
               "workbench/styles/styles.scss",
@@ -52,7 +60,7 @@
             "develop": {
               "optimization": false,
               "outputHashing": "all",
-              "sourceMap": true,
+              "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,

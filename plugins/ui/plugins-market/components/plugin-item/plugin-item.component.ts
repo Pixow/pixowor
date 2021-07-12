@@ -43,18 +43,19 @@ import { PluginsMarketService } from "../../plugins-market.service";
 export class PluginItemComponent implements OnInit {
   items: MenuItem[];
 
-
   @Input() plugin: Plugin;
 
   @Input() installed: boolean = false;
 
   @Output() install = new EventEmitter();
 
+  @Output() uninstall = new EventEmitter();
+
   @Output() active = new EventEmitter();
 
   @Output() deactive = new EventEmitter();
 
-  constructor(private ctrl: PluginsMarketService) {}
+  constructor(private pluginsMarketService: PluginsMarketService) {}
 
   ngOnInit() {
     console.log(">> init");
@@ -76,6 +77,14 @@ export class PluginItemComponent implements OnInit {
             this.handleActive(this.plugin);
           },
         },
+        {
+          label: "卸载",
+          icon: "pi pi-fw pi-lock-open",
+          disabled: this.plugin.active ? true : false,
+          command: () => {
+            this.handleUninstall(this.plugin);
+          },
+        },
       ];
     } else {
       this.items = [
@@ -92,7 +101,10 @@ export class PluginItemComponent implements OnInit {
 
   public getPluginLogo() {
     if (this.plugin.hasOwnProperty("active")) {
-      return url.resolve(this.ctrl.context.pluginServer, `plugins/${this.plugin.name}/logo.png`)
+      return url.resolve(
+        this.pluginsMarketService.context.pluginServer,
+        `plugins/${this.plugin.name}/logo.png`
+      );
     } else {
       return url.resolve(
         Environment.WEB_RESOURCE_URI,
@@ -103,6 +115,10 @@ export class PluginItemComponent implements OnInit {
 
   handleInstall(plugin: Plugin) {
     this.install.emit({ plugin });
+  }
+
+  handleUninstall(plugin: Plugin) {
+    this.uninstall.emit({ plugin });
   }
 
   handleActive(plugin: Plugin) {

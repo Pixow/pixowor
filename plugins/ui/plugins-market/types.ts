@@ -1,4 +1,4 @@
-export interface Plugin {
+export class Plugin {
   name: string;
   description: string;
   version: string;

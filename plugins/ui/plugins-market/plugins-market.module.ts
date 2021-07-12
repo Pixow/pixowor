@@ -18,6 +18,6 @@ import { PluginsMarketService } from "./plugins-market.service";
     UploadPluginComponent,
     TestPluginComponent,
   ],
-  providers: [PluginsMarketService]
+  providers: [PluginsMarketService],
 })
 export class PluginsMarketModule {}
