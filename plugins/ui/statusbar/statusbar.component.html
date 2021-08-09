@@ -1,0 +1,6 @@
+<div class="statusbar">
+  <ng-container *ngFor="let item of status | keyvalue">
+    <i>{{ item.value.type }}</i>
+    <span>{{ item.value.message }}</span>
+  </ng-container>
+</div>

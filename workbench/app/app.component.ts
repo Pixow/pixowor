@@ -18,6 +18,7 @@ import { SigninPlugin } from "plugins/ui/signin/signin.plugin";
 import { ActivitybarPlugin } from "plugins/ui/activitybar/activitybar.plugin";
 import { PluginsMarketPlugin } from "plugins/ui/plugins-market/plugins-market.plugin";
 import { StagePlugin } from "plugins/ui/stage/stage.plugin";
+import { StatusbarPlugin } from "plugins/ui/statusbar/statusbar.plugin";
 
 // regist module for plugin
 import * as core from "@angular/core";
@@ -113,6 +114,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pluginStore.install(new DialogPlugin(this.dialogService));
     this.pluginStore.install(new MenuPlugin());
     this.pluginStore.install(new ActivitybarPlugin());
+    this.pluginStore.install(new StatusbarPlugin());
     this.pluginStore.install(new StagePlugin());
     this.pluginStore.install(new SigninPlugin());
 
