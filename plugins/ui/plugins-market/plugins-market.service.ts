@@ -5,21 +5,21 @@ import { ContextService } from "workbench/app/core/services/context.service";
 import { cloneDeep } from "lodash";
 import { Plugin } from "./types";
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class PluginsMarketService {
   private pluginStore: PluginStore = usePluginStore();
   public context: ContextService = this.pluginStore.getContext<ContextService>();
 
-  plugins$ = new BehaviorSubject([])
+  plugins$ = new BehaviorSubject([]);
   installedPlugins$ = new BehaviorSubject([]);
 
   constructor() {
-    this.listPlugins()
-    this.listInstalledPlugins()
+    this.listPlugins();
+    this.listInstalledPlugins();
   }
 
-   public listPlugins() {
+  public listPlugins() {
     this.context.sdk.plugin.listPlugins().then((res) => {
       const { code, data } = res.data;
       this.plugins$.next(data.list);
@@ -34,11 +34,12 @@ export class PluginsMarketService {
     });
   }
 
-   // 激活插件
+  // 激活插件
   public activePlugin(plugin: Plugin, cb?: Function) {
     const { name } = plugin;
     const installedPlugins = cloneDeep(this.installedPlugins$.getValue());
 
+    // TODO: import from userDataPath
     (window as any).System.import(`http://localhost:45326/plugins/${name}/index.js`).then(
       (module) => {
         console.log(">> active: ", new module.default());
@@ -54,7 +55,7 @@ export class PluginsMarketService {
         }
         this.installedPlugins$.next(installedPlugins);
         this.context.writeJson(this.context.pluginConf, installedPlugins, () => {
-          if (cb) cb()
+          if (cb) cb();
         });
       }
     );

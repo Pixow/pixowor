@@ -3,7 +3,7 @@ import * as http from "http";
 import * as fs from "fs";
 import { app } from "electron";
 
-export function startPluginHostProcess() {
+export function startPluginProcess() {
   const userDataPath = app.getPath("userData");
 
   const pluginConf = path.join(userDataPath, "plugins/plugin-conf.json");

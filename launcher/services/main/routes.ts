@@ -1,23 +1,21 @@
 const zipFolder = require("zip-folder");
 const unzip = require("unzip-stream");
-const request = require("request");
 const qiniu = require("qiniu");
 import { app } from "electron";
 import * as path from "path";
 import * as fs from "fs";
 import * as fsa from "fs-extra";
 import * as util from "util";
-import * as url from "url";
 import * as wget from "wget-improved";
 
 import { UI_CHANNELS } from "./ipc_channel";
-import { getAllFiles, isFileExists, readAFile } from "../base/node/file";
+import { listdir, isFileExists, readFileSync } from "../../utils/file";
 
 export default {
   [UI_CHANNELS.READ_DIR]: ({ params, cb }) => {
     const { dir } = params;
 
-    const files = getAllFiles(dir);
+    const files = listdir(dir);
 
     cb({ data: files });
   },

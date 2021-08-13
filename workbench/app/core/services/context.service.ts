@@ -10,7 +10,7 @@ import { SocketConnection } from "workbench/app/core/socket-connection";
 import { QingWebApiSdk } from "qing-web-api-sdk";
 import { LocalStorage } from "workbench/app/utils/localstorage";
 import { User } from "workbench/app/models/user";
-import { UI_CHANNELS } from "launcher/code/ipc_channel";
+import { UI_CHANNELS } from "@launcher/services/main/ipc_channel";
 import { Environment } from "workbench/environments/environment";
 
 @Injectable({

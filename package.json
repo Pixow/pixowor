@@ -48,6 +48,7 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
+    "@types/fs-extra": "^9.0.12",
     "@types/jasmine": "^3.6.2",
     "@types/jest": "^26.0.19",
     "@types/lodash-es": "^4.17.3",
@@ -59,7 +60,6 @@
     "class-transformer": "^0.3.1",
     "compare-version": "^0.1.2",
     "electron": "^11.2.1",
-    "electron-rpc": "^2.0.1",
     "extract-zip": "^2.0.1",
     "fs-extra": "^9.1.0",
     "game-capsule": "git+ssh://git@code.apowo.com:PixelPai/game-capsule.git#dev",
@@ -102,5 +102,15 @@
     "zip-folder": "^1.0.0",
     "zone.js": "^0.11.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "electron-re": "^1.0.10",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.10.0"
+  },
+  "_moduleAliases": {
+    "@plugins": "dist/plugins",
+    "@workbench": "dist/workbench",
+    "@worker": "dist/worker",
+    "@launcher": "dist/launcher"
+  }
 }

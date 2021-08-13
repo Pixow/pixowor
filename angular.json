@@ -159,7 +159,6 @@
             "index": "worker/index.html",
             "main": "worker/main.ts",
             "tsConfig": "worker/tsconfig.app.json",
-            "polyfills": "worker/polyfills.ts",
             "preserveSymlinks": true,
             "assets": [],
             "styles": [],

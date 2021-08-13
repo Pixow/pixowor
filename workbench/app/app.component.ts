@@ -119,7 +119,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pluginStore.install(new SigninPlugin());
 
     this.pluginStore.install(new PluginsMarketPlugin(this.context));
-    this.activeInstalledPlugins();
+    // this.activeInstalledPlugins();
 
     // TODO: 各个插件的观测变量在插件内部注册
     // 注册观测变量
