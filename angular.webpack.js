@@ -3,7 +3,7 @@ module.exports = (config, options) => {
 
   if (options.fileReplacements) {
     for (let fileReplacement of options.fileReplacements) {
-      if (fileReplacement.replace !== "app/workbench/environments/environment.ts") {
+      if (fileReplacement.replace !== "workbench/environments/environment.ts") {
         continue;
       }
 

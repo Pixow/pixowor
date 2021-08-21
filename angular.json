@@ -8,7 +8,7 @@
   "projects": {
     "workbench": {
       "root": "",
-      "sourceRoot": "workbench",
+      "sourceRoot": "src/workbench",
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,14 +20,14 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "outputPath": "dist/workbench",
-            "index": "workbench/index.html",
-            "main": "workbench/main.ts",
+            "index": "src/workbench/index.html",
+            "main": "src/workbench/main.ts",
             "aot": true,
-            "tsConfig": "workbench/tsconfig.app.json",
-            "polyfills": "workbench/polyfills.ts",
+            "tsConfig": "src/workbench/tsconfig.app.json",
+            "polyfills": "src/workbench/polyfills.ts",
             "preserveSymlinks": true,
             "assets": [
-              "workbench/assets",
+              "src/workbench/assets",
 
               {
                 "glob": "**/*",
@@ -36,16 +36,16 @@
               }
             ],
             "styles": [
-              "workbench/styles/reset.scss",
-              "workbench/styles/styles.scss",
-              "workbench/styles/icon.scss",
+              "src/workbench/styles/reset.scss",
+              "src/workbench/styles/styles.scss",
+              "src/workbench/styles/icon.scss",
               "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
               "node_modules/primeicons/primeicons.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["workbench"]
+              "includePaths": ["src/workbench"]
             },
             "scripts": [
               "node_modules/systemjs/dist/system.js",
@@ -60,7 +60,7 @@
             "develop": {
               "optimization": false,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -69,8 +69,8 @@
               "buildOptimizer": false,
               "fileReplacements": [
                 {
-                  "replace": "workbench/environments/environment.ts",
-                  "with": "workbench/environments/environment.dev.ts"
+                  "replace": "src/workbench/environments/environment.ts",
+                  "with": "src/workbench/environments/environment.dev.ts"
                 }
               ]
             },
@@ -86,8 +86,8 @@
               "buildOptimizer": false,
               "fileReplacements": [
                 {
-                  "replace": "workbench/environments/environment.ts",
-                  "with": "workbench/environments/environment.release.ts"
+                  "replace": "src/workbench/environments/environment.ts",
+                  "with": "src/workbench/environments/environment.release.ts"
                 }
               ]
             },
@@ -103,8 +103,8 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "workbench/environments/environment.ts",
-                  "with": "workbench/environments/environment.prod.ts"
+                  "replace": "src/workbench/environments/environment.ts",
+                  "with": "src/workbench/environments/environment.prod.ts"
                 }
               ]
             }
@@ -137,122 +137,7 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "eslintConfig": ".eslintrc.json",
-            "lintFilePatterns": ["workbench/**.ts", "main.ts"]
-          }
-        }
-      }
-    },
-    "worker": {
-      "root": "",
-      "sourceRoot": "worker",
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "styleext": "scss"
-        }
-      },
-      "architect": {
-        "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
-          "options": {
-            "outputPath": "dist/worker",
-            "index": "worker/index.html",
-            "main": "worker/main.ts",
-            "tsConfig": "worker/tsconfig.app.json",
-            "preserveSymlinks": true,
-            "assets": [],
-            "styles": [],
-            "stylePreprocessorOptions": {
-              "includePaths": ["worker"]
-            },
-            "scripts": [],
-            "customWebpackConfig": {
-              "path": "./angular.webpack.js"
-            }
-          },
-          "configurations": {
-            "develop": {
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "fileReplacements": [
-                {
-                  "replace": "workbench/environments/environment.ts",
-                  "with": "workbench/environments/environment.dev.ts"
-                }
-              ]
-            },
-            "release": {
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "fileReplacements": [
-                {
-                  "replace": "workbench/environments/environment.ts",
-                  "with": "workbench/environments/environment.release.ts"
-                }
-              ]
-            },
-            "production": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "workbench/environments/environment.ts",
-                  "with": "workbench/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
-          "options": {
-            "browserTarget": "worker:build"
-          },
-          "configurations": {
-            "develop": {
-              "browserTarget": "worker:build:develop"
-            },
-            "release": {
-              "browserTarget": "worker:build:release"
-            },
-            "production": {
-              "browserTarget": "worker:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "editor:build"
-          }
-        },
-
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "eslintConfig": ".eslintrc.json",
-            "lintFilePatterns": ["worker/**.ts", "main.ts"]
+            "lintFilePatterns": ["src/workbench/**.ts", "main.ts"]
           }
         }
       }

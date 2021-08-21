@@ -7,16 +7,13 @@
   "author": "<mojixiang@apowo.com>",
   "license": "MIT",
   "scripts": {
-    "start:develop": "npm-run-all -p electron:serve ng:serve:develop ng:serve:worker:develop",
-    "start:release": "npm-run-all -p electron:serve ng:serve:release ng:serve:worker:release",
-    "start:production": "npm-run-all -p electron:serve ng:serve:productin ng:serve:worker:production",
-    "electron:serve": "wait-on http-get://localhost:4300/ && wait-on http-get://localhost:4301 && npm run build:launcher:serve && npx electron . --serve",
+    "start:develop": "npm-run-all -p electron:serve ng:serve:develop",
+    "start:release": "npm-run-all -p electron:serve ng:serve:release",
+    "start:production": "npm-run-all -p electron:serve ng:serve:productin",
+    "electron:serve": "wait-on http-get://localhost:4300/ && npm run build:launcher:serve && npx electron . --serve",
     "ng:serve:develop": "ng serve -c develop --port 4300",
     "ng:serve:release": "ng serve -c release --port 4300",
     "ng:serve:production": "ng serve -c production --port 4300",
-    "ng:serve:worker:develop": "ng serve worker -c develop --port 4301 ",
-    "ng:serve:worker:release": "ng serve worker -c release --port 4301 ",
-    "ng:serve:worker:production": "ng serve worker -c production --port 4301 ",
     "build:workbench": "ng build workbench --base-href ./",
     "build:workbench:develop": "npm run build:workbench -- -c develop",
     "build:launcher:serve": "tsc -p tsconfig-serve.json",
@@ -54,7 +51,6 @@
     "@types/lodash-es": "^4.17.3",
     "@types/long": "^4.0.1",
     "@types/mocha": "^8.2.0",
-    "angular-pluggable": "^1.0.9",
     "axios": "^0.21.1",
     "chai": "^4.2.0",
     "class-transformer": "^0.3.1",
@@ -110,7 +106,6 @@
   "_moduleAliases": {
     "@plugins": "dist/plugins",
     "@workbench": "dist/workbench",
-    "@worker": "dist/worker",
     "@launcher": "dist/launcher"
   }
 }

@@ -8,18 +8,17 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "target": "ES5",
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types", "./src/types/**"],
     "types": ["node", "jest", "long"],
     "baseUrl": ".",
     "paths": {
-      "@plugins/*": ["plugins/*"],
-      "@workbench/*": ["workbench/*"],
-      "@worker/*": ["worker/*"],
-      "@launcher/*": ["launcher/*"]
+      "@angular/*": ["./node_modules/@angular/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@workbench/*": ["src/workbench/*"],
+      "@launcher/*": ["src/launcher/*"]
     },
     "lib": ["ES2017", "ES2016", "ES2015", "DOM", "DOM.Iterable"]
   },
-  "files": ["./global.d.ts", "main.ts"],
-  "include": ["launcher/**/*", "workbench/**/*", "worker/*", "plugins/**/*"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
