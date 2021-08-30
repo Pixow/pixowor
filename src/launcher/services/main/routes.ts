@@ -12,6 +12,7 @@ import { Channels } from "../../config/ipc_channel";
 import { isFileExists, readFileSync } from "../../utils/io";
 import { listDir } from "@launcher/utils/list-dir";
 
+// TODO: copy these functions to io.service.ts
 export default {
   [Channels.READ_DIR]: ({ params, cb }) => {
     const { dir } = params;

@@ -1,25 +1,27 @@
-import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
+import { QingCore, Plugin, Event, RendererFunctions, RendererEvents, UIEvents } from "qing-core";
+import { RenderderEvent } from "../renderer/renderer";
 import { MenubarComponent } from "./menubar.component";
 
-export class MenuPlugin implements IPlugin {
-  pluginStore: PluginStore;
-  title = "菜单";
-  id = "menu";
+export class MenubarPlugin extends Plugin {
+  name = "Menubar";
+  version = "1.0.0";
+  description = "菜单栏";
 
-  getPluginName(): string {
-    return "menu@1.0.0";
+  constructor(private qingCore: QingCore) {
+    super();
+    this.qingCore.Invoke(
+      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
+      "menubar-slot",
+      MenubarComponent
+    );
   }
 
   getDependencies(): string[] {
-    return ["toast@1.0.0"];
-  }
-
-  init(pluginStore: PluginStore): void {
-    this.pluginStore = pluginStore;
+    return ["Toast@1.0.0"];
   }
 
   activate(): void {
-    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "menu", MenubarComponent);
+    this.qingCore.Emit(new RenderderEvent(RendererEvents.UPDATE_SLOT_VIEW, "menubar-slot"));
   }
 
   deactivate(): void {}

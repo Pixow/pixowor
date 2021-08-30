@@ -1,5 +1,5 @@
 <div class="statusbar">
-  <ng-container *ngFor="let item of status | keyvalue">
+  <ng-container *ngFor="let item of statusItems | keyvalue">
     <i>{{ item.value.type }}</i>
     <span>{{ item.value.message }}</span>
   </ng-container>

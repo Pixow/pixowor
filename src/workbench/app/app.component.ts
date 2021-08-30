@@ -1,22 +1,24 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, NgZone } from "@angular/core";
-import { Subject } from "rxjs";
+import { AfterViewInit, Component, OnDestroy, OnInit, NgZone, Inject } from "@angular/core";
 import { ContextService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";
-import * as path from "path";
-
-import { QingCore, RendererPlugin } from "qing-core";
+import { QingCore, Severity, User } from "qing-core";
+import { EreMessageChannel as msgc } from "electron-re";
 
 import { AlertPlugin } from "@plugins/common/alert.plugin";
 import { ToastPlugin } from "@plugins/common/toast.plugin";
 import { DialogPlugin } from "@plugins/common/dialog.plugin";
-import { MenuPlugin } from "@plugins/common/menubar/menubar.plugin";
-import { SigninPlugin } from "@plugins/ui/signin/signin.plugin";
-import { ActivitybarPlugin } from "@plugins/common/sidebar/sidebar.plugin";
-import { PluginsMarketPlugin } from "@plugins/ui/plugins-market/plugins-market.plugin";
+import { MenubarPlugin } from "@plugins/common/menubar/menubar.plugin";
 import { EditorAreaPlugin } from "@plugins/common/editor-area/editor-area.plugin";
 import { StatusbarPlugin } from "@plugins/common/statusbar/statusbar.plugin";
+import { SigninPlugin } from "@plugins/integration/signin/signin.plugin";
+import { RendererPlugin } from "@plugins/common/renderer/renderer.plugin";
+import { PluginsManagePlugin } from "@plugins/integration/plugins-manage/plugins-manage.plugin";
+import { PLUGIN_CONF_FILE, PLUGIN_SERVER } from "./app.config";
+import { Environment } from "@workbench/environments/environment";
+import { PluginLike } from "@plugins/integration/plugins-manage/plugins-manage.component";
 
 // regist module for plugin
+import * as qingCore from "qing-core";
 import * as core from "@angular/core";
 import * as common from "@angular/common";
 import * as forms from "@angular/forms";
@@ -31,12 +33,11 @@ import * as primengContextmenu from "primeng/contextmenu";
 import * as gameCore from "@PixelPai/game-core";
 import * as gameCapsule from "game-capsule";
 import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
-import { EreMessageChannel as msgc } from "electron-re";
-import { Channels } from "@launcher/config/ipc_channel";
-import { Inject } from "typedi";
+import { remote } from "electron";
 
 export const COMMON_DEPS = {
   rxjs,
+  "qing-core": qingCore,
   "@angular/core": core,
   "@angular/common": common,
   "@angular/forms": forms,
@@ -60,82 +61,65 @@ Object.keys(COMMON_DEPS).forEach((dep) => (window as any).define(dep, [], () => 
   providers: [DialogService],
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
-  // private pluginStore: PluginStore;
-  @Inject() qingCore: QingCore;
-
   constructor(
     private dialogService: DialogService,
     public context: ContextService,
-    private zone: NgZone
-  ) {
-    // this.pluginStore = createPluginStore<ContextService>(context);
-  }
+    private zone: NgZone,
+    @Inject(PLUGIN_SERVER) private pluginServer: string,
+    @Inject(PLUGIN_CONF_FILE) private pluginConf: string,
+    private qingCore: QingCore
+  ) {}
 
   ngOnInit() {
-    console.log("msgc: ", msgc);
-    msgc.send("app", "test", { value: "child" });
-
-    msgc.on("test_replay", (event, resp) => {
-      console.log("resp: ", resp);
+    this.qingCore.Environment = Object.assign(Environment, {
+      APP_DATA_PATH: remote.app.getPath("appData"),
+      USER_DATA_PATH: remote.app.getPath("userData"),
+      TEMP_PATH: remote.app.getPath("temp"),
     });
+    this.qingCore.InjectService(DialogService, this.dialogService);
 
-    const appDataPath = this.context.appPath;
-    // msgc.invoke("app", Channels.READ_DIR, { dir: appDataPath }).then((res) => {
-    //   console.log("READ DIR: ", res);
-    // });
+    const user: User = this.qingCore.Get("user");
+
+    if (user) {
+      this.qingCore.InitToken(user.token);
+    }
   }
 
   private activeInstalledPlugins() {
     this.zone.runOutsideAngular(() => {
-      msgc
-        .invoke("app", "read-file", {
-          path: this.context.pluginConf,
-          options: { encoding: "utf8" },
-        })
-        .then((res) => {
-          const { error, data } = res;
-
-          if (error !== null) {
-            console.error(error);
-            return;
-          }
-
-          const plugins = JSON.parse(data);
-          console.log("AppComponent ~ plugins", plugins);
+      this.qingCore
+        .ReadJson(this.pluginConf)
+        .then((data) => {
+          const plugins = data as PluginLike[];
 
           for (const plugin of plugins) {
-            const pluginEntry = `http://localhost:45326/plugins/${plugin.name}/index.js`;
+            const pluginEntry = `${this.pluginServer}/${plugin.name}/index.js`;
             (window as any).System.import(pluginEntry).then((module) => {
               // 重新触发变更检测
               this.zone.run(() => {
-                this.qingCore.installPlugin(new module.default());
+                this.qingCore.InstallPlugin(new module.default(this.qingCore));
               });
             });
           }
+        })
+        .catch((error) => {
+          this.qingCore.Toast(Severity.ERROR, error);
         });
     });
   }
 
   ngAfterViewInit() {
-    // this.pluginStore.install(new RendererPlugin());
-    // this.pluginStore.install(new ToastPlugin());
-    // this.pluginStore.install(new AlertPlugin());
-    // this.pluginStore.install(new DialogPlugin());
-    // this.pluginStore.install(new MenuPlugin());
-    // this.pluginStore.install(new ActivitybarPlugin());
-    // this.pluginStore.install(new StatusbarPlugin());
-    // this.pluginStore.install(new EditorAreaPlugin());
-    // this.pluginStore.install(new SigninPlugin());
-
-    // this.pluginStore.install(new PluginsMarketPlugin(this.context));
-    this.qingCore.installPlugin(new RendererPlugin());
-    this.qingCore.installPlugin(new ToastPlugin());
-    this.qingCore.installPlugin(new AlertPlugin());
-    this.qingCore.installPlugin(new DialogPlugin());
-    this.qingCore.installPlugin(new MenuPlugin());
-    this.qingCore.installPlugin(new EditorAreaPlugin());
-    this.qingCore.installPlugin(new SigninPlugin());
-
+    const ctx = this.qingCore;
+    // 每个插件的安装都是异步的
+    this.qingCore.InstallPlugin(new RendererPlugin(ctx));
+    this.qingCore.InstallPlugin(new ToastPlugin(ctx));
+    this.qingCore.InstallPlugin(new AlertPlugin(ctx));
+    this.qingCore.InstallPlugin(new DialogPlugin(ctx));
+    this.qingCore.InstallPlugin(new MenubarPlugin(ctx));
+    this.qingCore.InstallPlugin(new EditorAreaPlugin(ctx));
+    this.qingCore.InstallPlugin(new SigninPlugin(ctx));
+    this.qingCore.InstallPlugin(new StatusbarPlugin(ctx));
+    this.qingCore.InstallPlugin(new PluginsManagePlugin(ctx));
     this.activeInstalledPlugins();
   }
 

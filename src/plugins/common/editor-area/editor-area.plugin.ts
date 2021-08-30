@@ -1,14 +1,19 @@
-// import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
-import { QingCore, Plugin } from "qing-core";
-import { Inject } from "typedi";
+import { QingCore, Plugin, RendererFunctions, RendererEvents } from "qing-core";
+import { RenderderEvent } from "../renderer/renderer";
+import { EditorAreaComponent } from "./editor-area.component";
 
 export class EditorAreaPlugin extends Plugin {
-  // pluginStore: PluginStore;
-  @Inject() qingCore: QingCore;
-  title = "主内容";
+  name = "EditorArea";
+  version = "1.0.0";
+  description = "编辑区域插件";
 
-  getPluginName(): string {
-    return "editorArea@1.0.0";
+  constructor(private qingCore: QingCore) {
+    super();
+    this.qingCore.Invoke(
+      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
+      "editor-area-slot",
+      EditorAreaComponent
+    );
   }
 
   getDependencies(): string[] {
@@ -21,7 +26,8 @@ export class EditorAreaPlugin extends Plugin {
     // this.pluginStore.addEventListener("ShowInStage", (event )=> {
     //   const component = this.pluginStore.execFunction(FunctionNames.RENDERER_GET_DIALOG_COMPONENT)
     // })
-    this.qingCore.RegistVariable(this.getPluginName(), "EditorAreaComponents", []);
+    this.qingCore.RegistVariable(this.getPluginIdentify(), "EditorAreaComponents", []);
+    this.qingCore.Emit(new RenderderEvent(RendererEvents.UPDATE_SLOT_VIEW, "editor-area-slot"));
   }
 
   deactivate(): void {}

@@ -1,11 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Store } from "@ngxs/store";
-import { Event, PluginStore, usePluginStore } from "angular-pluggable";
-import { QingWebApiSdk } from "qing-web-api-sdk";
-import { LocalStorage } from "@workbench/app/utils/localstorage";
-import { ContextService } from "@workbench/app/core/services/context.service";
-
+import { QingCore, Event } from "qing-core";
 interface Introduce {
   title: string;
   description: string;
@@ -22,10 +17,8 @@ export class SigninComponent {
   public signinForm: FormGroup;
   public autoSignin: boolean;
   public isSubmitted = false;
-  private pluginStore: PluginStore = usePluginStore();
-  private context: ContextService = this.pluginStore.getContext<ContextService>();
 
-  constructor(private store: Store) {
+  constructor(private qingCore: QingCore) {
     this.introduces = [
       {
         title: "快速制作",
@@ -68,15 +61,16 @@ export class SigninComponent {
 
     const { account, password } = this.signinForm.value;
 
-    this.context.sdk.auth
+    this.qingCore.WebServiceSdk.auth
       .editorSignin(account, password)
       .then((res) => {
+        console.log("signin :", res);
         this.isSubmitted = false;
-        const { data } = res.data;
-        LocalStorage.set("user", data);
-        this.pluginStore.getObserver("user").next(data);
-        this.context.sdk.setToken(data.token);
-        this.pluginStore.dispatchEvent(new Event("CloseDialog"));
+        const { data } = res;
+        this.qingCore.Set("user", data);
+        this.qingCore.GetVariable("user").next(data);
+        this.qingCore.InitToken(data.token);
+        this.qingCore.Emit(new Event("CloseDialog"));
       })
       .catch((error) => {
         this.isSubmitted = false;

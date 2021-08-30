@@ -7,8 +7,6 @@ import * as fs from "fs";
 import { ElectronService } from "./electron.service";
 
 import { SocketConnection } from "@workbench/app/core/socket-connection";
-import { QingWebApiSdk } from "qing-web-api-sdk";
-import { LocalStorage } from "@workbench/app/utils/localstorage";
 import { User } from "@workbench/app/models/user";
 import { Channels } from "@launcher/config/ipc_channel";
 import { Environment } from "@workbench/environments/environment";
@@ -36,14 +34,7 @@ export class ContextService {
       this.childProcess = window.require("child_process");
       this.fs = window.require("fs");
     }
-    // 初始化SDK
-    const user: User = LocalStorage.get("user");
-    if (user) {
-      this._sdk.setToken(user.token);
-    }
   }
-
-  private _sdk = QingWebApiSdk.getInstance();
 
   public get Environment() {
     return Environment;
@@ -71,10 +62,6 @@ export class ContextService {
 
   public get pluginConf() {
     return path.join(this.userDataPath, "plugins/plugin-conf.json");
-  }
-
-  public get pluginServer() {
-    return `http://localhost:45326/plugins`;
   }
 
   public get pluginDirectory() {
@@ -110,10 +97,6 @@ export class ContextService {
         });
       });
     });
-  }
-
-  public get sdk() {
-    return this._sdk;
   }
 
   public get socket() {

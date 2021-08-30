@@ -1,5 +1,4 @@
 import { Component, Injector, OnInit } from "@angular/core";
-// import { PluginStore, usePluginStore, Event } from "angular-pluggable";
 import { QingCore } from "qing-core";
 import { Inject } from "typedi";
 
@@ -18,12 +17,9 @@ export interface TabviewItem {
 export class EditorAreaComponent implements OnInit {
   activeIndex = 1;
 
-  // private pluginStore: PluginStore = usePluginStore();
-  @Inject() qingCore: QingCore;
-
   public items: TabviewItem[] = [];
 
-  constructor(private inj: Injector) {}
+  constructor(private qingCore: QingCore) {}
 
   ngOnInit() {
     // this.pluginStore.getObserver("stage").subscribe(items => {

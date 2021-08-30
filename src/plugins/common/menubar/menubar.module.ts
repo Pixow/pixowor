@@ -1,11 +1,13 @@
 import { CommonModule } from "@angular/common";
-import { ComponentFactory, ComponentFactoryResolver, NgModule } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { MenubarModule } from "primeng/menubar";
+import { QingCore } from "qing-core";
 
-import { MenuComponent } from "./menubar.component";
+import { MenubarComponent } from "./menubar.component";
 
 @NgModule({
-  declarations: [MenuComponent],
+  declarations: [MenubarComponent],
   imports: [CommonModule, MenubarModule],
+  providers: [QingCore],
 })
 export class MenuModule {}

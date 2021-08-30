@@ -92,20 +92,10 @@ $explorer-bc-active: #1b1d22;
 ::ng-deep p-fileupload {
   .p-fileupload {
     .p-fileupload-buttonbar {
-      background-color: transparent;
-      border: none;
-      padding: 0;
-
       .p-button {
-        background-color: #4164e4;
-        padding: 3px;
+        display: initial;
+        vertical-align: baseline;
       }
-    }
-
-    .p-fileupload-content {
-      color: #fff;
-      background-color: transparent;
-      border: none;
     }
   }
 }

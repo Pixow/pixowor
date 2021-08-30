@@ -1,0 +1,92 @@
+<div class="plugins-manage__container">
+  <p-tabView>
+    <p-tabPanel header="已安装插件">
+      <div class="plugins-list">
+        <ng-container *ngFor="let plugin of installedPlugins">
+          <plugin-item
+            [plugin]="plugin"
+            (upgrade)="installOrUpgradePlugin(plugin)"
+            (uninstall)="uninstallPlugin(plugin)"
+            (active)="activePlugin(plugin)"
+            (deactive)="deactivePlugin(plugin)"
+          ></plugin-item>
+        </ng-container>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="安装新插件">
+      <div class="plugins-manage__search">
+        <div class="plugins-list">
+          <ng-container *ngFor="let plugin of onlinePlugins">
+            <plugin-item [plugin]="plugin" (install)="installOrUpgradePlugin(plugin)"></plugin-item>
+          </ng-container>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="开发测试插件">
+      <div class="develop-plugins-container">
+        <p-fileUpload
+          name="developPlugins[]"
+          customUpload="true"
+          (uploadHandler)="uploadPluginForDevelop($event)"
+          multiple="multiple"
+          maxFileSize="1000000"
+          [chooseLabel]="'选择文件'"
+          [uploadLabel]="'测试'"
+          [cancelLabel]="'取消'"
+        >
+          <ng-template let-file pTemplate="file">
+            <div class="file-info">
+              <span>{{ file.name }}</span>
+              <em>{{ file.size }}bytes</em>
+            </div>
+          </ng-template>
+        </p-fileUpload>
+
+        <div class="develop-plugins-list">
+          <ng-container *ngFor="let plugin of developPlugins">
+            <plugin-item
+              [plugin]="plugin"
+              (upload)="uploadPlugin(plugin)"
+              (uninstall)="uninstallPlugin(plugin)"
+              (active)="activePlugin(plugin)"
+              (deactive)="deactivePlugin(plugin)"
+            ></plugin-item>
+          </ng-container>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+<!-- <div class="plugins-market">
+  <p-tieredMenu #menu [model]="items" [popup]="true"></p-tieredMenu>
+  <div class="plugins-market__header">
+    <h1>插件市场</h1>
+    <i class="pi pi-refresh" (click)="refreshPluginsList()"></i>
+    <i class="pi pi-ellipsis-h" (click)="menu.toggle($event)"></i>
+  </div>
+  <div class="plugins-market__search">
+    <input placeholder="搜索插件市场" />
+  </div>
+
+  <p-accordion [multiple]="true">
+    <p-accordionTab header="在线插件">
+      <ul>
+        <li *ngFor="let plugin of plugins">
+          <plugin-item [plugin]="plugin" (install)="installPlugin($event)"></plugin-item>
+        </li>
+      </ul>
+    </p-accordionTab>
+    <p-accordionTab header="本地插件">
+      <ul>
+        <li *ngFor="let plugin of installedPlugins">
+          <plugin-item
+            [plugin]="plugin"
+            (uninstall)="uninstallPlugin($event)"
+            (active)="activePlugin($event)"
+            (deactive)="deactivePlugin($event)"
+          ></plugin-item>
+        </li>
+      </ul>
+    </p-accordionTab>
+  </p-accordion>
+</div> -->

@@ -1,24 +1,19 @@
-import { IPlugin, PluginStore } from "angular-pluggable";
+import { QingCore, Plugin } from "qing-core";
+export class AlertPlugin extends Plugin {
+  name = "Alert";
+  version = "1.0.0";
+  description = "警告插件";
 
-export class AlertPlugin implements IPlugin {
-  pluginStore: PluginStore;
-  title = "alert";
-  id = "alert";
-
-  getPluginName(): string {
-    return "alert@1.0.0";
+  constructor(private qingCore: QingCore) {
+    super();
   }
 
   getDependencies(): string[] {
     return [];
   }
 
-  init(pluginStore: PluginStore): void {
-    this.pluginStore = pluginStore;
-  }
-
   activate(): void {
-    this.pluginStore.addEventListener("Alert", (event) => {
+    this.qingCore.On("Alert", (event) => {
       alert(event.data.message);
     });
   }

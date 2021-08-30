@@ -396,6 +396,13 @@
   dependencies:
     tslib "^2.0.0"
 
+"@angular/core@^12.2.2":
+  version "12.2.3"
+  resolved "https://registry.nlark.com/@angular/core/download/@angular/core-12.2.3.tgz#74f53915da3134f7e3a205219107b2eb4adcf8a6"
+  integrity sha1-dPU5FdoxNPfjogUhkQey60rc+KY=
+  dependencies:
+    tslib "^2.2.0"
+
 "@angular/elements@11.2.2":
   version "11.2.2"
   resolved "https://registry.yarnpkg.com/@angular/elements/-/elements-11.2.2.tgz#7fa8736c4bfc12c0193ee17e8b3b2c3ba475dd07"
@@ -4847,6 +4854,11 @@ events@^3.0.0:
   resolved "https://registry.npm.taobao.org/events/download/events-3.2.0.tgz#93b87c18f8efcd4202a461aec4dfc0556b639379"
   integrity sha1-k7h8GPjvzUICpGGuxN/AVWtjk3k=
 
+events@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.nlark.com/events/download/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
+  integrity sha1-Mala0Kkk4tLEGagTrrLE6HjqdAA=
+
 eventsource@^1.0.7:
   version "1.0.7"
   resolved "https://registry.npm.taobao.org/eventsource/download/eventsource-1.0.7.tgz#8fbc72c93fcd34088090bc0a4e64f4b5cee6d8d0"
@@ -5309,7 +5321,16 @@ fs-extra@8.1.0, fs-extra@^8.1.0:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
-fs-extra@^9.0.0, fs-extra@^9.1.0:
+fs-extra@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.nlark.com/fs-extra/download/fs-extra-10.0.0.tgz#9ff61b655dde53fb34a82df84bb214ce802e17c1"
+  integrity sha1-n/YbZV3eU/s0qC34S7IUzoAuF8E=
+  dependencies:
+    graceful-fs "^4.2.0"
+    jsonfile "^6.0.1"
+    universalify "^2.0.0"
+
+fs-extra@^9.0.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
   integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==
@@ -8194,7 +8215,7 @@ npm-registry-fetch@^9.0.0:
 
 npm-run-all@^4.1.5:
   version "4.1.5"
-  resolved "https://registry.npm.taobao.org/npm-run-all/download/npm-run-all-4.1.5.tgz#04476202a15ee0e2e214080861bff12a51d98fba"
+  resolved "https://registry.nlark.com/npm-run-all/download/npm-run-all-4.1.5.tgz?cache=0&sync_timestamp=1618847007508&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnpm-run-all%2Fdownload%2Fnpm-run-all-4.1.5.tgz#04476202a15ee0e2e214080861bff12a51d98fba"
   integrity sha1-BEdiAqFe4OLiFAgIYb/xKlHZj7o=
   dependencies:
     ansi-styles "^3.2.1"
@@ -9378,10 +9399,10 @@ primeicons@^4.1.0:
   resolved "https://registry.npm.taobao.org/primeicons/download/primeicons-4.1.0.tgz#19eaef8ef5594b0006358ae64e738d03e167c9bb"
   integrity sha1-GervjvVZSwAGNYrmTnONA+Fnybs=
 
-primeng@^11.1.0-rc.1:
-  version "11.2.0"
-  resolved "https://registry.npm.taobao.org/primeng/download/primeng-11.2.0.tgz#a1adfe6ef85c9a4db2fca5e1b9770fefd9bcd7fe"
-  integrity sha1-oa3+bvhcmk2y/KXhuXcP79m81/4=
+primeng@11.3.0:
+  version "11.3.0"
+  resolved "https://registry.nlark.com/primeng/download/primeng-11.3.0.tgz#e2c1ca882d5016de5308544164db40b99194695b"
+  integrity sha1-4sHKiC1QFt5TCFRBZNtAuZGUaVs=
   dependencies:
     tslib "^2.0.0"
 
@@ -9584,6 +9605,18 @@ q@^1.1.2, q@^1.4.1:
   version "1.5.1"
   resolved "https://registry.npm.taobao.org/q/download/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qing-core@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.nlark.com/qing-core/download/qing-core-1.0.10.tgz#e92d270b81ef8a0bad9fcca46c210ba4418b8251"
+  integrity sha1-6S0nC4Hvigutn8ykbCELpEGLglE=
+  dependencies:
+    "@angular/core" "^12.2.2"
+    electron-re "^1.0.10"
+    events "^3.3.0"
+    qing-web-api-sdk "git+ssh://git@code.apowo.com:PixelPai/qing-web-api-sdk.git#master"
+    rxjs "6.6.3"
+    semver "^7.3.5"
 
 "qing-web-api-sdk@git+ssh://git@code.apowo.com:PixelPai/qing-web-api-sdk.git#master":
   version "0.0.1"
@@ -10496,6 +10529,13 @@ semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.npm.taobao.org/semver/download/semver-6.3.0.tgz?cache=0&sync_timestamp=1606854493763&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha1-7gpkyK9ejO6mdoexM3YeG+y9HT0=
+
+semver@^7.3.5:
+  version "7.3.5"
+  resolved "https://registry.npm.taobao.org/semver/download/semver-7.3.5.tgz?cache=0&sync_timestamp=1616463603361&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-7.3.5.tgz#0b621c879348d8998e4b0e4be94b3f12e6018ef7"
+  integrity sha1-C2Ich5NI2JmOSw5L6Us/EuYBjvc=
+  dependencies:
+    lru-cache "^6.0.0"
 
 semver@~2.3.1:
   version "2.3.2"
@@ -11677,6 +11717,11 @@ tslib@^2.0.1, tslib@^2.0.3:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.1.0.tgz?cache=0&sync_timestamp=1609887785854&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftslib%2Fdownload%2Ftslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
   integrity sha1-2mCGDxwuyqVwOrfTm8Bba/mIuXo=
+
+tslib@^2.2.0:
+  version "2.3.1"
+  resolved "https://registry.nlark.com/tslib/download/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  integrity sha1-6KM1rdXOrlGqJh0ypJAVjvBC7wE=
 
 tty-browserify@0.0.0:
   version "0.0.0"

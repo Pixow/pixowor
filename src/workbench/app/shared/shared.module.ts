@@ -15,7 +15,7 @@ import { DialogModule } from "primeng/dialog";
 import { AccordionModule } from "primeng/accordion";
 import { FileUploadModule } from "primeng/fileupload";
 import { MenubarModule } from "primeng/menubar";
-import { RendererModule } from "angular-pluggable";
+import { RendererModule } from "@plugins/common/renderer/renderer";
 
 const COMPONENTS = [];
 

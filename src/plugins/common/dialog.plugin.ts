@@ -1,36 +1,33 @@
-import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
+import { QingCore, Plugin, Event, UIEvents, RendererFunctions } from "qing-core";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 
-export class DialogPlugin implements IPlugin {
-  pluginStore: PluginStore;
-  title = "dialog";
-  id = "dialog";
-  ref: DynamicDialogRef;
+export class DialogPlugin extends Plugin {
+  name = "Dialog";
+  version = "1.0.0";
+  description = "弹出框插件";
 
-  constructor() {}
+  private ref: DynamicDialogRef;
 
-  getPluginName(): string {
-    return "dialog@1.0.0";
+  constructor(private qingCore: QingCore) {
+    super();
   }
 
   getDependencies(): string[] {
     return [];
   }
 
-  init(pluginStore: PluginStore): void {
-    this.pluginStore = pluginStore;
-  }
-
   activate(): void {
-    this.pluginStore.addEventListener("ShowInDialog", (event) => {
-      const component = this.pluginStore.execFunction(
-        FunctionNames.RENDERER_GET_DIALOG_COMPONENT,
-        (event.data as any).componentName
+    this.qingCore.On(UIEvents.OPEN_DIALOG, (event: Event) => {
+      const component = this.qingCore.Invoke(
+        RendererFunctions.GET_COMPONENT,
+        event.data.componentName
       );
-      this.ref = this.pluginStore.context.dialogService.open(component, (event.data as any).config);
+      this.ref = this.qingCore
+        .GetService<DialogService>(DialogService)
+        .open(component, (event.data as any).config || {});
     });
 
-    this.pluginStore.addEventListener("CloseDialog", (event) => {
+    this.qingCore.On(UIEvents.CLOSE_DIALOG, (event: Event) => {
       this.ref.close();
     });
   }

@@ -1,0 +1,27 @@
+.plugins-manage__container {
+  width: 620px;
+  height: 600px;
+
+  .plugins-list {
+    margin: 0 -1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .develop-plugins-container {
+    margin: 0 -1.25em;
+
+    .develop-plugins-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  }
+
+  .file-info {
+    display: flex;
+    margin-bottom: 5px;
+    justify-content: space-between;
+  }
+}

@@ -1,24 +1,22 @@
 <div class="workbench">
-  <Renderer placement="menu"></Renderer>
+  <div class="workbench_menu">
+    <Renderer placement="menubar-slot"></Renderer>
+  </div>
   <div class="workbench__container">
-    <!-- <div class="workbench__container__activitybar">
-      <Renderer placement="activitybar"></Renderer>
-    </div> -->
-
-    <div class="workbench__container__explorer">
-      <Renderer placement="explorer"></Renderer>
+    <div class="workbench__container__sidebar">
+      <Renderer placement="sidebar-slot"></Renderer>
     </div>
 
     <div class="workbench__container__stage">
-      <Renderer placement="stage"></Renderer>
+      <Renderer placement="editor-area-slot"></Renderer>
     </div>
 
-    <div class="workbench__container__extensions">
-      <Renderer placement="extensions"></Renderer>
+    <div class="workbench__container__widgetbar">
+      <Renderer placement="widgetbar-slot"></Renderer>
     </div>
   </div>
   <div class="workbench__statusbar">
-    <Renderer placement="statusbar"></Renderer>
+    <Renderer placement="statusbar-slot"></Renderer>
   </div>
 </div>
-<Renderer placement="toast"></Renderer>
+<Renderer placement="toast-slot"></Renderer>

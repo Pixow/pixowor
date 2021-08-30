@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\moJiXiang\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/electorn-re
+  C:\Program Files\nodejs\node.exe C:\Users\moJiXiang\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
 
 PATH: 
   C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python39\Scripts\;C:\Python39\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;D:\Gradle\bin;D:\apache-jmeter-5.4.1\bin;D:\Go\bin;C:\Users\moJiXiang\AppData\Roaming\Python\Python39\Scripts;C:\Users\moJiXiang\kubectl.exe;D:\Kubernetes\Minikube;;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet\;C:\Users\moJiXiang\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\moJiXiang\AppData\Local\Programs\Python\Python39\;C:\Users\moJiXiang\AppData\Local\Microsoft\WindowsApps;D:\SOFTWARE\Microsoft VS Code\bin;C:\Users\moJiXiang\AppData\Local\hyper\app-3.0.2\resources\bin;C:\Users\moJiXiang\AppData\Roaming\npm;D:\SOFTWARE\Git\cmd;C:\Users\moJiXiang\go\bin
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.npm.taobao.org/@types%2felectorn-re: Not found
-      at Request.params.callback [as _callback] (C:\Users\moJiXiang\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
-      at Request.self.callback (C:\Users\moJiXiang\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
-      at Request.emit (events.js:315:20)
-      at Request.<anonymous> (C:\Users\moJiXiang\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
-      at Request.emit (events.js:315:20)
-      at IncomingMessage.<anonymous> (C:\Users\moJiXiang\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141556:12)
-      at Object.onceWrapper (events.js:421:28)
-      at IncomingMessage.emit (events.js:327:22)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+  Error: ENOENT: no such file or directory, copyfile 'C:\Users\moJiXiang\AppData\Local\Yarn\Cache\v6\npm-tslib-2.3.1-e8a335add5ceae51aa261d32a490158ef042ef01-integrity\node_modules\tslib\CopyrightNotice.txt' -> 'D:\Work\qing-project\qing\node_modules\qing-core\node_modules\tslib\CopyrightNotice.txt'
 
 npm manifest: 
   {
@@ -36,16 +26,13 @@ npm manifest:
     "author": "<mojixiang@apowo.com>",
     "license": "MIT",
     "scripts": {
-      "start:develop": "npm-run-all -p electron:serve ng:serve:develop ng:serve:worker:develop",
-      "start:release": "npm-run-all -p electron:serve ng:serve:release ng:serve:worker:release",
-      "start:production": "npm-run-all -p electron:serve ng:serve:productin ng:serve:worker:production",
-      "electron:serve": "wait-on http-get://localhost:4300/ && wait-on http-get://localhost:4301 && npm run build:launcher:serve && npx electron . --serve",
+      "start:develop": "npm-run-all -p electron:serve ng:serve:develop",
+      "start:release": "npm-run-all -p electron:serve ng:serve:release",
+      "start:production": "npm-run-all -p electron:serve ng:serve:productin",
+      "electron:serve": "wait-on http-get://localhost:4300/ && npm run build:launcher:serve && npx electron . --serve",
       "ng:serve:develop": "ng serve -c develop --port 4300",
-      "ng:serve:release": "ng serve -c release --port 4300",
+      "ng:serve:release": "node --max-old-space-size=8192 node_modules/@angular/cli/bin/ng serve -c release --port 4300",
       "ng:serve:production": "ng serve -c production --port 4300",
-      "ng:serve:worker:develop": "ng serve worker -c develop --port 4301 ",
-      "ng:serve:worker:release": "ng serve worker -c release --port 4301 ",
-      "ng:serve:worker:production": "ng serve worker -c production --port 4301 ",
       "build:workbench": "ng build workbench --base-href ./",
       "build:workbench:develop": "npm run build:workbench -- -c develop",
       "build:launcher:serve": "tsc -p tsconfig-serve.json",
@@ -83,7 +70,6 @@ npm manifest:
       "@types/lodash-es": "^4.17.3",
       "@types/long": "^4.0.1",
       "@types/mocha": "^8.2.0",
-      "angular-pluggable": "^1.0.9",
       "axios": "^0.21.1",
       "chai": "^4.2.0",
       "class-transformer": "^0.3.1",
@@ -104,7 +90,6 @@ npm manifest:
       "npm-run-all": "^4.1.5",
       "primeflex": "^2.0.0",
       "primeicons": "^4.1.0",
-      "primeng": "^11.1.0-rc.1",
       "protractor": "^7.0.0",
       "qing-web-api-sdk": "git+ssh://git@code.apowo.com:PixelPai/qing-web-api-sdk.git#master",
       "qiniu": "^7.3.2",
@@ -133,13 +118,15 @@ npm manifest:
     },
     "dependencies": {
       "electron-re": "^1.0.10",
+      "inversify": "^5.1.1",
+      "primeng": "11.3.0",
       "reflect-metadata": "^0.1.13",
-      "typedi": "^0.10.0"
+      "typedi": "^0.10.0",
+      "qing-core": "git+ssh://git@code.apowo.com:PixelPai/qing-core.git#master"
     },
     "_moduleAliases": {
       "@plugins": "dist/plugins",
       "@workbench": "dist/workbench",
-      "@worker": "dist/worker",
       "@launcher": "dist/launcher"
     }
   }
@@ -511,13 +498,6 @@ Lockfile:
     dependencies:
       tslib "^2.0.0"
   
-  "@angular/common@11.2.3":
-    version "11.2.3"
-    resolved "https://registry.nlark.com/@angular/common/download/@angular/common-11.2.3.tgz?cache=0&sync_timestamp=1621448330082&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40angular%2Fcommon%2Fdownload%2F%40angular%2Fcommon-11.2.3.tgz#e71d645fb6bdef9463f23a551cc072ef276c1d84"
-    integrity sha1-5x1kX7a975Rj8jpVHMBy7ydsHYQ=
-    dependencies:
-      tslib "^2.0.0"
-  
   "@angular/compiler-cli@11.2.2":
     version "11.2.2"
     resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-11.2.2.tgz#4f0281891ee98656ae3cf5ec0d4f8678c79809fd"
@@ -550,13 +530,6 @@ Lockfile:
     version "11.2.2"
     resolved "https://registry.yarnpkg.com/@angular/core/-/core-11.2.2.tgz#b44c0f118b6520427b26a7b856e0ac79e58fd156"
     integrity sha512-NjjvjMCRJpqQ6FMI/ECAOJrrpJIwNqZGORqJDHBNUqytwlmDXkq25UaiXHrpEqC7M2G+J8REhnoUGnMYqK7x+A==
-    dependencies:
-      tslib "^2.0.0"
-  
-  "@angular/core@11.2.3":
-    version "11.2.3"
-    resolved "https://registry.nlark.com/@angular/core/download/@angular/core-11.2.3.tgz#7dd59f35e0b2410543a61be6048c474c18a43f40"
-    integrity sha1-fdWfNeCyQQVDphvmBIxHTBikP0A=
     dependencies:
       tslib "^2.0.0"
   
@@ -2485,15 +2458,6 @@ Lockfile:
     version "1.0.2"
     resolved "https://registry.npm.taobao.org/alphanum-sort/download/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
     integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
-  
-  angular-pluggable@^1.0.9:
-    version "1.0.9"
-    resolved "https://registry.nlark.com/angular-pluggable/download/angular-pluggable-1.0.9.tgz?cache=0&sync_timestamp=1621936454037&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fangular-pluggable%2Fdownload%2Fangular-pluggable-1.0.9.tgz#fc4329d2877541bfa505d274a6afe92ee380b456"
-    integrity sha1-/EMp0od1Qb+lBdJ0pq/pLuOAtFY=
-    dependencies:
-      "@angular/common" "11.2.3"
-      "@angular/core" "11.2.3"
-      rxjs "^7.0.1"
   
   ansi-colors@4.1.1, ansi-colors@^4.1.1:
     version "4.1.1"
@@ -6377,6 +6341,11 @@ Lockfile:
     dependencies:
       loose-envify "^1.0.0"
   
+  inversify@^5.1.1:
+    version "5.1.1"
+    resolved "https://registry.nlark.com/inversify/download/inversify-5.1.1.tgz#6fbd668c591337404e005a1946bfe0d802c08730"
+    integrity sha1-b71mjFkTN0BOAFoZRr/g2ALAhzA=
+  
   ip-regex@^2.1.0:
     version "2.1.0"
     resolved "https://registry.npm.taobao.org/ip-regex/download/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"
@@ -8367,7 +8336,7 @@ Lockfile:
   
   npm-run-all@^4.1.5:
     version "4.1.5"
-    resolved "https://registry.npm.taobao.org/npm-run-all/download/npm-run-all-4.1.5.tgz#04476202a15ee0e2e214080861bff12a51d98fba"
+    resolved "https://registry.nlark.com/npm-run-all/download/npm-run-all-4.1.5.tgz?cache=0&sync_timestamp=1618847007508&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnpm-run-all%2Fdownload%2Fnpm-run-all-4.1.5.tgz#04476202a15ee0e2e214080861bff12a51d98fba"
     integrity sha1-BEdiAqFe4OLiFAgIYb/xKlHZj7o=
     dependencies:
       ansi-styles "^3.2.1"
@@ -9551,10 +9520,10 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/primeicons/download/primeicons-4.1.0.tgz#19eaef8ef5594b0006358ae64e738d03e167c9bb"
     integrity sha1-GervjvVZSwAGNYrmTnONA+Fnybs=
   
-  primeng@^11.1.0-rc.1:
-    version "11.2.0"
-    resolved "https://registry.npm.taobao.org/primeng/download/primeng-11.2.0.tgz#a1adfe6ef85c9a4db2fca5e1b9770fefd9bcd7fe"
-    integrity sha1-oa3+bvhcmk2y/KXhuXcP79m81/4=
+  primeng@11.3.0:
+    version "11.3.0"
+    resolved "https://registry.nlark.com/primeng/download/primeng-11.3.0.tgz#e2c1ca882d5016de5308544164db40b99194695b"
+    integrity sha1-4sHKiC1QFt5TCFRBZNtAuZGUaVs=
     dependencies:
       tslib "^2.0.0"
   
@@ -9992,14 +9961,9 @@ Lockfile:
     dependencies:
       picomatch "^2.2.1"
   
-  reflect-metadata@^0.1.13:
+  reflect-metadata@^0.1.13, reflect-metadata@^0.1.2:
     version "0.1.13"
     resolved "https://registry.nlark.com/reflect-metadata/download/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
-    integrity sha1-Z648pXyXKiqhZCsQ/jY/4y1J3Ag=
-  
-  reflect-metadata@^0.1.2:
-    version "0.1.13"
-    resolved "https://registry.npm.taobao.org/reflect-metadata/download/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
     integrity sha1-Z648pXyXKiqhZCsQ/jY/4y1J3Ag=
   
   regenerate-unicode-properties@^8.2.0:
@@ -10491,13 +10455,6 @@ Lockfile:
     integrity sha1-jKhGNcTaqQDA05Z6buesYCce5VI=
     dependencies:
       tslib "^1.9.0"
-  
-  rxjs@^7.0.1:
-    version "7.1.0"
-    resolved "https://registry.nlark.com/rxjs/download/rxjs-7.1.0.tgz?cache=0&sync_timestamp=1621619391474&other_urls=https%3A%2F%2Fregistry.nlark.com%2Frxjs%2Fdownload%2Frxjs-7.1.0.tgz#94202d27b19305ef7b1a4f330277b2065df7039e"
-    integrity sha1-lCAtJ7GTBe97Gk8zAneyBl33A54=
-    dependencies:
-      tslib "~2.1.0"
   
   safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
     version "5.1.2"
@@ -11858,7 +11815,7 @@ Lockfile:
     resolved "https://registry.nlark.com/tslib/download/tslib-2.2.0.tgz?cache=0&sync_timestamp=1618847132149&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftslib%2Fdownload%2Ftslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
     integrity sha1-+yxHWXfjXiQTEe3iaTzuHsZpj1w=
   
-  tslib@^2.0.1, tslib@^2.0.3, tslib@~2.1.0:
+  tslib@^2.0.1, tslib@^2.0.3:
     version "2.1.0"
     resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.1.0.tgz?cache=0&sync_timestamp=1609887785854&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftslib%2Fdownload%2Ftslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
     integrity sha1-2mCGDxwuyqVwOrfTm8Bba/mIuXo=

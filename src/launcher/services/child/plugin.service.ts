@@ -5,6 +5,7 @@
   const { app } = require("electron");
   const { ProcessHost } = require("electron-re");
 
+  // TODO: use childprocess to run plugin service
   ProcessHost.registry("start-pluginservice", (params) => {
     console.log("ProcessHost start pluginservice");
     return startPluginService();

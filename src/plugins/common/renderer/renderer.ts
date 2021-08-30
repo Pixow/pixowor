@@ -5,18 +5,14 @@ import {
   Input,
   AfterViewInit,
   NgModule,
-  OnInit,
-  Directive,
   ɵcreateInjector as createInjector,
   Injector,
-  Inject,
   ComponentFactoryResolver,
   Type,
   ComponentRef,
   OnDestroy,
 } from "@angular/core";
-import { Service } from "typedi";
-import { QingCore, Event } from "qing-core";
+import { QingCore, Event, RendererEvents, RendererFunctions } from "qing-core";
 
 export class RenderderEvent extends Event {
   placement: string;
@@ -27,35 +23,23 @@ export class RenderderEvent extends Event {
   }
 }
 
-export enum RendererFunctions {
-  ADD = "add",
-  ONCE = "once",
-  REGIST_DIALOG_COMPONENT = "registDialogComponent",
-  GET_DIALOG_COMPONENT = "getDialogComponent",
-  REMOVE = "remove",
-  GET_COMPONENTS_IN_PLACEMENT = "getComponentsInPlacement",
-  RENDER_COMPONENTS = "renderComponent",
-}
-
 @Component({
   selector: "Renderer",
   template: `<ng-container #componentAnchor></ng-container>`,
 })
 export class RendererComponent implements AfterViewInit, OnDestroy {
-  @Input() placement!: string;
+  @Input() placement: string;
 
   @ViewChild("componentAnchor", { read: ViewContainerRef })
   componentAnchor!: ViewContainerRef;
 
-  //   private pluginStore = usePluginStore();
-  @Service() qingCore: QingCore;
-
   private componentRefs: ComponentRef<Component>[] = [];
 
-  constructor(private resolver: ComponentFactoryResolver) {}
+  constructor(private resolver: ComponentFactoryResolver, private qingCore: QingCore) {}
 
   ngAfterViewInit() {
-    this.qingCore.On(RendererFunctions.RENDER_COMPONENTS, (event: RenderderEvent) => {
+    // 当某个插槽动态插入组件，需要更新视图
+    this.qingCore.On(RendererEvents.UPDATE_SLOT_VIEW, (event: RenderderEvent) => {
       if (event.placement === this.placement) {
         // https://segmentfault.com/a/1190000013972657
         // ExpressionChangedAfterItHasBeenCheckedError error
@@ -68,15 +52,8 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 
   renderComponent(placement: string) {
     this.componentAnchor.clear();
-    // const components = this.pluginStore.execFunction(
-    //   FunctionNames.RENDERER_GET_COMPONENTS_IN_PLACEMENT,
-    //   placement
-    // );
 
-    const components = this.qingCore.Invoke(
-      RendererFunctions.GET_COMPONENTS_IN_PLACEMENT,
-      placement
-    );
+    const components = this.qingCore.Invoke(RendererFunctions.GET_PLACEMENT_COMPONENTS, placement);
 
     if (components && components.length > 0) {
       (components as Type<Component>[]).forEach((component) => {
@@ -98,5 +75,6 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 @NgModule({
   declarations: [RendererComponent],
   exports: [RendererComponent],
+  providers: [QingCore],
 })
 export class RendererModule {}

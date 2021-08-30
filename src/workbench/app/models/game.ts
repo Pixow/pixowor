@@ -14,6 +14,7 @@ export class GameVersion {
   commit: string;
 }
 
+// TODO: 删除这些类，集中在game-core中定义
 export class Game {
   _id: string;
   owner: User;

@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
+// TODO: Import from qing-core
 interface FileStat {
   type: string;
   file: string;

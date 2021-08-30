@@ -76,13 +76,13 @@
             },
             "release": {
               "optimization": false,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
+              "extractLicenses": false,
+              "vendorChunk": true,
               "buildOptimizer": false,
               "fileReplacements": [
                 {

@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, NgModule, OnInit } from "@angular/core";
-import { PluginStore, usePluginStore, Event } from "angular-pluggable";
+import { QingCore, Event, UIEvents } from "qing-core";
 
 @Component({
   selector: "statusbar",
@@ -8,14 +8,15 @@ import { PluginStore, usePluginStore, Event } from "angular-pluggable";
   styleUrls: ["./statusbar.component.scss"],
 })
 export class StatusbarComponent implements OnInit {
-  private pluginStore: PluginStore = usePluginStore();
+  public statusItems;
 
-  public status;
+  constructor(private qingCore: QingCore) {}
 
   ngOnInit() {
-    console.log("Statusbar init----->");
-    this.pluginStore.getObserver("status").subscribe((data) => {
-      this.status = data;
+    this.qingCore.On(UIEvents.ADD_STATUS, (event: Event) => {
+      const { pluginName, message } = event.data;
+      let status = this.qingCore.GetVariable("statusbar");
+      status[pluginName] = message;
     });
   }
 }
@@ -23,5 +24,6 @@ export class StatusbarComponent implements OnInit {
 @NgModule({
   declarations: [StatusbarComponent],
   imports: [CommonModule],
+  providers: [QingCore],
 })
 export class StatusModule {}

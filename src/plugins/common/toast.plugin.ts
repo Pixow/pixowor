@@ -1,25 +1,23 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ComponentFactory,
-  ComponentFactoryResolver,
-  NgModule,
-  OnInit,
-} from "@angular/core";
-import { IPlugin, PluginStore, usePluginStore, Event, FunctionNames } from "angular-pluggable";
+import { ChangeDetectorRef, Component, NgModule, OnInit } from "@angular/core";
+import { QingCore, Plugin, Event, UIEvents, RendererFunctions, RendererEvents } from "qing-core";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
+import { RenderderEvent } from "./renderer/renderer";
 
 @Component({
   selector: "toast",
   template: '<p-toast key="globalMessage" position="top-center"></p-toast>',
 })
 export class ToastPluginComponent implements OnInit {
-  private pluginStore: PluginStore = usePluginStore();
-  constructor(private messageService: MessageService, private ref: ChangeDetectorRef) {}
+  constructor(
+    private qingCore: QingCore,
+    private messageService: MessageService,
+    private ref: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.pluginStore.addEventListener("Toast", (event: Event) => {
+    console.log("Toast init");
+    this.qingCore.On(UIEvents.TOAST, (event: Event) => {
       console.log(">> event: ", event);
       this.messageService.add({
         key: "globalMessage",
@@ -35,28 +33,30 @@ export class ToastPluginComponent implements OnInit {
 @NgModule({
   imports: [ToastModule],
   declarations: [ToastPluginComponent],
+  providers: [QingCore],
 })
 export class ToastPluginModule {}
 
-export class ToastPlugin implements IPlugin {
-  pluginStore: PluginStore;
-  title = "toast";
-  id = "toast";
+export class ToastPlugin extends Plugin {
+  name = "Toast";
+  version = "1.0.0";
+  description = "提示插件";
 
-  getPluginName(): string {
-    return "toast@1.0.0";
+  constructor(private qingCore: QingCore) {
+    super();
+    this.qingCore.Invoke(
+      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
+      "toast-slot",
+      ToastPluginComponent
+    );
   }
 
   getDependencies(): string[] {
     return [];
   }
 
-  init(pluginStore: PluginStore): void {
-    this.pluginStore = pluginStore;
-  }
-
   activate(): void {
-    this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "toast", ToastPluginComponent);
+    this.qingCore.Emit(new RenderderEvent(RendererEvents.UPDATE_SLOT_VIEW, "toast-slot"));
   }
 
   deactivate(): void {}

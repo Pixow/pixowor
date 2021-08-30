@@ -1,14 +1,13 @@
-import { Plugin, QingCore } from "qing-core";
-import { Inject } from "typedi";
-import { RendererFunctions } from "../renderer/renderer.component";
+import { Plugin, QingCore, RendererFunctions } from "qing-core";
 import { SidebarComponent } from "./sidebar";
 
 export class SidebarPlugin extends Plugin {
-  @Inject() qingCore: QingCore;
-  title = "侧边栏";
+  name = "Sidebar";
+  version = "1.0.0";
+  description = "侧边栏";
 
-  getPluginName(): string {
-    return "sidebar@1.0.0";
+  constructor(private qingCore: QingCore) {
+    super();
   }
 
   getDependencies(): string[] {
@@ -16,7 +15,7 @@ export class SidebarPlugin extends Plugin {
   }
 
   activate(): void {
-    this.qingCore.Invoke(RendererFunctions.ADD, "sidebar", SidebarComponent);
+    this.qingCore.Invoke(RendererFunctions.REGIST_COMPONENT, "sidebar", SidebarComponent);
   }
 
   deactivate(): void {}

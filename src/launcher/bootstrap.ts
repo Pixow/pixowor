@@ -56,7 +56,7 @@ export default function Startup() {
     center: true,
     minWidth: 800,
     minHeight: 600,
-    title: "图轻工作台",
+    title: "轻宇宙",
     autoHideMenuBar: true,
     icon: path.join(app.getAppPath(), "src/resources/icon.png"),
     webPreferences: {

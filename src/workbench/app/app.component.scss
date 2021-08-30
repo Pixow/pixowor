@@ -15,19 +15,15 @@
   background-color: $explorer-bc;
 }
 
-.workbench__container__activitybar {
-  width: 60px;
-}
-
-.workbench__container__explorer {
+.workbench__container__sidebar {
   width: 300px;
 }
 
 .workbench__container__stage {
-  width: calc(100% - 660px);
+  width: calc(100% - 600px);
 }
 
-.workbench__container__extensions {
+.workbench__container__widgetbar {
   width: 300px;
 }
 

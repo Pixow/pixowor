@@ -1,5 +1,5 @@
-import "module-alias/register";
 import "reflect-metadata";
+import "module-alias/register";
 
 import * as path from "path";
 import * as fs from "fs";
@@ -32,8 +32,8 @@ const viewConf = Container.get(ViewConf);
 
 app.whenReady().then(async () => {
   const appService = new BrowserService(
-    "app",
-    path.join(app.getAppPath(), "dist/launcher/services/child/app.service.js"),
+    "io-service",
+    path.join(app.getAppPath(), "dist/launcher/services/child/io.service.js"),
     { webPreferences: { webSecurity: true } }
   );
 

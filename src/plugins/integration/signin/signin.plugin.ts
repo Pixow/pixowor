@@ -1,32 +1,25 @@
-import { FunctionNames, IPlugin, PluginStore } from "angular-pluggable";
+import { QingCore, Plugin, RendererFunctions } from "qing-core";
 import { SigninComponent } from "./signin.component";
-import { LocalStorage } from "@workbench/app/utils/localstorage";
-export class SigninPlugin implements IPlugin {
-  pluginStore: PluginStore;
-  title = "登录工具";
-  id = "signin";
+export class SigninPlugin extends Plugin {
+  name = "Signin";
+  version = "1.0.0";
+  description = "登录插件";
 
-  getPluginName(): string {
-    return "signin-plugin@1.0.0";
+  constructor(private qingCore: QingCore) {
+    super();
   }
 
   getDependencies(): string[] {
-    return ["dialog@1.0.0"];
-  }
-
-  init(pluginStore: PluginStore): void {
-    this.pluginStore = pluginStore;
+    return ["Dialog@1.0.0"];
   }
 
   activate(): void {
-    this.pluginStore.execFunction(
-      FunctionNames.RENDERER_REGIST_DIALOG_COMPONENT,
-      "Signin",
-      SigninComponent
-    );
+    this.qingCore.Invoke(RendererFunctions.REGIST_COMPONENT, "Signin", SigninComponent);
 
-    const user = LocalStorage.get("user");
-    this.pluginStore.registObserver("user", user);
+    const user = this.qingCore.Get("user");
+    this.qingCore.RegistVariable(this.getPluginIdentify(), "user", user);
+
+    // TODO: 注入menu 登录item
   }
 
   deactivate(): void {}
