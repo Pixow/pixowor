@@ -58,7 +58,7 @@ export default function Startup() {
     minHeight: 600,
     title: "轻宇宙",
     autoHideMenuBar: true,
-    icon: path.join(app.getAppPath(), "src/resources/icon.png"),
+    icon: path.join(app.getAppPath(), "resources/icon.png"),
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

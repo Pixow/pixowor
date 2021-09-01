@@ -8,7 +8,12 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "target": "ES5",
-    "typeRoots": ["node_modules/@types", "./src/types/**", "node_modules/qing-core/dist/types"],
+    "typeRoots": [
+      "node_modules/@types",
+      "./src/types/**",
+      "node_modules/qing-core/dist/types",
+      "node_modules/electron-updater/out"
+    ],
     "types": ["node", "jest", "long"],
     "baseUrl": ".",
     "paths": {

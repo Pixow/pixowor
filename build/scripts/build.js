@@ -59,6 +59,8 @@ let builderConfig = {
     "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
     "!**/{appveyor.yml,.travis.yml,circle.yml}",
     "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}",
+    "!src/*",
+    "!.vscode/*",
     "!output/*",
   ],
   publish: [
@@ -88,7 +90,7 @@ let builderConfig = {
   nsis: {
     oneClick: false,
     allowElevation: true,
-    allowToChangeInstallationDirectory: false,
+    allowToChangeInstallationDirectory: true,
     installerIcon: "./build/icons/logo.ico",
     uninstallerIcon: "./build/icons/logo.ico",
     installerHeaderIcon: "./build/icons/logo.ico",

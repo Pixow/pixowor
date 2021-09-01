@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/launcher",
+    "outDir": "./dist",
     "sourceMap": false,
     "declaration": false,
     "moduleResolution": "node",
@@ -18,6 +18,6 @@
     },
     "lib": ["ES2017", "ES2016", "ES2015", "DOM", "DOM.Iterable"]
   },
-  "include": ["src/launcher/**/*.ts"],
+  "include": ["src/launcher/**/*.ts", "src/main.ts"],
   "exclude": ["node_modules"]
 }
