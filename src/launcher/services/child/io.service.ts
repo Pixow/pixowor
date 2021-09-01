@@ -2,7 +2,6 @@
   const { app } = require("electron");
   const path = require("path");
   const fs = require("fs-extra");
-  const url = require("url");
   const util = require("util");
   const qiniu = require("qiniu");
   const zipFolder = require("zip-folder");
@@ -11,12 +10,7 @@
 
   const { EreMessageChannel } = require("electron-re");
 
-  // let listDir;
-  // if (process.env.NODE_ENV === "RELEASE") {
-  //   listDir = require(path.join(app.getAppPath(), "dist/launcher/utils/list-dir.js"));
-  // } else {
-  // }
-  const { listDir } = require(path.join(app.getAppPath(), "dist/launcher/list-dir.js"));
+  const { listDir } = require(path.join(app.getAppPath(), "dist/launcher/utils/list-dir.js"));
 
   const msgc = EreMessageChannel;
 
