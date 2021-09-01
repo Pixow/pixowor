@@ -10,7 +10,13 @@
   const wget = require("wget-improved");
 
   const { EreMessageChannel } = require("electron-re");
-  const { listDir } = require(path.join(app.getAppPath(), "dist/launcher/utils/list-dir.js"));
+
+  // let listDir;
+  // if (process.env.NODE_ENV === "RELEASE") {
+  //   listDir = require(path.join(app.getAppPath(), "dist/launcher/utils/list-dir.js"));
+  // } else {
+  // }
+  const { listDir } = require(path.join(app.getAppPath(), "dist/launcher/list-dir.js"));
 
   const msgc = EreMessageChannel;
 

@@ -29,8 +29,9 @@ export function notifySend({ title, body, icon, delay }: INotify) {
  * checkEnvFiles [检查环境文件是否存在]
  */
 export function checkEnvFiles() {
-  const appDataPath = path.join(app.getPath("appData"), "QingStudio");
+  const appDataPath = path.join(app.getPath("appData"), "QingUniverse");
   const pathRuntime = path.join(appDataPath, "runtime/");
+  const pluginsDir = path.join(appDataPath, "plugins");
 
   const check = function ({
     _path,
@@ -46,7 +47,8 @@ export function checkEnvFiles() {
         fsa.mkdirSync(_path);
         if (exec) exec();
       } else {
-        fsa.closeSync(fsa.openSync(_path, "w"));
+        fsa.ensureFileSync(_path);
+        if (exec) exec();
       }
     }
   };
@@ -54,8 +56,15 @@ export function checkEnvFiles() {
   [
     { _path: appDataPath, isDir: true },
     { _path: pathRuntime, isDir: true },
+    { _path: pluginsDir, isDir: true },
     { _path: path.join(pathRuntime, "view-conf.json"), isDir: false },
-    { _path: path.join(appDataPath, "plugins/plugin-conf.json"), isDir: false },
+    {
+      _path: path.join(pluginsDir, "plugin-conf.json"),
+      isDir: false,
+      exec: function () {
+        fsa.writeJsonSync(path.join(pluginsDir, "plugin-conf.json"), []);
+      },
+    },
     { _path: path.join(pathRuntime, "error.log"), isDir: false },
   ].forEach((info) => {
     check(info);

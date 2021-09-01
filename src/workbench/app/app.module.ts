@@ -17,7 +17,7 @@ import { SharedModule } from "@workbench/app/shared/shared.module";
 import { DialogService } from "primeng/dynamicdialog";
 import { QingCore } from "qing-core";
 import { PLUGIN_CONF_FILE, PLUGIN_DIR, PLUGIN_SERVER } from "./app.config";
-import { PluginsManageModule } from "@plugins/integration/plugins-manage/plugins-manage.module";
+import { PluginsManageModule } from "@workbench/plugins/integration/plugins-manage/plugins-manage.module";
 
 @NgModule({
   declarations: [AppComponent],

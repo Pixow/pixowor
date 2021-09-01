@@ -4,18 +4,18 @@ import { DialogService } from "primeng/dynamicdialog";
 import { QingCore, Severity, User } from "qing-core";
 import { EreMessageChannel as msgc } from "electron-re";
 
-import { AlertPlugin } from "@plugins/common/alert.plugin";
-import { ToastPlugin } from "@plugins/common/toast.plugin";
-import { DialogPlugin } from "@plugins/common/dialog.plugin";
-import { MenubarPlugin } from "@plugins/common/menubar/menubar.plugin";
-import { EditorAreaPlugin } from "@plugins/common/editor-area/editor-area.plugin";
-import { StatusbarPlugin } from "@plugins/common/statusbar/statusbar.plugin";
-import { SigninPlugin } from "@plugins/integration/signin/signin.plugin";
-import { RendererPlugin } from "@plugins/common/renderer/renderer.plugin";
-import { PluginsManagePlugin } from "@plugins/integration/plugins-manage/plugins-manage.plugin";
+import { AlertPlugin } from "@workbench/plugins/common/alert.plugin";
+import { ToastPlugin } from "@workbench/plugins/common/toast.plugin";
+import { DialogPlugin } from "@workbench/plugins/common/dialog.plugin";
+import { MenubarPlugin } from "@workbench/plugins/common/menubar/menubar.plugin";
+import { EditorAreaPlugin } from "@workbench/plugins/common/editor-area/editor-area.plugin";
+import { StatusbarPlugin } from "@workbench/plugins/common/statusbar/statusbar.plugin";
+import { SigninPlugin } from "@workbench/plugins/integration/signin/signin.plugin";
+import { RendererPlugin } from "@workbench/plugins/common/renderer/renderer.plugin";
+import { PluginsManagePlugin } from "@workbench/plugins/integration/plugins-manage/plugins-manage.plugin";
 import { PLUGIN_CONF_FILE, PLUGIN_SERVER } from "./app.config";
 import { Environment } from "@workbench/environments/environment";
-import { PluginLike } from "@plugins/integration/plugins-manage/plugins-manage.component";
+import { PluginLike } from "@workbench/plugins/integration/plugins-manage/plugins-manage.component";
 
 // regist module for plugin
 import * as qingCore from "qing-core";
@@ -30,7 +30,6 @@ import * as primengMenu from "primeng/menu";
 import * as primengTree from "primeng/tree";
 import * as primengAccordion from "primeng/accordion";
 import * as primengContextmenu from "primeng/contextmenu";
-import * as gameCore from "@PixelPai/game-core";
 import * as gameCapsule from "game-capsule";
 import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
 import { remote } from "electron";
@@ -48,7 +47,6 @@ export const COMMON_DEPS = {
   "primeng/accordion": primengAccordion,
   "primeng/contextmenu": primengContextmenu,
   "primeng/menu": primengMenu,
-  "@PixelPai/game-core": gameCore,
   "game-capsule": gameCapsule,
   "@materia-ui/ngx-monaco-editor": ngxMonacoEditor,
 };

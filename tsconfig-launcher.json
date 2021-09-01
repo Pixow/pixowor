@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "sourceMap": false,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "target": "ES5",
+    "typeRoots": ["node_modules/@types", "./src/types/**", "node_modules/qing-core/dist/types"],
+    "types": ["node", "jest", "long"],
+    "baseUrl": ".",
+    "paths": {
+      "@angular/*": ["./node_modules/@angular/*"],
+      "@workbench/*": ["src/workbench/*"],
+      "@launcher/*": ["src/launcher/*"]
+    },
+    "lib": ["ES2017", "ES2016", "ES2015", "DOM", "DOM.Iterable"]
+  },
+  "include": ["src/launcher/**/*.ts", "src/main.ts"],
+  "exclude": ["node_modules"]
+}
