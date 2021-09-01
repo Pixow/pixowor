@@ -9,11 +9,11 @@ cache: &global_cache
   policy: pull-push
 
 before_script:
-  - Get-Service | ?{$_.Name -like '*ssh-agent*'} | select -Property Name, StartType, Status
-  - Set-Service -Name ssh-agent -StartupType Manual
-  - Start-Service ssh-agent
-  - echo $env:SSH_PRIVATE_KEY > key
-  - ssh-add key
+  # - Get-Service | ?{$_.Name -like '*ssh-agent*'} | select -Property Name, StartType, Status
+  # - Set-Service -Name ssh-agent -StartupType Manual
+  # - Start-Service ssh-agent
+  # - echo $env:SSH_PRIVATE_KEY > key
+  # - ssh-add key
   - yarn config set registry https://registry.npm.taobao.org/
 
 ################## 开发环境 ###################
@@ -28,9 +28,8 @@ job:BuildDevelopTooqingStudio:
     - qing-edt-builder
   script:
     - yarn install
-    - npm rebuild node-sass
     - yarn upgrade @PixelPai/game-core game-capsule pkth5_resource_tools net-socket-packet pixelpai_proto
-    - yarn run package:windows:develop
+    - yarn package:windows:develop
     - node upload-app.js develop
 
 #########################################
@@ -47,9 +46,8 @@ job:BuildReleaseTooqingStudio:
     - qing-edt-builder
   script:
     - yarn install
-    - npm rebuild node-sass
     - yarn upgrade @PixelPai/game-core game-capsule pkth5_resource_tools net-socket-packet pixelpai_proto
-    - yarn run package:windows:release
+    - yarn package:windows:release
     - node upload-app.js release
 
 #########################################
@@ -66,8 +64,7 @@ job:BuildProductionTooqingStudio:
     - qing-edt-builder
   script:
     - yarn install
-    - npm rebuild node-sass
     - yarn upgrade @PixelPai/game-core game-capsule pkth5_resource_tools net-socket-packet pixelpai_proto
-    - yarn run package:windows:production
+    - yarn package:windows:production
     - node upload-app.js production
 #########################################
