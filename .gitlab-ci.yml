@@ -20,7 +20,7 @@ job:BuildDevelopTooqingStudio:
   only:
     - /^develop-.*$/
   tags:
-    - game-editor-win-runner
+    - qing-edt-builder
   script:
     - yarn install
     - npm rebuild node-sass
@@ -39,7 +39,7 @@ job:BuildReleaseTooqingStudio:
   only:
     - /^release-.*$/
   tags:
-    - game-editor-win-runner
+    - qing-edt-builder
   script:
     - yarn install
     - npm rebuild node-sass
@@ -58,7 +58,7 @@ job:BuildProductionTooqingStudio:
   only:
     - /^production-.*$/
   tags:
-    - game-editor-win-runner
+    - qing-edt-builder
   script:
     - yarn install
     - npm rebuild node-sass
