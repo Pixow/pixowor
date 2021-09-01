@@ -9,6 +9,9 @@ cache: &global_cache
   policy: pull-push
 
 before_script:
+  - Get-Service | ?{$_.Name -like '*ssh-agent*'} | select -Property Name, StartType, Status
+  - Set-Service -Name ssh-agent -StartupType Manual
+  - Start-Service ssh-agent
   - echo $env:SSH_PRIVATE_KEY > key
   - ssh-add key
   - yarn config set registry https://registry.npm.taobao.org/
