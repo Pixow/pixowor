@@ -9,7 +9,8 @@ cache: &global_cache
   policy: pull-push
 
 before_script:
-  - ssh-add (echo $env:SSH_PRIVATE_KEY > key)
+  - echo $env:SSH_PRIVATE_KEY > key
+  - ssh-add key
   - yarn config set registry https://registry.npm.taobao.org/
 
 ################## 开发环境 ###################
