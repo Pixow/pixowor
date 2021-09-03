@@ -1,0 +1,26 @@
+{
+  "menubar": {
+    "file": "File",
+    "signin": "Signin",
+    "signout": "Signout",
+    "savegame": "Save Game",
+    "buildsetting": "Build Setting",
+    "newproject": "New Project",
+    "openproject": "Open Project",
+    "saveproject": "Save Project",
+    "exit": "Exit",
+    "game": "Game",
+    "newscene": "New Scene",
+    "gamesetting": "Game Settings",
+    "runtobrowser": "Run to Browser",
+    "runtophoneemulator": "Run to Phone Emulator",
+    "tools": "Tools",
+    "editsetting": "Editor Settings",
+    "pluginmanager": "Plugins Manager",
+    "packagemanager": "Packages Manager",
+    "help": "Help",
+    "gettingstarted": "Getting Started",
+    "luadoc": "LUA Document",
+    "lang": "Language"
+  }
+}

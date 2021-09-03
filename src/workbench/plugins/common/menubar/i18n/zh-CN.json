@@ -1,0 +1,26 @@
+{
+  "menubar": {
+    "file": "文件",
+    "signin": "登录",
+    "signout": "退出登录",
+    "savegame": "保存游戏",
+    "buildsetting": "编译配置",
+    "newproject": "新建项目",
+    "openproject": "打开项目",
+    "saveproject": "保存项目",
+    "exit": "退出",
+    "game": "游戏",
+    "newscene": "新建场景",
+    "gamesetting": "游戏配置",
+    "runtobrowser": "运行到浏览器",
+    "runtophoneemulator": "运行到手机模拟器",
+    "tools": "工具",
+    "editsetting": "编辑器设置",
+    "pluginmanager": "插件管理",
+    "packagemanager": "包管理",
+    "help": "帮助",
+    "gettingstarted": "入门教程",
+    "luadoc": "LUA 文档",
+    "lang": "语言"
+  }
+}

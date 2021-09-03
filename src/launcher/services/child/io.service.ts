@@ -8,11 +8,13 @@
   const unzip = require("unzip-stream");
   const wget = require("wget-improved");
 
-  const { EreMessageChannel } = require("electron-re");
+  const { MessageChannel } = require("electron-re");
 
   const { listDir } = require(path.join(app.getAppPath(), "dist/launcher/utils/list-dir.js"));
+  const SETTINGS_FILE = path.join(app.getPath("userData"), "runtime/settings.json");
+  const I18_DIR = path.join(app.getPath("userData"), "i18n");
 
-  const msgc = EreMessageChannel;
+  const msgc = MessageChannel;
 
   // TODO: 从qing-core中导入，但是qing-core打包为umd方式导入有问题
   const IOEvents = {
@@ -37,6 +39,10 @@
 
     UPLOADFILE_REPLY: "upload-file_reply",
     DOWNLOADFILE_REPLY: "download-file_reply",
+    INSTALLI18N: "install-i18n",
+
+    SET_DEFAULT_LANG: "set-default-lang",
+    GET_DEFAULT_LANG: "get-default-lang",
   };
 
   msgc.on("test", (event, args) => {
@@ -272,5 +278,30 @@
     } catch (error) {
       msgc.sendTo(event.senderId, IOEvents.DOWNLOADFILE_REPLY, { error: error, data: null });
     }
+  });
+
+  // 注入插件的 i18n 值
+  msgc.handle(IOEvents.INSTALLI18N, (event, args) => {
+    const { translateObjs } = args;
+
+    for (const lang of Object.keys(translateObjs)) {
+      const langFile = path.join(I18_DIR, `${lang}.json`);
+      let sourceTranslateObjs = fs.readJSONSync(langFile);
+      sourceTranslateObjs = Object.assign(sourceTranslateObjs, translateObjs[lang]);
+      fs.writeJsonSync(path.join(I18_DIR, `${lang}.json`), sourceTranslateObjs);
+    }
+
+    return { error: null, data: "success" };
+  });
+
+  msgc.handle(IOEvents.SET_DEFAULT_LANG, (event, args) => {
+    const settings = fs.readJSONSync(SETTINGS_FILE);
+    fs.writeJsonSync(SETTINGS_FILE, Object.assign(settings, { lang: args.lang }));
+    return { error: null, data: "success" };
+  });
+
+  msgc.handle(IOEvents.GET_DEFAULT_LANG, (event, args) => {
+    const settings = fs.readJSONSync(SETTINGS_FILE);
+    return { error: null, data: { lang: settings.lang || "zh-CN" } };
   });
 }

@@ -10,6 +10,7 @@ import "reflect-metadata";
 import * as path from "path";
 import * as fs from "fs";
 import { app, BrowserWindow, ipcMain } from "electron";
+import installExtension, { ANGULARJS_BATARANG } from "electron-devtools-installer";
 import Startup from "@launcher/bootstrap";
 import { Container } from "typedi";
 import { autoUpdater } from "electron-updater";
@@ -18,8 +19,8 @@ import WindowService from "@launcher/services/main/windows";
 import { IpcMainProcess } from "@launcher/services/main";
 import { checkEnvFiles } from "@launcher/utils/utils";
 import ViewConf from "@launcher/lib/view-conf";
-import { MessageChannel, BrowserService, ChildProcessPool } from "electron-re";
-import { StartPluginService } from "@launcher/utils/start-plugin-service";
+import { BrowserService, ChildProcessPool } from "electron-re";
+const { fork } = require("child_process");
 
 // import { CustomNodeJsGlobal } from "global";
 // declare var global: CustomNodeJsGlobal;
@@ -29,14 +30,21 @@ global.nodeEnv = process.env.NODE_ENV;
 global.pathRuntime = checkEnvFiles().pathRuntime;
 
 // TODO: IpcMainProcess
-global.ipcMainProcess = new IpcMainProcess(ipcMain);
-// TODO: Use ChildProcessPool
-// global.pluginServiceProcess = new ChildProcessPool({
-//   path: path.join(app.getAppPath(), "dist/launcher/services/child/plugin.service.js"),
-// });
+// global.ipcMainProcess = new IpcMainProcess(ipcMain);
 
 const windowService = Container.get(WindowService);
 const viewConf = Container.get(ViewConf);
+
+function StartUserDataServer() {
+  global.userDataStaticServiceProcess = fork(
+    path.join(app.getAppPath(), "dist/launcher/services/child/user-data.service.js"),
+    [app.getPath("userData")]
+  );
+}
+
+function StopUserDataServer() {
+  global.userDataStaticServiceProcess.kill();
+}
 
 export default class AppUpdater {
   constructor(private win: BrowserWindow) {
@@ -107,15 +115,17 @@ app.whenReady().then(async () => {
   await appService.connected();
   appService.openDevTools();
 
-  // TODO: 启动plugin service child process
-  // global.pluginServiceProcess.send("start-pluginservice", {});
-  StartPluginService();
-
+  // 使用child_process.fork启动 plugin server
+  StartUserDataServer();
   Startup();
 
-  const mainWin = windowService.getCurrentWindow();
+  installExtension(ANGULARJS_BATARANG)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log("An error occurred: ", err));
 
-  new AppUpdater(mainWin);
+  // const mainWin = windowService.getCurrentWindow();
+
+  // new AppUpdater(mainWin);
 });
 
 app.on("window-all-closed", () => {
@@ -129,6 +139,7 @@ app.on("window-all-closed", () => {
 
 app.on("quit", () => {
   console.log("quit");
+  StopUserDataServer();
 });
 
 app.on("activate", () => {
@@ -141,7 +152,7 @@ app.on("activate", () => {
 process.on("uncaughtException", (err) => {
   const errorInfo = err.stack.toString();
 
-  const errorFile = path.join(app.getAppPath(), "runtime/error.log");
+  const errorFile = path.join(app.getPath("userData"), "runtime/error.log");
   fs.writeFile(errorFile, errorInfo, { encoding: "utf8", flag: "w" }, (err) => {
     if (err) {
       console.log(err);

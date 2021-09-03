@@ -15,6 +15,19 @@ export class RendererPlugin extends Plugin {
 
   constructor(private qingCore: QingCore) {
     super();
+
+    this.qingCore.Bind(RendererFunctions.REGIST_COMPONENT, this.registComponent.bind(this));
+    this.qingCore.Bind(RendererFunctions.GET_COMPONENT, this.getComponent.bind(this));
+
+    this.qingCore.Bind(
+      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
+      this.registPlacementComponents.bind(this)
+    );
+
+    this.qingCore.Bind(
+      RendererFunctions.GET_PLACEMENT_COMPONENTS,
+      this.getPlacementComponents.bind(this)
+    );
   }
 
   getDependencies() {
@@ -53,20 +66,7 @@ export class RendererPlugin extends Plugin {
     return this.componentsMap.get(placement);
   }
 
-  activate() {
-    this.qingCore.Bind(RendererFunctions.REGIST_COMPONENT, this.registComponent.bind(this));
-    this.qingCore.Bind(RendererFunctions.GET_COMPONENT, this.getComponent.bind(this));
-
-    this.qingCore.Bind(
-      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
-      this.registPlacementComponents.bind(this)
-    );
-
-    this.qingCore.Bind(
-      RendererFunctions.GET_PLACEMENT_COMPONENTS,
-      this.getPlacementComponents.bind(this)
-    );
-  }
+  activate() {}
 
   deactivate() {
     this.qingCore.UnBind(RendererFunctions.REGIST_COMPONENT);

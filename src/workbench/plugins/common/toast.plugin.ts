@@ -44,11 +44,6 @@ export class ToastPlugin extends Plugin {
 
   constructor(private qingCore: QingCore) {
     super();
-    this.qingCore.Invoke(
-      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
-      "toast-slot",
-      ToastPluginComponent
-    );
   }
 
   getDependencies(): string[] {
@@ -56,6 +51,11 @@ export class ToastPlugin extends Plugin {
   }
 
   activate(): void {
+    this.qingCore.Invoke(
+      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
+      "toast-slot",
+      ToastPluginComponent
+    );
     this.qingCore.Emit(new RenderderEvent(RendererEvents.UPDATE_SLOT_VIEW, "toast-slot"));
   }
 

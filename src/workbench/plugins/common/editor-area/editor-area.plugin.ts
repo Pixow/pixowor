@@ -9,11 +9,6 @@ export class EditorAreaPlugin extends Plugin {
 
   constructor(private qingCore: QingCore) {
     super();
-    this.qingCore.Invoke(
-      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
-      "editor-area-slot",
-      EditorAreaComponent
-    );
   }
 
   getDependencies(): string[] {
@@ -21,11 +16,11 @@ export class EditorAreaPlugin extends Plugin {
   }
 
   activate(): void {
-    // this.pluginStore.execFunction(FunctionNames.RENDERER_ADD, "stage", StageComponent);
-    // this.pluginStore.registObserver("stage", []);
-    // this.pluginStore.addEventListener("ShowInStage", (event )=> {
-    //   const component = this.pluginStore.execFunction(FunctionNames.RENDERER_GET_DIALOG_COMPONENT)
-    // })
+    this.qingCore.Invoke(
+      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
+      "editor-area-slot",
+      EditorAreaComponent
+    );
     this.qingCore.RegistVariable(this.getPluginIdentify(), "EditorAreaComponents", []);
     this.qingCore.Emit(new RenderderEvent(RendererEvents.UPDATE_SLOT_VIEW, "editor-area-slot"));
   }

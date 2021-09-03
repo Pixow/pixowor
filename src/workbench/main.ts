@@ -4,6 +4,7 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 import { AppModule } from "./app/app.module";
 import { Environment } from "./environments/environment";
+import { remote } from "electron";
 
 if (Environment.production) {
   enableProdMode();

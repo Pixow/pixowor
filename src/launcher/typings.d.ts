@@ -4,7 +4,7 @@ export interface CustomNodeJsGlobal extends NodeJS.Global {
   nodeEnv: string;
   pathRuntime: string;
   ipcMainProcess: any;
-  pluginServiceProcess: any;
+  userDataStaticServiceProcess: any;
 }
 
 declare global {
@@ -13,7 +13,7 @@ declare global {
       nodeEnv: string;
       pathRuntime: string;
       ipcMainProcess: any;
-      pluginServiceProcess: any;
+      userDataStaticServiceProcess: any;
     }
   }
 }

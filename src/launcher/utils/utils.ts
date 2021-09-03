@@ -1,6 +1,8 @@
 import { app, Notification } from "electron";
 import * as path from "path";
 import * as fsa from "fs-extra";
+import zhCNObjs from "./i18n/zh-CN.json";
+import enObjs from "./i18n/en.json";
 export interface INotify {
   title: string;
   body: string;
@@ -30,8 +32,9 @@ export function notifySend({ title, body, icon, delay }: INotify) {
 export function checkEnvFiles() {
   const env = process.env.NODE_ENV;
   const userDataPath = path.join(app.getPath("userData"));
-  const pathRuntime = path.join(userDataPath, "runtime/");
+  const pathRuntime = path.join(userDataPath, "runtime");
   const pluginsDir = path.join(userDataPath, "plugins");
+  const i18Dir = path.join(userDataPath, "i18n");
 
   const check = function ({
     _path,
@@ -56,6 +59,7 @@ export function checkEnvFiles() {
   [
     { _path: pathRuntime, isDir: true },
     { _path: pluginsDir, isDir: true },
+    { _path: i18Dir, isDir: true },
     { _path: path.join(pathRuntime, "view-conf.json"), isDir: false },
     {
       _path: path.join(pluginsDir, "plugin-conf.json"),
@@ -64,7 +68,28 @@ export function checkEnvFiles() {
         fsa.writeJsonSync(path.join(pluginsDir, "plugin-conf.json"), []);
       },
     },
+    {
+      _path: path.join(i18Dir, "zh-CN.json"),
+      isDir: false,
+      exec: function () {
+        fsa.writeJsonSync(path.join(i18Dir, "zh-CN.json"), zhCNObjs);
+      },
+    },
+    {
+      _path: path.join(i18Dir, "en.json"),
+      isDir: false,
+      exec: function () {
+        fsa.writeJsonSync(path.join(i18Dir, "en.json"), enObjs);
+      },
+    },
     { _path: path.join(pathRuntime, "error.log"), isDir: false },
+    {
+      _path: path.join(pathRuntime, "settings.json"),
+      isDir: false,
+      exec: function () {
+        fsa.writeJsonSync(path.join(pathRuntime, "settings.json"), { lang: "zh-CN" });
+      },
+    },
   ].forEach((info) => {
     check(info);
   });

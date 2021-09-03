@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, NgZone, Inject } from "@angular/core";
 import { ContextService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";
-import { QingCore, Severity, User } from "qing-core";
-import { EreMessageChannel as msgc } from "electron-re";
+import { QingCore, Severity, User, Plugin } from "qing-core";
+import { remote } from "electron";
+import { BehaviorSubject } from "rxjs";
 
 import { AlertPlugin } from "@workbench/plugins/common/alert.plugin";
 import { ToastPlugin } from "@workbench/plugins/common/toast.plugin";
@@ -32,7 +33,7 @@ import * as primengAccordion from "primeng/accordion";
 import * as primengContextmenu from "primeng/contextmenu";
 import * as gameCapsule from "game-capsule";
 import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
-import { remote } from "electron";
+import { TranslocoService } from "@ngneat/transloco";
 
 export const COMMON_DEPS = {
   rxjs,
@@ -65,22 +66,68 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private zone: NgZone,
     @Inject(PLUGIN_SERVER) private pluginServer: string,
     @Inject(PLUGIN_CONF_FILE) private pluginConf: string,
+    private translocoService: TranslocoService,
     private qingCore: QingCore
   ) {}
 
   ngOnInit() {
     this.qingCore.Environment = Object.assign(Environment, {
+      APP_PATH: remote.app.getAppPath(),
       APP_DATA_PATH: remote.app.getPath("appData"),
       USER_DATA_PATH: remote.app.getPath("userData"),
       TEMP_PATH: remote.app.getPath("temp"),
     });
+
+    console.log("QingCore Environment: ", this.qingCore.Environment);
+
     this.qingCore.InjectService(DialogService, this.dialogService);
+    this.qingCore.InjectService(TranslocoService, this.translocoService);
 
     const user: User = this.qingCore.Get("user");
 
     if (user) {
       this.qingCore.InitToken(user.token);
     }
+  }
+
+  ngAfterViewInit() {
+    // 每个插件的prepare都是异步的
+    this.preparePlugins().then(() => {
+      this.qingCore.GetDefaultLang().then(({ lang }) => {
+        // 必须等待语言load完成，才能激活插件
+        this.translocoService.load(lang).subscribe(() => {
+          this.translocoService.setDefaultLang(lang);
+          this.translocoService.setActiveLang(lang);
+
+          this.activatePlugins();
+        });
+      });
+    });
+  }
+
+  private getInitialPlugins(): Plugin[] {
+    const ctx = this.qingCore;
+    return [
+      new RendererPlugin(ctx),
+      new ToastPlugin(ctx),
+      new AlertPlugin(ctx),
+      new DialogPlugin(ctx),
+      new MenubarPlugin(ctx),
+      new EditorAreaPlugin(ctx),
+      new SigninPlugin(ctx),
+      new StatusbarPlugin(ctx),
+      new PluginsManagePlugin(ctx),
+    ];
+  }
+
+  preparePlugins() {
+    // Prepare Plugin first, include install I18n files into userData i18n directory
+    return this.qingCore.PreparePlugins(this.getInitialPlugins());
+  }
+
+  activatePlugins() {
+    this.qingCore.ActivatePlugins(this.getInitialPlugins());
+    this.activeInstalledPlugins();
   }
 
   private activeInstalledPlugins() {
@@ -95,7 +142,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             (window as any).System.import(pluginEntry).then((module) => {
               // 重新触发变更检测
               this.zone.run(() => {
-                this.qingCore.InstallPlugin(new module.default(this.qingCore));
+                // TODO: wait for activate
+                const plugin: Plugin = new module.default(this.qingCore);
+                this.qingCore.PreparePlugins([plugin]).then(() => {
+                  plugin.activate();
+                });
               });
             });
           }
@@ -104,21 +155,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           this.qingCore.Toast(Severity.ERROR, error);
         });
     });
-  }
-
-  ngAfterViewInit() {
-    const ctx = this.qingCore;
-    // 每个插件的安装都是异步的
-    this.qingCore.InstallPlugin(new RendererPlugin(ctx));
-    this.qingCore.InstallPlugin(new ToastPlugin(ctx));
-    this.qingCore.InstallPlugin(new AlertPlugin(ctx));
-    this.qingCore.InstallPlugin(new DialogPlugin(ctx));
-    this.qingCore.InstallPlugin(new MenubarPlugin(ctx));
-    this.qingCore.InstallPlugin(new EditorAreaPlugin(ctx));
-    this.qingCore.InstallPlugin(new SigninPlugin(ctx));
-    this.qingCore.InstallPlugin(new StatusbarPlugin(ctx));
-    this.qingCore.InstallPlugin(new PluginsManagePlugin(ctx));
-    this.activeInstalledPlugins();
   }
 
   ngOnDestroy() {}

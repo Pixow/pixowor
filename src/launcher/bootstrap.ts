@@ -60,6 +60,7 @@ export default function Startup() {
     autoHideMenuBar: true,
     icon: path.join(app.getAppPath(), "resources/icon.png"),
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: true,
       enableRemoteModule: true,
       affinity: "",

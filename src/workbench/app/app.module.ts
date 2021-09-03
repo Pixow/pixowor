@@ -1,5 +1,6 @@
 import { ErrorHandler, InjectionToken, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxsModule } from "@ngxs/store";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -10,7 +11,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { CoreModule } from "./core/core.module";
 import { ErrorHandlerService } from "./core/services";
-import { HttpClientModule } from "@angular/common/http";
 import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
 import { SharedModule } from "@workbench/app/shared/shared.module";
@@ -18,6 +18,7 @@ import { DialogService } from "primeng/dynamicdialog";
 import { QingCore } from "qing-core";
 import { PLUGIN_CONF_FILE, PLUGIN_DIR, PLUGIN_SERVER } from "./app.config";
 import { PluginsManageModule } from "@workbench/plugins/integration/plugins-manage/plugins-manage.module";
+import { TranslocoRootModule } from './transloco/transloco-root.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +37,7 @@ import { PluginsManageModule } from "@workbench/plugins/integration/plugins-mana
     // 参考：https://github.com/paucls/angular-pluggable-architecture/blob/master/dashboard/src/app/dashboard/dashboard/dashboard.component.ts
     PluginsManageModule,
     NgxsModule.forRoot([]),
+    TranslocoRootModule,
   ],
   providers: [
     {

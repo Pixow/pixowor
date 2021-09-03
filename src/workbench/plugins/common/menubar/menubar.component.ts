@@ -1,90 +1,119 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { Event, QingCore, Severity, UIEvents } from "qing-core";
+import { Event, QingCore, Severity, UIEvents, User } from "qing-core";
 import { MenuItem } from "primeng/api";
-import { User } from "@workbench/app/models/user";
-
+import { TranslocoService } from "@ngneat/transloco";
 @Component({
   selector: "menubar",
   templateUrl: "./menubar.component.html",
   styleUrls: ["./menubar.component.scss"],
 })
 export class MenubarComponent implements OnInit, AfterViewInit {
-  menuItems: MenuItem[] = [
-    {
-      label: "文件",
-      items: [
-        {
-          label: "登录",
-        },
-        {
-          label: "退出登录",
-        },
-        {
-          label: "保存游戏",
-          command: () => {},
-        },
-        {
-          label: "编译配置",
-          command: () => {
-            this.qingCore.Toast(Severity.INFO, "打开游戏 ");
-          },
-        },
-        {
-          separator: true,
-        },
-        {
-          label: "新建项目",
-          command: () => {},
-        },
-        {
-          label: "打开项目",
-          command: () => {},
-        },
-        {
-          label: "保存项目",
-          command: () => {},
-        },
-        {
-          separator: true,
-        },
-        { label: "退出" },
-      ],
-    },
-    {
-      label: "游戏",
-      items: [
-        { label: "新建场景", command: () => {} },
-        { label: "游戏配置", command: () => {} },
-        { label: "运行到浏览器", command: () => {} },
-        { label: "运行到手机模拟器", command: () => {} },
-      ],
-    },
-    {
-      label: "工具",
-      items: [
-        { label: "编辑器设置" },
-        {
-          label: "插件管理",
-          command: () => {
-            this.qingCore.OpenDialog("plugins-market");
-          },
-        },
-        { label: "包管理" },
-      ],
-    },
-    {
-      label: "帮助",
-      items: [{ label: "入门教程" }, { label: "LUA 文档" }],
-    },
-  ];
-  constructor(private qingCore: QingCore, private cd: ChangeDetectorRef) {}
+  menuItems: MenuItem[];
+  translocoService: TranslocoService;
+
+  constructor(private qingCore: QingCore, private cd: ChangeDetectorRef) {
+    this.translocoService = qingCore.GetService<TranslocoService>(TranslocoService);
+  }
 
   ngOnInit() {
+    console.log("MenubarComponent init");
+
+    this.menuItems = [
+      {
+        label: this.translocoService.translate("menubar.file"),
+        items: [
+          {
+            label: this.translocoService.translate("menubar.signin"),
+          },
+          {
+            label: this.translocoService.translate("menubar.signout"),
+          },
+          {
+            label: this.translocoService.translate("menubar.savegame"),
+            command: () => {},
+          },
+          {
+            label: this.translocoService.translate("menubar.buildsetting"),
+            command: () => {},
+          },
+          {
+            separator: true,
+          },
+          {
+            label: this.translocoService.translate("menubar.newproject"),
+            command: () => {},
+          },
+          {
+            label: this.translocoService.translate("menubar.openproject"),
+            command: () => {},
+          },
+          {
+            label: this.translocoService.translate("menubar.saveproject"),
+            command: () => {},
+          },
+          {
+            separator: true,
+          },
+          { label: this.translocoService.translate("menubar.exit") },
+        ],
+      },
+      {
+        label: this.translocoService.translate("menubar.game"),
+        items: [
+          { label: this.translocoService.translate("menubar.newscene"), command: () => {} },
+          { label: this.translocoService.translate("menubar.gamesetting"), command: () => {} },
+          { label: this.translocoService.translate("menubar.runtobrowser"), command: () => {} },
+          {
+            label: this.translocoService.translate("menubar.runtophoneemulator"),
+            command: () => {},
+          },
+        ],
+      },
+      {
+        label: this.translocoService.translate("menubar.tools"),
+        items: [
+          { label: this.translocoService.translate("menubar.editsetting") },
+          {
+            label: this.translocoService.translate("menubar.pluginmanager"),
+            command: () => {
+              this.qingCore.OpenDialog("plugins-market");
+            },
+          },
+          { label: this.translocoService.translate("menubar.packagemanager") },
+        ],
+      },
+      {
+        label: this.translocoService.translate("menubar.help"),
+        items: [
+          { label: this.translocoService.translate("menubar.gettingstarted") },
+          { label: this.translocoService.translate("menubar.luadoc") },
+        ],
+      },
+      {
+        label: this.translocoService.translate("menubar.lang"),
+        items: [
+          {
+            label: "中文",
+            command: () => {
+              // TODO: 语言切换需要重启
+              this.qingCore.SetDefaultLang("zh-CN");
+            },
+          },
+          {
+            label: "English",
+            command: () => {
+              this.qingCore.SetDefaultLang("en");
+            },
+          },
+        ],
+      },
+    ];
+
     this.qingCore.GetVariable("user").subscribe((user: User) => {
       let item: MenuItem;
 
       let signoutItem: MenuItem = {
-        label: "退出登录",
+        label: this.translocoService.translate("menubar.signout"),
         command: () => {
           this.qingCore.Remove("user");
           this.qingCore.getObserver("user").next(null);
@@ -101,7 +130,7 @@ export class MenubarComponent implements OnInit, AfterViewInit {
         signoutItem.disabled = false;
       } else {
         item = {
-          label: "登录",
+          label: this.translocoService.translate("menubar.signin"),
           command: () => {
             this.qingCore.OpenDialog("Signin");
           },

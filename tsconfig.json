@@ -3,6 +3,7 @@
     "outDir": "./dist",
     "sourceMap": false,
     "declaration": false,
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,8 +11,7 @@
     "target": "ES5",
     "typeRoots": [
       "node_modules/@types",
-      "./src/types/**",
-      "node_modules/qing-core/dist/types",
+      "node_modules/qing-core/dist/types/src",
       "node_modules/electron-updater/out"
     ],
     "types": ["node", "jest", "long"],

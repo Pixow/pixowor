@@ -10,8 +10,8 @@ import {
 import * as path from "path";
 import * as url from "url";
 import compareVersions from "compare-version";
-import { EreMessageChannel as msgc } from "electron-re";
-import { Event, QingCore, Plugin, MsgcResponse, Severity, FileStat, IOEvents } from "qing-core";
+import { MessageChannel as msgc } from "electron-re";
+import { Event, QingCore, Plugin, MsgcResponse, Severity, FileStat } from "qing-core";
 
 import { PluginsManageService } from "./plugins-manage.service";
 import { PLUGIN_CONF_FILE, PLUGIN_DIR, PLUGIN_SERVER } from "@workbench/app/app.config";
@@ -148,8 +148,10 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
     const installedPlugins = this.pluginsManageService.installedPlugins$.getValue();
 
     (window as any).System.import(`${this.pluginServer}/${name}/index.js`)
-      .then((module) => {
-        this.qingCore.InstallPlugin(new module.default(this.qingCore));
+      .then(async (module) => {
+        const p: Plugin = new module.default(this.qingCore);
+        await this.qingCore.PreparePlugins([p]);
+        p.activate();
         // upgrade installed plugin if existed
         let needUpgradePlugin: PluginLike = installedPlugins.find((p) => p.name === plugin.name);
         if (needUpgradePlugin) {
@@ -183,7 +185,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
 
   // 禁用插件
   public deactivePlugin(plugin: PluginLike) {
-    this.qingCore.UninstallPlugin(plugin.name);
+    this.qingCore.DeactivatePlugin([plugin.name]);
 
     const installedPlugins = this.pluginsManageService.installedPlugins$.getValue();
     const thePlugin: PluginLike = installedPlugins.find((p) => p.name === plugin.name);
