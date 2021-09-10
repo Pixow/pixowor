@@ -329,6 +329,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
   }
 
   // 卸载插件
+  // TODO: 卸载插件没有deactivate插件
   public uninstallPlugin(plugin: PluginLike) {
     const installedPlugins = this.pluginsManageService.installedPlugins$.getValue();
     const index = installedPlugins.findIndex((p) => p.name === plugin.name);

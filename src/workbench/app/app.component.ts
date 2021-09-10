@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, NgZone, Inject } from "@angular/core";
+import { TranslocoService } from "@ngneat/transloco";
 import { ContextService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";
 import { QingCore, Severity, User, Plugin } from "qing-core";
@@ -33,7 +34,10 @@ import * as primengAccordion from "primeng/accordion";
 import * as primengContextmenu from "primeng/contextmenu";
 import * as gameCapsule from "game-capsule";
 import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
-import { TranslocoService } from "@ngneat/transloco";
+import * as Transloco from "@ngneat/transloco";
+import gameCore from "@PixelPai/game-core";
+import { EditorCanvasManager } from "@PixelPai/game-core/editor";
+console.log("🚀 ~ file: app.component.ts ~ line 40 ~ editor", EditorCanvasManager);
 
 export const COMMON_DEPS = {
   rxjs,
@@ -50,6 +54,8 @@ export const COMMON_DEPS = {
   "primeng/menu": primengMenu,
   "game-capsule": gameCapsule,
   "@materia-ui/ngx-monaco-editor": ngxMonacoEditor,
+  "@ngneat/transloco": Transloco,
+  "@PixelPai/game-core": gameCore,
 };
 
 Object.keys(COMMON_DEPS).forEach((dep) => (window as any).define(dep, [], () => COMMON_DEPS[dep]));

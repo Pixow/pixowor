@@ -123,6 +123,8 @@ app.whenReady().then(async () => {
     .then((name) => console.log(`Added Extension:  ${name}`))
     .catch((err) => console.log("An error occurred: ", err));
 
+  console.log("WindowService: ", windowService);
+
   // const mainWin = windowService.getCurrentWindow();
 
   // new AppUpdater(mainWin);

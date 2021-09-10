@@ -40,10 +40,10 @@ npm manifest:
       "start:develop": "npm-run-all -p electron:serve start:workbench:develop",
       "start:release": "npm-run-all -p electron:serve start:workbench:release",
       "start:production": "npm-run-all -p electron:serve start:workbench:productin",
-      "electron:serve": "wait-on http-get://localhost:4300/ && npm run start:launcher:serve",
-      "start:workbench:develop": "ng serve -c develop --port 4300",
-      "start:workbench:release": "node --max-old-space-size=8192 node_modules/@angular/cli/bin/ng serve -c release --port 4300",
-      "start:workbench:production": "ng serve -c production --port 4300",
+      "electron:serve": "wait-on http-get://localhost:4301/ && npm run start:launcher:serve",
+      "start:workbench:develop": "ng serve -c develop --port 4301",
+      "start:workbench:release": "node --max-old-space-size=8192 node_modules/@angular/cli/bin/ng serve -c release --port 4301",
+      "start:workbench:production": "ng serve -c production --port 4301",
       "start:launcher:serve": "rimraf dist/launcher && tsc -p tsconfig-launcher.json && npx electron . --serve",
       "build:launcher:tsc": "rimraf dist/launcher && tsc -p tsconfig-launcher.json",
       "build:launcher": "rimraf dist && npx webpack build --config ./launcher.webpack.js",
@@ -1186,7 +1186,7 @@ Lockfile:
   
   "@babel/plugin-transform-modules-amd@^7.10.4", "@babel/plugin-transform-modules-amd@^7.12.1":
     version "7.12.1"
-    resolved "https://registry.npm.taobao.org/@babel/plugin-transform-modules-amd/download/@babel/plugin-transform-modules-amd-7.12.1.tgz#3154300b026185666eebb0c0ed7f8415fefcf6f9"
+    resolved "https://registry.npm.taobao.org/@babel/plugin-transform-modules-amd/download/@babel/plugin-transform-modules-amd-7.12.1.tgz#3154301b026185666eebb0c0ed7f8415fefcf6f9"
     integrity sha1-MVQwCwJhhWZu67DA7X+EFf789vk=
     dependencies:
       "@babel/helper-module-transforms" "^7.12.1"

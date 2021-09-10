@@ -71,7 +71,7 @@ export default function Startup() {
   const workbenchWindowDefinition = getWindowDefinition(
     serve,
     "workbench",
-    4300,
+    4301,
     workbenchOptions,
     (window: Electron.BrowserWindow) => {
       console.log("run window setup");

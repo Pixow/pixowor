@@ -16,3 +16,8 @@ declare module "electron-re" {
   }
   export { MessageChannel, ChildProcessPool, BrowserService };
 }
+
+interface ActiveXObject {
+  new (s: string): any;
+}
+declare var ActiveXObject: ActiveXObject;

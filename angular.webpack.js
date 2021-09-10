@@ -1,19 +1,27 @@
-module.exports = (config, options) => {
-  config.target = "electron-renderer";
+const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-  if (options.fileReplacements) {
-    for (let fileReplacement of options.fileReplacements) {
-      if (fileReplacement.replace !== "workbench/environments/environment.ts") {
-        continue;
-      }
-
-      let fileReplacementParts = fileReplacement["with"].split(".");
-      if (fileReplacementParts.length > 1 && ["web"].indexOf(fileReplacementParts[1]) >= 0) {
-        config.target = "web";
-      }
-      break;
-    }
-  }
-
-  return config;
+module.exports = {
+  target: "electron-renderer",
+  resolve: {
+    extensions: [".ts", ".js"],
+    alias: {
+      "@PixelPai/game-core": path.resolve(__dirname, "node_modules/@PixelPai/game-core/release/js"),
+    },
+  },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "node_modules/@PixelPai/game-core/release/js"),
+          to: "./js",
+        },
+        {
+          from: path.resolve(__dirname, `node_modules/@PixelPai/game-core/release/resources`),
+          to: `./resources`,
+          toType: "dir",
+        },
+      ],
+    }),
+  ],
 };
