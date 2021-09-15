@@ -4,7 +4,6 @@ import { ContextService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";
 import { QingCore, Severity, User, Plugin } from "qing-core";
 import { remote } from "electron";
-import { BehaviorSubject } from "rxjs";
 
 import { AlertPlugin } from "@workbench/plugins/common/alert.plugin";
 import { ToastPlugin } from "@workbench/plugins/common/toast.plugin";
@@ -37,7 +36,6 @@ import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
 import * as Transloco from "@ngneat/transloco";
 import gameCore from "@PixelPai/game-core";
 import { EditorCanvasManager } from "@PixelPai/game-core/editor";
-console.log("🚀 ~ file: app.component.ts ~ line 40 ~ editor", EditorCanvasManager);
 
 export const COMMON_DEPS = {
   rxjs,
