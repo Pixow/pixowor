@@ -1,33 +1,30 @@
 import { Component, NgModule, Type } from "@angular/core";
-import { QingCore, Plugin, RendererFunctions } from "qing-core";
+import { PixoworCore, Plugin } from "pixowor-core";
 import { RenderderEvent } from "./renderer";
+import manifest from "./manifest.json";
 
 export type ComponentUrl = string;
 
 export class RendererPlugin extends Plugin {
-  name = "Renderer";
-  version = "1.0.0";
-  description = "渲染插件";
-
   private components = new Map<string, Component>();
 
   private componentsMap = new Map<string, Array<Type<Component>>>();
 
-  constructor(private qingCore: QingCore) {
-    super();
+  constructor(pixoworCore: PixoworCore) {
+    super(pixoworCore, manifest);
 
-    this.qingCore.Bind(RendererFunctions.REGIST_COMPONENT, this.registComponent.bind(this));
-    this.qingCore.Bind(RendererFunctions.GET_COMPONENT, this.getComponent.bind(this));
+    // this.pixoworCore.Bind(RendererFunctions.REGIST_COMPONENT, this.registComponent.bind(this));
+    // this.pixoworCore.Bind(RendererFunctions.GET_COMPONENT, this.getComponent.bind(this));
 
-    this.qingCore.Bind(
-      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
-      this.registPlacementComponents.bind(this)
-    );
+    // this.pixoworCore.Bind(
+    //   RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
+    //   this.registPlacementComponents.bind(this)
+    // );
 
-    this.qingCore.Bind(
-      RendererFunctions.GET_PLACEMENT_COMPONENTS,
-      this.getPlacementComponents.bind(this)
-    );
+    // this.pixoworCore.Bind(
+    //   RendererFunctions.GET_PLACEMENT_COMPONENTS,
+    //   this.getPlacementComponents.bind(this)
+    // );
   }
 
   getDependencies() {
@@ -66,11 +63,9 @@ export class RendererPlugin extends Plugin {
     return this.componentsMap.get(placement);
   }
 
-  activate() {}
-
-  deactivate() {
-    this.qingCore.UnBind(RendererFunctions.REGIST_COMPONENT);
-    this.qingCore.UnBind(RendererFunctions.REGIST_PLACEMENT_COMPONENTS);
-    this.qingCore.UnBind(RendererFunctions.GET_PLACEMENT_COMPONENTS);
+  activate() {
+    this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
   }
+
+  deactivate() {}
 }

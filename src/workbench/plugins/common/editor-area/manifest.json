@@ -1,0 +1,8 @@
+{
+  "pid": "pixowor-editor-area",
+  "name": "Pixowor Editor Area",
+  "author": "moJiXiang",
+  "version": "1.0.0",
+  "description": "EditorArea plugin for Pixowor",
+  "minAppVersion": "1.0.0"
+}

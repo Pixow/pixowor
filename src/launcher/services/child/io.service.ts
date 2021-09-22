@@ -39,7 +39,7 @@
 
     UPLOADFILE_REPLY: "upload-file_reply",
     DOWNLOADFILE_REPLY: "download-file_reply",
-    INSTALLI18N: "install-i18n",
+    INSTALLI_18N: "install-i18n",
 
     SET_DEFAULT_LANG: "set-default-lang",
     GET_DEFAULT_LANG: "get-default-lang",
@@ -281,7 +281,7 @@
   });
 
   // 注入插件的 i18n 值
-  msgc.handle(IOEvents.INSTALLI18N, (event, args) => {
+  msgc.handle(IOEvents.INSTALLI_18N, (event, args) => {
     const { translateObjs } = args;
 
     for (const lang of Object.keys(translateObjs)) {

@@ -1,8 +1,12 @@
-import { NgModule, ErrorHandler, Injectable } from "@angular/core";
+import { NgModule, ErrorHandler, Injectable, Inject } from "@angular/core";
+import { PixoworCore, Severity } from "pixowor-core";
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandler {
-  handleError(error: any) {
+  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) {}
+
+  handleError(error: Error) {
     console.error("ErrorHandlerService ERROR! ", error);
+    this.pixoworCore.workspace.toast(Severity.ERROR, error.message);
   }
 }

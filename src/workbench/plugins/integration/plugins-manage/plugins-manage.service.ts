@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@angular/core";
-import { Plugin, QingCore } from "qing-core";
-import { BehaviorSubject, combineLatest, forkJoin, from, merge } from "rxjs";
+import { Plugin, PixoworCore } from "pixowor-core";
+import { BehaviorSubject, combineLatest, forkJoin, from, merge, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { PLUGIN_CONF_FILE, PLUGIN_SERVER } from "@workbench/app/app.config";
 import { PluginLike } from "./plugins-manage.component";
@@ -14,7 +14,7 @@ export class PluginsManageService {
   installedPlugins$ = new BehaviorSubject([]);
 
   constructor(
-    private qingCore: QingCore,
+    private pixoworCore: PixoworCore,
     @Inject(PLUGIN_CONF_FILE) private pluginConfFile: string
   ) {}
 
@@ -25,14 +25,7 @@ export class PluginsManageService {
     }).subscribe((res) => {
       console.log("forkJoin:", res);
       const installedPlugins = <PluginLike[]>res.installedPlugins;
-      const onlinePlugins = <PluginLike[]>(
-        res.onlinePlugins.list.map((p) => ({
-          name: p.name,
-          description: p.description,
-          version: p.version,
-          author: p.author,
-        }))
-      );
+      const onlinePlugins = <PluginLike[]>res.onlinePlugins.list;
 
       for (let onlinePlugin of onlinePlugins) {
         if (
@@ -60,10 +53,10 @@ export class PluginsManageService {
   }
 
   public listOnlinePlugins() {
-    return from(this.qingCore.WebServiceSdk.plugin.listPlugins()).pipe(map((res) => res.data));
+    return from(this.pixoworCore.pixowApi.plugin.listPlugins());
   }
 
   public listInstalledPlugins() {
-    return from(this.qingCore.ReadJson(this.pluginConfFile));
+    return from(this.pixoworCore.fileSystemManager.readJson(this.pluginConfFile));
   }
 }

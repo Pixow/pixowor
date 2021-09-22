@@ -1,7 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { Event, QingCore, Severity, UIEvents, User } from "qing-core";
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
+import { QEvent, PixoworCore, Severity, UIEvents } from "pixowor-core";
+import { User } from "pixow-api";
 import { MenuItem } from "primeng/api";
 import { TranslocoService } from "@ngneat/transloco";
+import { ipcRenderer, remote } from "electron";
+import storage from "electron-json-storage";
+
 @Component({
   selector: "menubar",
   templateUrl: "./menubar.component.html",
@@ -9,114 +13,139 @@ import { TranslocoService } from "@ngneat/transloco";
 })
 export class MenubarComponent implements OnInit, AfterViewInit {
   menuItems: MenuItem[];
-  translocoService: TranslocoService;
+  transloco: TranslocoService;
 
-  constructor(private qingCore: QingCore, private cd: ChangeDetectorRef) {
-    this.translocoService = qingCore.GetService<TranslocoService>(TranslocoService);
+  constructor(
+    @Inject(PixoworCore) private pixoworCore: PixoworCore,
+    private cd: ChangeDetectorRef
+  ) {
+    this.transloco = pixoworCore.serviceManager.getService<TranslocoService>(TranslocoService);
   }
 
   ngOnInit() {
-    console.log("MenubarComponent init");
-
     this.menuItems = [
       {
-        label: this.translocoService.translate("menubar.file"),
+        label: this.transloco.translate("menubar.file"),
         items: [
           {
-            label: this.translocoService.translate("menubar.signin"),
+            label: this.transloco.translate("menubar.signin"),
           },
           {
-            label: this.translocoService.translate("menubar.signout"),
+            label: this.transloco.translate("menubar.signout"),
           },
           {
-            label: this.translocoService.translate("menubar.savegame"),
+            label: this.transloco.translate("menubar.savegame"),
             command: () => {},
           },
           {
-            label: this.translocoService.translate("menubar.buildsetting"),
+            label: this.transloco.translate("menubar.buildsetting"),
             command: () => {},
           },
           {
             separator: true,
           },
           {
-            label: this.translocoService.translate("menubar.newproject"),
+            label: this.transloco.translate("menubar.newproject"),
             command: () => {},
           },
           {
-            label: this.translocoService.translate("menubar.openproject"),
+            label: this.transloco.translate("menubar.openproject"),
             command: () => {},
           },
           {
-            label: this.translocoService.translate("menubar.saveproject"),
+            label: this.transloco.translate("menubar.saveproject"),
             command: () => {},
           },
           {
             separator: true,
           },
-          { label: this.translocoService.translate("menubar.exit") },
+          { label: this.transloco.translate("menubar.exit") },
         ],
       },
       {
-        label: this.translocoService.translate("menubar.game"),
+        label: this.transloco.translate("menubar.game"),
         items: [
-          { label: this.translocoService.translate("menubar.newscene"), command: () => {} },
-          { label: this.translocoService.translate("menubar.gamesetting"), command: () => {} },
-          { label: this.translocoService.translate("menubar.runtobrowser"), command: () => {} },
+          { label: this.transloco.translate("menubar.newscene"), command: () => {} },
+          { label: this.transloco.translate("menubar.gamesetting"), command: () => {} },
+          { label: this.transloco.translate("menubar.runtobrowser"), command: () => {} },
           {
-            label: this.translocoService.translate("menubar.runtophoneemulator"),
+            label: this.transloco.translate("menubar.runtophoneemulator"),
             command: () => {},
           },
         ],
       },
       {
-        label: this.translocoService.translate("menubar.tools"),
+        label: this.transloco.translate("menubar.tools"),
         items: [
-          { label: this.translocoService.translate("menubar.editsetting") },
+          { label: this.transloco.translate("menubar.editsetting") },
           {
-            label: this.translocoService.translate("menubar.pluginmanager"),
+            label: this.transloco.translate("menubar.pluginmanager"),
             command: () => {
-              this.qingCore.OpenDialog("plugins-market");
+              this.pixoworCore.workspace.openDialog("PluginsManage", {});
             },
           },
-          { label: this.translocoService.translate("menubar.packagemanager") },
+          { label: this.transloco.translate("menubar.packagemanager") },
         ],
       },
       {
-        label: this.translocoService.translate("menubar.help"),
+        label: this.transloco.translate("menubar.communityplugins"),
+        items: [],
+      },
+      {
+        label: this.transloco.translate("menubar.help"),
         items: [
-          { label: this.translocoService.translate("menubar.gettingstarted") },
-          { label: this.translocoService.translate("menubar.luadoc") },
+          { label: this.transloco.translate("menubar.gettingstarted") },
+          { label: this.transloco.translate("menubar.luadoc") },
+          {
+            label: "测试单窗口打开",
+            command: () => {
+              ipcRenderer.send("openSubWindow");
+            },
+          },
         ],
       },
       {
-        label: this.translocoService.translate("menubar.lang"),
+        label: this.transloco.translate("menubar.lang"),
         items: [
           {
             label: "中文",
             command: () => {
               // TODO: 语言切换需要重启
-              this.qingCore.SetDefaultLang("zh-CN");
+              const settings = storage.getSync("settings");
+              storage.set("settings", Object.assign(settings, { lang: "zh-CN" }), (error) => {
+                if (error) {
+                  console.error(error);
+                  return;
+                }
+                ipcRenderer.send("relaunch");
+              });
             },
           },
           {
             label: "English",
             command: () => {
-              this.qingCore.SetDefaultLang("en");
+              const settings = storage.getSync("settings");
+              storage.set("settings", Object.assign(settings, { lang: "en" }), (error) => {
+                if (error) {
+                  console.error(error);
+                  return;
+                }
+                ipcRenderer.send("relaunch");
+              });
             },
           },
         ],
       },
     ];
 
-    this.qingCore.GetVariable("user").subscribe((user: User) => {
+    this.pixoworCore.stateManager.getVariable("user").subscribe((user: User) => {
       let item: MenuItem;
 
       let signoutItem: MenuItem = {
-        label: this.translocoService.translate("menubar.signout"),
+        label: this.transloco.translate("menubar.signout"),
         command: () => {
-          this.qingCore.Remove("user");
-          this.qingCore.getObserver("user").next(null);
+          this.pixoworCore.storageManager.remove("user");
+          this.pixoworCore.stateManager.getVariable("user").next(null);
         },
         disabled: true,
       };
@@ -130,9 +159,9 @@ export class MenubarComponent implements OnInit, AfterViewInit {
         signoutItem.disabled = false;
       } else {
         item = {
-          label: this.translocoService.translate("menubar.signin"),
+          label: this.transloco.translate("menubar.signin"),
           command: () => {
-            this.qingCore.OpenDialog("Signin");
+            this.pixoworCore.workspace.openDialog("Signin", {});
           },
         };
 
@@ -143,20 +172,26 @@ export class MenubarComponent implements OnInit, AfterViewInit {
     });
 
     // TODO: 参数应该是插件名称，menubar给插件分配col和insertIndex
-    this.qingCore.On(UIEvents.ACTIVATE_IN_MENU, (event: Event) => {
-      const { col, insertIndex, label, cb } = event.data;
-      this.menuItems[col].items.splice(insertIndex, 0, {
+    this.pixoworCore.workspace.on(UIEvents.INJECT_PLUGIN_MENU, (args) => {
+      const { pid, label, command } = args;
+      this.menuItems[3].items.push({
+        id: pid,
         label,
-        command: cb,
+        command,
       });
 
       // 更新UI
       this.cd.detectChanges();
     });
 
-    this.qingCore.On(UIEvents.DEACTIVATE_IN_MENU, (event: Event) => {
-      const { col, insertIndex } = event.data;
-      this.menuItems[col].items.splice(insertIndex, 1);
+    this.pixoworCore.workspace.on(UIEvents.UNINJECT_PLUGIN_MENU, (args) => {
+      const { pid } = args;
+      const idx = this.menuItems[3].items.findIndex((item) => item.id === pid);
+      console.log(
+        "🚀 ~ file: menubar.component.ts ~ line 181 ~ MenubarComponent ~ this.pixoworCore.workspace.on ~ idx",
+        idx
+      );
+      this.menuItems[3].items.splice(idx, 1);
 
       // 更新UI
       this.cd.detectChanges();

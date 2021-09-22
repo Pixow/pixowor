@@ -16,7 +16,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
 
   getTranslation(lang: string) {
     console.log("getTranslation: ", lang);
-    // load from userData server
+    // load i18n files from userData server
     return this.http.get<Translation>(`http://localhost:45326/i18n/${lang}.json`);
   }
 }

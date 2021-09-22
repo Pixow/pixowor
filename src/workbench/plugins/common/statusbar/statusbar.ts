@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
-import { Component, NgModule, OnInit } from "@angular/core";
-import { QingCore, Event, UIEvents } from "qing-core";
+import { Component, NgModule, OnInit, Inject } from "@angular/core";
+import { PixoworCore, UIEvents } from "pixowor-core";
 
 @Component({
   selector: "statusbar",
@@ -10,12 +10,12 @@ import { QingCore, Event, UIEvents } from "qing-core";
 export class StatusbarComponent implements OnInit {
   public statusItems;
 
-  constructor(private qingCore: QingCore) {}
+  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) {}
 
   ngOnInit() {
-    this.qingCore.On(UIEvents.ADD_STATUS, (event: Event) => {
-      const { pluginName, message } = event.data;
-      let status = this.qingCore.GetVariable("statusbar");
+    this.pixoworCore.workspace.on(UIEvents.ADD_STATUS, (args) => {
+      const { pluginName, message } = args;
+      let status = this.pixoworCore.stateManager.getVariable("statusbar");
       status[pluginName] = message;
     });
   }
@@ -24,6 +24,6 @@ export class StatusbarComponent implements OnInit {
 @NgModule({
   declarations: [StatusbarComponent],
   imports: [CommonModule],
-  providers: [QingCore],
+  providers: [PixoworCore],
 })
 export class StatusModule {}

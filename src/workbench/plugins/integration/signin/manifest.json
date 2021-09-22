@@ -1,0 +1,11 @@
+{
+  "pid": "pixowor-signin",
+  "name": "Pixowor Signin",
+  "author": "Pixowor",
+  "version": "1.0.0",
+  "description": "Signin plugin for pixowor editor",
+  "minAppVersion": "1.0.0",
+  "dependencies": {
+    "pixowor-dialog": "1.0.0"
+  }
+}

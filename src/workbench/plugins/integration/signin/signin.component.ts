@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { QingCore, Event } from "qing-core";
+import { PixoworCore, QEvent, UIEvents } from "pixowor-core";
 interface Introduce {
   title: string;
   description: string;
@@ -18,7 +18,7 @@ export class SigninComponent {
   public autoSignin: boolean;
   public isSubmitted = false;
 
-  constructor(private qingCore: QingCore) {
+  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) {
     this.introduces = [
       {
         title: "快速制作",
@@ -61,16 +61,16 @@ export class SigninComponent {
 
     const { account, password } = this.signinForm.value;
 
-    this.qingCore.WebServiceSdk.auth
+    this.pixoworCore.pixowApi.auth
       .editorSignin(account, password)
       .then((res) => {
         console.log("signin :", res);
         this.isSubmitted = false;
         const { data } = res;
-        this.qingCore.Set("user", data);
-        this.qingCore.GetVariable("user").next(data);
-        this.qingCore.InitToken(data.token);
-        this.qingCore.Emit(new Event("CloseDialog"));
+        this.pixoworCore.storageManager.set("user", data);
+        this.pixoworCore.stateManager.getVariable("user").next(data);
+        this.pixoworCore.setPixowApiToken(data.token);
+        this.pixoworCore.workspace.emit(UIEvents.CLOSE_DIALOG);
       })
       .catch((error) => {
         this.isSubmitted = false;

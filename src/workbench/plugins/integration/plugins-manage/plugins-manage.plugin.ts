@@ -1,14 +1,10 @@
-import { QingCore, Plugin, RendererFunctions } from "qing-core";
-
+import { Component } from "@angular/core";
+import { PixoworCore, Plugin } from "pixowor-core";
 import { PluginsManageComponent } from "./plugins-manage.component";
-
+import manifest from "./manifest.json";
 export class PluginsManagePlugin extends Plugin {
-  name = "PluginsManage";
-  version = "1.0.0";
-  description = "插件集市";
-
-  constructor(private qingCore: QingCore) {
-    super();
+  constructor(pixoworCore: PixoworCore) {
+    super(pixoworCore, manifest);
   }
 
   getDependencies(): string[] {
@@ -16,10 +12,10 @@ export class PluginsManagePlugin extends Plugin {
   }
 
   activate(): void {
-    this.qingCore.Invoke(
-      RendererFunctions.REGIST_COMPONENT,
-      "plugins-market",
-      PluginsManageComponent
+    this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
+    this.pixoworCore.stateManager.registerComponent(
+      "PluginsManage",
+      <Component>PluginsManageComponent
     );
   }
 

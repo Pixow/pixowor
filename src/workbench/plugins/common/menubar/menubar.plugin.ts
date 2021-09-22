@@ -1,38 +1,23 @@
-import {
-  QingCore,
-  Plugin,
-  Event,
-  RendererFunctions,
-  RendererEvents,
-  UIEvents,
-  Severity,
-} from "qing-core";
-import { RenderderEvent } from "../renderer/renderer";
+import { PixoworCore, Plugin, Placements, UIEvents } from "pixowor-core";
 import { MenubarComponent } from "./menubar.component";
+import manifest from "./manifest.json";
 import en from "./i18n/en.json";
 import zhCN from "./i18n/zh-CN.json";
+import { Component, Type } from "@angular/core";
 export class MenubarPlugin extends Plugin {
-  name = "Menubar";
-  version = "1.0.0";
-  description = "菜单栏";
-
-  constructor(private qingCore: QingCore) {
-    super();
+  constructor(pixoworCore: PixoworCore) {
+    super(pixoworCore, manifest);
   }
 
-  getDependencies(): string[] {
-    return ["Toast@1.0.0"];
-  }
-
-  async prepare(): Promise<any> {
+  async install(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.qingCore
-        .InstallI18n({
+      this.pixoworCore.fileSystemManager
+        .installI18n({
           en: en,
           "zh-CN": zhCN,
         })
         .then(() => {
-          console.log("Menubar plugin prepare");
+          this.colorLog(`${this.name} installed!`);
           resolve(true);
         })
         .catch((error) => reject(error));
@@ -40,12 +25,13 @@ export class MenubarPlugin extends Plugin {
   }
 
   activate(): void {
-    this.qingCore.Invoke(
-      RendererFunctions.REGIST_PLACEMENT_COMPONENTS,
-      "menubar-slot",
-      MenubarComponent
+    this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
+    this.pixoworCore.workspace.registerSlotComponent(
+      Placements.MENUBAR,
+      <Type<Component>>MenubarComponent
     );
-    this.qingCore.Emit(new RenderderEvent(RendererEvents.UPDATE_SLOT_VIEW, "menubar-slot"));
+
+    this.pixoworCore.workspace.emit(UIEvents.INJECT_SLOT, Placements.MENUBAR);
   }
 
   deactivate(): void {}

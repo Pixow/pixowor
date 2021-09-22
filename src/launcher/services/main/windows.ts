@@ -112,8 +112,8 @@ export default class WindowService {
       width = viewInfo.result.width;
       height = viewInfo.result.height;
     } else {
-      width = 800;
-      height = 600;
+      width = 1200;
+      height = 800;
     }
 
     this.viewConf.setConf({ width, height });

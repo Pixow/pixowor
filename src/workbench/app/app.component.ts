@@ -2,12 +2,16 @@ import { AfterViewInit, Component, OnDestroy, OnInit, NgZone, Inject } from "@an
 import { TranslocoService } from "@ngneat/transloco";
 import { ContextService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";
-import { QingCore, Severity, User, Plugin } from "qing-core";
+import { PixoworCore, Severity, Plugin } from "pixowor-core";
+import { User } from "pixow-api";
 import { remote } from "electron";
+import storage from "electron-json-storage";
+import * as path from "path";
+import compareVersions from "compare-version";
 
-import { AlertPlugin } from "@workbench/plugins/common/alert.plugin";
-import { ToastPlugin } from "@workbench/plugins/common/toast.plugin";
-import { DialogPlugin } from "@workbench/plugins/common/dialog.plugin";
+import { AlertPlugin } from "@workbench/plugins/common/alert/alert.plugin";
+import { ToastPlugin } from "@workbench/plugins/common/toast/toast.plugin";
+import { DialogPlugin } from "@workbench/plugins/common/dialog/dialog.plugin";
 import { MenubarPlugin } from "@workbench/plugins/common/menubar/menubar.plugin";
 import { EditorAreaPlugin } from "@workbench/plugins/common/editor-area/editor-area.plugin";
 import { StatusbarPlugin } from "@workbench/plugins/common/statusbar/statusbar.plugin";
@@ -15,11 +19,10 @@ import { SigninPlugin } from "@workbench/plugins/integration/signin/signin.plugi
 import { RendererPlugin } from "@workbench/plugins/common/renderer/renderer.plugin";
 import { PluginsManagePlugin } from "@workbench/plugins/integration/plugins-manage/plugins-manage.plugin";
 import { PLUGIN_CONF_FILE, PLUGIN_SERVER } from "./app.config";
-import { Environment } from "@workbench/environments/environment";
 import { PluginLike } from "@workbench/plugins/integration/plugins-manage/plugins-manage.component";
 
 // regist module for plugin
-import * as qingCore from "qing-core";
+import * as pixoworCore from "pixowor-core";
 import * as core from "@angular/core";
 import * as common from "@angular/common";
 import * as forms from "@angular/forms";
@@ -39,7 +42,7 @@ import { EditorCanvasManager } from "@PixelPai/game-core/editor";
 
 export const COMMON_DEPS = {
   rxjs,
-  "qing-core": qingCore,
+  "pixowor-core": pixoworCore,
   "@angular/core": core,
   "@angular/common": common,
   "@angular/forms": forms,
@@ -71,46 +74,63 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     @Inject(PLUGIN_SERVER) private pluginServer: string,
     @Inject(PLUGIN_CONF_FILE) private pluginConf: string,
     private translocoService: TranslocoService,
-    private qingCore: QingCore
+    @Inject(PixoworCore) private pixoworCore: PixoworCore
   ) {}
 
   ngOnInit() {
-    this.qingCore.Environment = Object.assign(Environment, {
-      APP_PATH: remote.app.getAppPath(),
-      APP_DATA_PATH: remote.app.getPath("appData"),
-      USER_DATA_PATH: remote.app.getPath("userData"),
-      TEMP_PATH: remote.app.getPath("temp"),
-    });
+    this.initialize();
+    this.initPixoworCore();
+  }
 
-    console.log("QingCore Environment: ", this.qingCore.Environment);
+  initialize() {
+    storage.setDataPath(path.join(remote.app.getPath("userData"), "runtime"));
+  }
 
-    this.qingCore.InjectService(DialogService, this.dialogService);
-    this.qingCore.InjectService(TranslocoService, this.translocoService);
+  initPixoworCore() {
+    this.pixoworCore.serviceManager.injectService(DialogService, this.dialogService);
+    this.pixoworCore.serviceManager.injectService(TranslocoService, this.translocoService);
 
-    const user: User = this.qingCore.Get("user");
+    const user: User = this.pixoworCore.storageManager.get("user");
 
     if (user) {
-      this.qingCore.InitToken(user.token);
+      this.pixoworCore.setPixowApiToken(user.token);
     }
   }
 
-  ngAfterViewInit() {
-    // 每个插件的prepare都是异步的
-    this.preparePlugins().then(() => {
-      this.qingCore.GetDefaultLang().then(({ lang }) => {
-        // 必须等待语言load完成，才能激活插件
-        this.translocoService.load(lang).subscribe(() => {
-          this.translocoService.setDefaultLang(lang);
-          this.translocoService.setActiveLang(lang);
+  async ngAfterViewInit() {
+    const settings = storage.getSync("settings");
 
-          this.activatePlugins();
-        });
-      });
+    const lang = (settings as any).lang || "zh-CN";
+
+    // Check core plugin version and install
+    const installedCorePlugins = this.getInstalledCorePlugins();
+    const corePlugins = this.getCorePlugins();
+
+    for (const corePlugin of corePlugins) {
+      const installedPlugin: PluginLike = installedCorePlugins[corePlugin.pid];
+
+      if (!installedPlugin || compareVersions(installedPlugin.version, corePlugin.version) < 0) {
+        await corePlugin.install();
+
+        storage.set(
+          "core-plugins",
+          Object.assign(installedCorePlugins, { [corePlugin.pid]: corePlugin.version }),
+          () => {}
+        );
+      }
+    }
+
+    // 必须等待语言load完成，才能激活插件
+    this.translocoService.load(lang).subscribe(() => {
+      this.translocoService.setDefaultLang(lang);
+      this.translocoService.setActiveLang(lang);
+
+      this.activatePlugins();
     });
   }
 
-  private getInitialPlugins(): Plugin[] {
-    const ctx = this.qingCore;
+  private getCorePlugins(): Plugin[] {
+    const ctx = this.pixoworCore;
     return [
       new RendererPlugin(ctx),
       new ToastPlugin(ctx),
@@ -124,39 +144,37 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
   }
 
-  preparePlugins() {
-    // Prepare Plugin first, include install I18n files into userData i18n directory
-    return this.qingCore.PreparePlugins(this.getInitialPlugins());
-  }
-
   activatePlugins() {
-    this.qingCore.ActivatePlugins(this.getInitialPlugins());
-    this.activeInstalledPlugins();
+    this.pixoworCore.activatePlugins(this.getCorePlugins());
+    this.activeCommunityPlugins();
   }
 
-  private activeInstalledPlugins() {
+  private getInstalledCorePlugins() {
+    return storage.getSync("core-plugins");
+  }
+
+  private activeCommunityPlugins() {
     this.zone.runOutsideAngular(() => {
-      this.qingCore
-        .ReadJson(this.pluginConf)
+      this.pixoworCore.fileSystemManager
+        .readJson(this.pluginConf)
         .then((data) => {
           const plugins = data as PluginLike[];
 
           for (const plugin of plugins) {
-            const pluginEntry = `${this.pluginServer}/${plugin.name}/index.js`;
+            const pluginEntry = `${this.pluginServer}/${plugin.pid}/index.js`;
             (window as any).System.import(pluginEntry).then((module) => {
               // 重新触发变更检测
               this.zone.run(() => {
                 // TODO: wait for activate
-                const plugin: Plugin = new module.default(this.qingCore);
-                this.qingCore.PreparePlugins([plugin]).then(() => {
-                  plugin.activate();
-                });
+                const plugin: Plugin = new module.default(this.pixoworCore);
+
+                this.pixoworCore.activatePlugins([plugin]);
               });
             });
           }
         })
         .catch((error) => {
-          this.qingCore.Toast(Severity.ERROR, error);
+          this.pixoworCore.workspace.toast(Severity.ERROR, error);
         });
     });
   }

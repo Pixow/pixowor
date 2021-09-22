@@ -5,7 +5,7 @@
         <ng-container *ngFor="let plugin of installedPlugins">
           <plugin-item
             [plugin]="plugin"
-            (upgrade)="installOrUpgradePlugin(plugin)"
+            (upgrade)="downloadPluginForInstall(plugin)"
             (uninstall)="uninstallPlugin(plugin)"
             (active)="activePlugin(plugin)"
             (deactive)="deactivePlugin(plugin)"
@@ -17,7 +17,10 @@
       <div class="plugins-manage__search">
         <div class="plugins-list">
           <ng-container *ngFor="let plugin of onlinePlugins">
-            <plugin-item [plugin]="plugin" (install)="installOrUpgradePlugin(plugin)"></plugin-item>
+            <plugin-item
+              [plugin]="plugin"
+              (install)="downloadPluginForInstall(plugin)"
+            ></plugin-item>
           </ng-container>
         </div>
       </div>

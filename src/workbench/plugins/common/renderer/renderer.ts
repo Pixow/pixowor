@@ -5,16 +5,15 @@ import {
   Input,
   AfterViewInit,
   NgModule,
-  ɵcreateInjector as createInjector,
-  Injector,
   ComponentFactoryResolver,
-  Type,
   ComponentRef,
   OnDestroy,
+  Inject,
+  Type,
 } from "@angular/core";
-import { QingCore, Event, RendererEvents, RendererFunctions } from "qing-core";
+import { PixoworCore, QEvent, UIEvents, Placements } from "pixowor-core";
 
-export class RenderderEvent extends Event {
+export class RenderderEvent extends QEvent {
   placement: string;
 
   constructor(name: string, placement: string) {
@@ -33,18 +32,21 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
   @ViewChild("componentAnchor", { read: ViewContainerRef })
   componentAnchor!: ViewContainerRef;
 
-  private componentRefs: ComponentRef<Component>[] = [];
+  private ref: ComponentRef<Component> = null;
 
-  constructor(private resolver: ComponentFactoryResolver, private qingCore: QingCore) {}
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    @Inject(PixoworCore) private pixoworCore: PixoworCore
+  ) {}
 
   ngAfterViewInit() {
     // 当某个插槽动态插入组件，需要更新视图
-    this.qingCore.On(RendererEvents.UPDATE_SLOT_VIEW, (event: RenderderEvent) => {
-      if (event.placement === this.placement) {
+    this.pixoworCore.workspace.on(UIEvents.INJECT_SLOT, (placement: Placements) => {
+      if (placement === this.placement) {
         // https://segmentfault.com/a/1190000013972657
         // ExpressionChangedAfterItHasBeenCheckedError error
         Promise.resolve(null).then(() => {
-          this.renderComponent(event.placement);
+          this.renderComponent(placement);
         });
       }
     });
@@ -53,21 +55,18 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
   renderComponent(placement: string) {
     this.componentAnchor.clear();
 
-    const components = this.qingCore.Invoke(RendererFunctions.GET_PLACEMENT_COMPONENTS, placement);
+    const component = this.pixoworCore.workspace.getSlotComponent(placement);
 
-    if (components && components.length > 0) {
-      (components as Type<Component>[]).forEach((component) => {
-        console.log(`>> Renderer Plugin ${component.name} in ${placement}`);
-        const componentFactory = this.resolver.resolveComponentFactory(component);
-        const ref = this.componentAnchor.createComponent(componentFactory);
-        this.componentRefs.push(ref);
-      });
+    if (component) {
+      console.log(`>> Renderer Plugin ${component.name} in ${placement}`);
+      const componentFactory = this.resolver.resolveComponentFactory(component);
+      this.ref = this.componentAnchor.createComponent(componentFactory);
     }
   }
 
   ngOnDestroy() {
-    for (let ref of this.componentRefs) {
-      ref.destroy();
+    if (this.ref) {
+      this.ref.destroy();
     }
   }
 }
@@ -75,6 +74,6 @@ export class RendererComponent implements AfterViewInit, OnDestroy {
 @NgModule({
   declarations: [RendererComponent],
   exports: [RendererComponent],
-  providers: [QingCore],
+  providers: [PixoworCore],
 })
 export class RendererModule {}

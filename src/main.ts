@@ -9,8 +9,10 @@ import "reflect-metadata";
 
 import * as path from "path";
 import * as fs from "fs";
-import { app, BrowserWindow, ipcMain } from "electron";
+import * as url from "url";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import installExtension, { ANGULARJS_BATARANG } from "electron-devtools-installer";
+
 import Startup from "@launcher/bootstrap";
 import { Container } from "typedi";
 import { autoUpdater } from "electron-updater";
@@ -28,6 +30,7 @@ const { fork } = require("child_process");
 /** -------------------- Env ------------------------*/
 global.nodeEnv = process.env.NODE_ENV;
 global.pathRuntime = checkEnvFiles().pathRuntime;
+console.log("🚀 ~ file: main.ts ~ line 33 ~ global.pathRuntime", global.pathRuntime);
 
 // TODO: IpcMainProcess
 // global.ipcMainProcess = new IpcMainProcess(ipcMain);
@@ -105,6 +108,24 @@ export default class AppUpdater {
   }
 }
 
+function confirmAndRelaunch(e) {
+  // dialog options
+  const messageBoxOptions = {
+    type: "question",
+    buttons: ["Cancel", "Relaunch"],
+    title: "This will relaunch the app",
+    message: "Are you sure to relaunch?",
+  };
+  dialog.showMessageBox(null, messageBoxOptions).then((data) => {
+    if (data.response == 0) {
+      e.preventDefault();
+    } else {
+      app.relaunch();
+      app.exit(0);
+    }
+  });
+}
+
 app.whenReady().then(async () => {
   const appService = new BrowserService(
     "io-service",
@@ -124,6 +145,40 @@ app.whenReady().then(async () => {
     .catch((err) => console.log("An error occurred: ", err));
 
   console.log("WindowService: ", windowService);
+
+  ipcMain.on("relaunch", (e) => {
+    confirmAndRelaunch(e);
+  });
+
+  ipcMain.on("openSubWindow", () => {
+    const windowDefinition = {
+      name: "test",
+      config: {
+        url: url.format({
+          pathname: path.resolve(
+            app.getPath("userData"),
+            "plugins/qing-subwindow-test-plugin/index.html"
+          ),
+          protocol: "file:",
+          slashes: true,
+        }),
+        options: {
+          width: 800,
+          height: 600,
+          show: true,
+          webPreferences: {
+            webSecurity: false,
+            nodeIntegration: true,
+            enableRemoteModule: true,
+            affinity: "",
+            webviewTag: true,
+          },
+        },
+      },
+    };
+    windowService.processWindows([windowDefinition]);
+    windowService.openWindow({ windowName: "test" });
+  });
 
   // const mainWin = windowService.getCurrentWindow();
 

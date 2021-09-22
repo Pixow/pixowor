@@ -33,3 +33,11 @@ error-handler.service.ts:6 ErrorHandlerService ERROR!  Error: Uncaught (in promi
 TypeError: Cannot read property 'ɵmod' of undefined
     at getNgModuleDef (core.js:1021)
 ```
+
+https://tiberiuzuld.github.io/angular-gridster2/compact
+
+https://github.com/angular-split
+
+### 绝对路径转换
+
+https://ekoneko.github.io/blog/electron/try-electron/

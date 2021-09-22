@@ -1,0 +1,8 @@
+{
+  "pid": "pixowor-dialog",
+  "name": "Pixowor Dialog Plugin",
+  "author": "moJiXiang",
+  "version": "1.0.0",
+  "description": "Dialog plugin for pixowor",
+  "minAppVersion": "1.0.0"
+}

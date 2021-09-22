@@ -1,26 +1,23 @@
-import { QingCore, Plugin, RendererFunctions } from "qing-core";
+import { Component, Type } from "@angular/core";
+import { PixoworCore, Plugin } from "pixowor-core";
 import { SigninComponent } from "./signin.component";
+import manifest from "./manifest.json";
 export class SigninPlugin extends Plugin {
-  name = "Signin";
-  version = "1.0.0";
-  description = "登录插件";
-
-  constructor(private qingCore: QingCore) {
-    super();
-  }
-
-  getDependencies(): string[] {
-    return ["Dialog@1.0.0"];
+  constructor(pixoworCore: PixoworCore) {
+    super(pixoworCore, manifest);
   }
 
   activate(): void {
-    this.qingCore.Invoke(RendererFunctions.REGIST_COMPONENT, "Signin", SigninComponent);
-
-    const user = this.qingCore.Get("user");
-    this.qingCore.RegistVariable(this.getPluginIdentify(), "user", user);
+    this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
+    this.registerComponent("Signin", <Component>SigninComponent);
+    const user = this.get("user");
+    this.registerVariable("user", user);
 
     // TODO: 注入menu 登录item
   }
 
-  deactivate(): void {}
+  deactivate(): void {
+    this.unRrgisterComponent("Signin");
+    this.unRegisterVariable("user");
+  }
 }

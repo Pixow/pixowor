@@ -1,10 +1,10 @@
-import { Component, Injector, OnInit } from "@angular/core";
-import { QingCore } from "qing-core";
+import { Component, Inject, Injector, OnInit } from "@angular/core";
+import { PixoworCore, UIEvents } from "pixowor-core";
 
 export interface TabviewItem {
-  id: number;
+  id: string;
   header: string;
-  content: string;
+  content?: string;
   component?: any;
 }
 
@@ -16,15 +16,14 @@ export interface TabviewItem {
 export class EditorAreaComponent implements OnInit {
   activeIndex = 1;
 
-  public items: TabviewItem[] = [];
+  public items: { [k: string]: TabviewItem } = {};
 
-  constructor(private qingCore: QingCore) {}
+  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) {}
 
   ngOnInit() {
     // this.pluginStore.getObserver("stage").subscribe(items => {
     //   this.items = <TabviewItem[]>items;
     // })
-
     // this.pluginStore.addEventListener("ShowInStage", (event: Event) => {
     //   const item = (event as any).data;
     //   console.log(
@@ -40,9 +39,24 @@ export class EditorAreaComponent implements OnInit {
     //     this.activeIndex = index;
     //   }
     // });
+    // this.pixoworCore.stateManager.getVariable("EditorAreaComponents").subscribe((data) => {
+    //   this.items = this.items.concat(data.component);
+    // });
 
-    this.qingCore.GetVariable("EditorAreaComponents").subscribe((data) => {
-      this.items = this.items.concat(data.component);
+    this.pixoworCore.workspace.on(UIEvents.INJECT_EDITOR_AREA, (args) => {
+      const { id, componentName, header } = args;
+
+      const component = this.pixoworCore.stateManager.getComponent(componentName);
+
+      this.items[id] = {
+        id,
+        header,
+        component,
+      };
     });
+  }
+
+  public getItems() {
+    return Object.values(this.items);
   }
 }

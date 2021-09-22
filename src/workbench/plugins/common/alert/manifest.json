@@ -1,0 +1,8 @@
+{
+  "pid": "pixowor-alert",
+  "name": "Pixowor Alert Plugin",
+  "author": "moJiXiang",
+  "version": "1.0.0",
+  "description": "Alert plugin for pixowor",
+  "minAppVersion": "1.0.0"
+}

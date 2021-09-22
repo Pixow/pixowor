@@ -1,12 +1,12 @@
 <div class="stage">
-  <!-- <p-tabView [styleClass]="'TQ-tabview'" [controlClose]="true" [activeIndex]="activeIndex">
+  <p-tabView [styleClass]="'TQ-tabview'" [controlClose]="true" [activeIndex]="activeIndex">
     <p-tabPanel
       [cache]="false"
       [header]="item.header"
-      *ngFor="let item of items; let i = index"
+      *ngFor="let item of getItems(); let i = index"
       [selected]="i == activeIndex"
     >
       <ng-container *ngComponentOutlet="item.component; injector: item.injector"></ng-container>
     </p-tabPanel>
-  </p-tabView> -->
+  </p-tabView>
 </div>

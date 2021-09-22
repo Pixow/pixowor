@@ -1,6 +1,5 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectorRef, Component, NgModule, OnInit } from "@angular/core";
-import { QingCore } from "qing-core";
 import { TooltipModule } from "primeng/tooltip";
 
 @Component({

@@ -1,21 +1,18 @@
-import { Plugin, QingCore, RendererFunctions } from "qing-core";
+import { Component, Type } from "@angular/core";
+import { Placements, Plugin, PixoworCore } from "pixowor-core";
 import { SidebarComponent } from "./sidebar";
-
+import manifest from "./manifest.json";
 export class SidebarPlugin extends Plugin {
-  name = "Sidebar";
-  version = "1.0.0";
-  description = "侧边栏";
-
-  constructor(private qingCore: QingCore) {
-    super();
-  }
-
-  getDependencies(): string[] {
-    return [];
+  constructor(pixoworCore: PixoworCore) {
+    super(pixoworCore, manifest);
   }
 
   activate(): void {
-    this.qingCore.Invoke(RendererFunctions.REGIST_COMPONENT, "sidebar", SidebarComponent);
+    this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
+    this.pixoworCore.workspace.registerSlotComponent(
+      Placements.SIDEBAR,
+      <Type<Component>>SidebarComponent
+    );
   }
 
   deactivate(): void {}

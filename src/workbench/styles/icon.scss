@@ -1,11 +1,11 @@
-.qing {
+.pixowor {
   width: 24px;
   height: 24px;
   display: inline-block;
   position: relative;
 }
 
-.qing-after {
+.pixowor-after {
   content: "";
   position: absolute;
   top: 0;
@@ -14,144 +14,144 @@
   width: 100%;
 }
 
-.qing-resmanager::after {
-  @extend .qing-after;
+.pixowor-resmanager::after {
+  @extend .pixowor-after;
   background: url("/assets/images/resmanager.svg") center center;
   background-size: 100%;
 }
 
-.qing-resmanager:hover,
-.qing-resmanager.active,
-.qing-resmanager.focus {
+.pixowor-resmanager:hover,
+.pixowor-resmanager.active,
+.pixowor-resmanager.focus {
   background: url("/assets/images/resmanager-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-editor::after {
-  @extend .qing-after;
+.pixowor-editor::after {
+  @extend .pixowor-after;
   background: url("/assets/images/editor.svg") center center;
   background-size: 100%;
 }
 
-.qing-editor:hover,
-.qing-editor.active,
-.qing-editor.focus {
+.pixowor-editor:hover,
+.pixowor-editor.active,
+.pixowor-editor.focus {
   background: url("/assets/images/editor-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-game::after {
-  @extend .qing-after;
+.pixowor-game::after {
+  @extend .pixowor-after;
   background: url("/assets/images/game.svg") center center;
   background-size: 100%;
 }
 
-.qing-game:hover,
-.qing-game.active,
-.qing-game.focus {
+.pixowor-game:hover,
+.pixowor-game.active,
+.pixowor-game.focus {
   background: url("/assets/images/game-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-plug::after {
-  @extend .qing-after;
+.pixowor-plug::after {
+  @extend .pixowor-after;
   background: url("/assets/images/plug.svg") center center;
   background-size: 100%;
 }
 
-.qing-plug:hover,
-.qing-plug.active,
-.qing-plug.focus {
+.pixowor-plug:hover,
+.pixowor-plug.active,
+.pixowor-plug.focus {
   background: url("/assets/images/plug-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-modules::after {
-  @extend .qing-after;
+.pixowor-modules::after {
+  @extend .pixowor-after;
   background: url("/assets/images/modules.svg") center center;
   background-size: 100%;
 }
 
-.qing-modules:hover,
-.qing-modules.active,
-.qing-modules.focus {
+.pixowor-modules:hover,
+.pixowor-modules.active,
+.pixowor-modules.focus {
   background: url("/assets/images/modules-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-group::after {
-  @extend .qing-after;
+.pixowor-group::after {
+  @extend .pixowor-after;
   background: url("/assets/images/group.svg") center center;
   background-size: 100%;
 }
 
-.qing-group:hover,
-.qing-group.active,
-.qing-group.focus {
+.pixowor-group:hover,
+.pixowor-group.active,
+.pixowor-group.focus {
   background: url("/assets/images/group-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-market::after {
-  @extend .qing-after;
+.pixowor-market::after {
+  @extend .pixowor-after;
   background: url("/assets/images/market.svg") center center;
   background-size: 100%;
 }
 
-.qing-market:hover,
-.qing-market:active,
-.qing-market:focus {
+.pixowor-market:hover,
+.pixowor-market:active,
+.pixowor-market:focus {
   background: url("/assets/images/market-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-function::after {
-  @extend .qing-after;
+.pixowor-function::after {
+  @extend .pixowor-after;
   background: url("/assets/images/function.svg") center center;
   background-size: 100%;
 }
 
-.qing-function:hover,
-.qing-function:active,
-.qing-function:focus {
+.pixowor-function:hover,
+.pixowor-function:active,
+.pixowor-function:focus {
   background: url("/assets/images/function-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-user::after {
-  @extend .qing-after;
+.pixowor-user::after {
+  @extend .pixowor-after;
   background: url("/assets/images/user.svg") center center;
   background-size: 100%;
 }
 
-.qing-user:hover,
-.qing-user:active,
-.qing-user:focus {
+.pixowor-user:hover,
+.pixowor-user:active,
+.pixowor-user:focus {
   background: url("/assets/images/user-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-close::after {
-  @extend .qing-after;
+.pixowor-close::after {
+  @extend .pixowor-after;
   background: url("/assets/images/close.svg") center center;
   background-size: 100%;
 }
-.qing-close:hover,
-.qing-close:active,
-.qing-close:focus {
-  @extend .qing-after;
+.pixowor-close:hover,
+.pixowor-close:active,
+.pixowor-close:focus {
+  @extend .pixowor-after;
   background: url("/assets/images/close-active.svg") center center;
   background-size: 100%;
 }
 
-.qing-settings::after {
-  @extend .qing-after;
+.pixowor-settings::after {
+  @extend .pixowor-after;
   background: url("/assets/images/settings.svg") center center;
   background-size: 100%;
 }
-.qing-settings:hover,
-.qing-settings:active,
-.qing-settings:focus {
+.pixowor-settings:hover,
+.pixowor-settings:active,
+.pixowor-settings:focus {
   background: url("/assets/images/settings-active.svg") center center;
   background-size: 100%;
 }

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CarouselModule } from "primeng/carousel";
 import { CheckboxModule } from "primeng/checkbox";
 import { ProgressBarModule } from "primeng/progressbar";
-import { QingCore } from "qing-core";
+import { PixoworCore } from "pixowor-core";
 
 import { SigninComponent } from "./signin.component";
 
@@ -18,6 +18,6 @@ import { SigninComponent } from "./signin.component";
     CarouselModule,
     CheckboxModule,
   ],
-  providers: [QingCore],
+  providers: [PixoworCore],
 })
 export class SigninModule {}

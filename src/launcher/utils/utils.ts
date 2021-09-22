@@ -1,8 +1,6 @@
 import { app, Notification } from "electron";
 import * as path from "path";
 import * as fsa from "fs-extra";
-import zhCNObjs from "./i18n/zh-CN.json";
-import enObjs from "./i18n/en.json";
 export interface INotify {
   title: string;
   body: string;
@@ -72,14 +70,14 @@ export function checkEnvFiles() {
       _path: path.join(i18Dir, "zh-CN.json"),
       isDir: false,
       exec: function () {
-        fsa.writeJsonSync(path.join(i18Dir, "zh-CN.json"), zhCNObjs);
+        fsa.writeJsonSync(path.join(i18Dir, "zh-CN.json"), { login: "登录" });
       },
     },
     {
       _path: path.join(i18Dir, "en.json"),
       isDir: false,
       exec: function () {
-        fsa.writeJsonSync(path.join(i18Dir, "en.json"), enObjs);
+        fsa.writeJsonSync(path.join(i18Dir, "en.json"), { login: "Login" });
       },
     },
     { _path: path.join(pathRuntime, "error.log"), isDir: false },

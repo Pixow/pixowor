@@ -1,0 +1,12 @@
+{
+  "pid": "pixowor-plugins-manager-plugin",
+  "name": "Pixowor Plugins Manager plugin",
+  "author": "moJiXiang",
+  "version": "1.0.0",
+  "description": "Plugins manager for pixowor",
+  "minAppVersion": "1.0.0",
+  "dependencies": {
+    "pixowor-toast": "1.0.0",
+    "pixowor-dialog": "1.0.0"
+  }
+}

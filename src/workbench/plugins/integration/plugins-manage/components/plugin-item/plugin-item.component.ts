@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from "@angular/core";
-import { Plugin } from "qing-core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MenuItem } from "primeng/api";
 import { PluginLike } from "../../plugins-manage.component";
 

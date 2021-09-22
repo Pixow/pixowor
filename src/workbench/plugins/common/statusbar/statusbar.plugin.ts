@@ -1,22 +1,24 @@
-import { Event, Plugin, QingCore, RendererFunctions } from "qing-core";
+import { Component } from "@angular/core";
+import { Plugin, PixoworCore } from "pixowor-core";
 import { StatusbarComponent } from "./statusbar";
+import manifest from "./manifest.json";
 
 export class StatusbarPlugin extends Plugin {
-  name = "Statusbar";
+  pid = "pixowor-statusbar";
+  name = "Qing Statusbar";
+  author = "Qing";
   version = "1.0.0";
-  description = "状态栏";
+  description = "Qing editor statusbar";
+  minAppVersion = "1.0.0";
 
-  constructor(private qingCore: QingCore) {
-    super();
-    this.qingCore.RegistVariable(this.getPluginIdentify(), "statusbar", {});
-  }
-
-  getDependencies(): string[] {
-    return [];
+  constructor(pixoworCore: PixoworCore) {
+    super(pixoworCore, manifest);
   }
 
   activate(): void {
-    this.qingCore.Invoke(RendererFunctions.REGIST_COMPONENT, "statusbar", StatusbarComponent);
+    this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
+    this.pixoworCore.stateManager.registerVariable("statusbar", {});
+    this.pixoworCore.stateManager.registerComponent("statusbar", <Component>StatusbarComponent);
   }
 
   deactivate(): void {}
