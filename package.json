@@ -4,7 +4,7 @@
   "version": "0.0.2",
   "description": "轻宇宙编辑器, 插件化架构设计",
   "main": "./dist/main.js",
-  "repository": "git@code.apowo.com:PixelPai/qing.git",
+  "repository": "git@github.com:Pixow/pixowor.git",
   "author": "Apowo Network Technology Co.,Ltd.",
   "license": "MIT",
   "scripts": {
@@ -107,7 +107,6 @@
     "zone.js": "^0.11.3"
   },
   "dependencies": {
-    "@PixelPai/game-core": "^1.0.861",
     "@ngneat/transloco": "2.22.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-json-storage": "^4.5.0",
@@ -117,7 +116,8 @@
     "fs-extra": "^10.0.0",
     "module-alias": "^2.2.2",
     "node-static": "^0.7.11",
-    "pixowor-core": "^1.0.12",
+    "pixow-api": "git+ssh://git@github.com:Pixow/pixow-api.git#develop",
+    "pixowor-core": "git+ssh://git@github.com:Pixow/pixowor-core.git#develop",
     "qiniu": "^7.3.2",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",

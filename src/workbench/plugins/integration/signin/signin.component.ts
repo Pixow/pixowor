@@ -1,5 +1,6 @@
 import { Component, Inject } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import storage from "electron-json-storage";
 import { PixoworCore, QEvent, UIEvents } from "pixowor-core";
 interface Introduce {
   title: string;
@@ -69,6 +70,15 @@ export class SigninComponent {
         const { data } = res;
         this.pixoworCore.storageManager.set("user", data);
         this.pixoworCore.stateManager.getVariable("user").next(data);
+
+        const settings = storage.getSync("settings");
+        storage.set("settings", Object.assign(settings, { token: data.token }), (error) => {
+          if (error) {
+            console.error(error);
+            return;
+          }
+        });
+
         this.pixoworCore.setPixowApiToken(data.token);
         this.pixoworCore.workspace.emit(UIEvents.CLOSE_DIALOG);
       })

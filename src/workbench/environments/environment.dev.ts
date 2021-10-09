@@ -1,4 +1,7 @@
+import { Area } from "pixow-api";
+
 export const Environment = {
+  area: Area.CNDEV,
   production: false,
   environment: "DEVELOP",
   bucket: "pixelpai-dev",

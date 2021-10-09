@@ -150,15 +150,13 @@ app.whenReady().then(async () => {
     confirmAndRelaunch(e);
   });
 
-  ipcMain.on("openSubWindow", () => {
+  ipcMain.on("openSubWindow", (e, args) => {
+    const { pluginId, name } = args;
     const windowDefinition = {
-      name: "test",
+      name,
       config: {
         url: url.format({
-          pathname: path.resolve(
-            app.getPath("userData"),
-            "plugins/qing-subwindow-test-plugin/index.html"
-          ),
+          pathname: path.resolve(app.getPath("userData"), `plugins/${pluginId}/index.html`),
           protocol: "file:",
           slashes: true,
         }),
@@ -177,7 +175,7 @@ app.whenReady().then(async () => {
       },
     };
     windowService.processWindows([windowDefinition]);
-    windowService.openWindow({ windowName: "test" });
+    windowService.openWindow({ windowName: name });
   });
 
   // const mainWin = windowService.getCurrentWindow();

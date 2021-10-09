@@ -14,25 +14,25 @@ if (process.env.NODE_ENV === "production") {
   productName = package.productName;
   artifactName = productName + "-v${version}.${ext}";
   name = package.name;
-  shortcutName = "QingUniverse";
+  shortcutName = "Pixowor";
   url = "http://www.tooqing.com/download/editor/";
-  appId = "com.apowo.qing";
+  appId = "com.apowo.pixowor";
 } else if (process.env.NODE_ENV === "release") {
   output = "./output/release";
   productName = `${package.productName}-RELEASE`;
   artifactName = productName + "-v${version}.${ext}";
   name = `${package.name}-release`;
-  shortcutName = "QingUniverseRelease";
+  shortcutName = "PixoworRelease";
   url = "http://a.tooqing.com/download/editor/";
-  appId = "com.apowo.qing_release";
+  appId = "com.apowo.pixowor_release";
 } else {
   output = "./output/develop";
   productName = `${package.productName}-DEVELOP`;
   artifactName = productName + "-v${version}.${ext}";
   name = `${package.name}-develop`;
-  shortcutName = "QingUniverseDevelop";
+  shortcutName = "PixoworDevelop";
   url = "http://a.tooqing.com/download/editordev/";
-  appId = "com.apowo.qing_develop";
+  appId = "com.apowo.pixowor_develop";
 }
 
 let builderConfig = {

@@ -6,6 +6,7 @@ import { NgxsModule } from "@ngxs/store";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { remote } from "electron";
 import * as path from "path";
+import storage from "electron-json-storage";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -16,7 +17,7 @@ import { MessageService } from "primeng/api";
 import { Environment } from "@workbench/environments/environment";
 import { SharedModule } from "@workbench/app/shared/shared.module";
 import { DialogService } from "primeng/dynamicdialog";
-import { PixoworCore, Env } from "pixowor-core";
+import { PixoworCore, Settings } from "pixowor-core";
 import { Area } from "pixow-api";
 import { PLUGIN_CONF_FILE, PLUGIN_DIR, PLUGIN_SERVER } from "./app.config";
 import { PluginsManageModule } from "@workbench/plugins/integration/plugins-manage/plugins-manage.module";
@@ -25,15 +26,13 @@ import { TranslocoRootModule } from "./transloco/transloco-root.module";
 import pkg from "../../../package.json";
 
 function initPixoworCore() {
-  const env: Env = Object.assign(Environment, {
-    APP_PATH: remote.app.getAppPath(),
-    APP_DATA_PATH: remote.app.getPath("appData"),
-    USER_DATA_PATH: remote.app.getPath("userData"),
-    TEMP_PATH: remote.app.getPath("temp"),
-    area: Area.CNDEV,
-  });
+  storage.setDataPath(path.join(remote.app.getPath("userData"), "runtime"));
+  const settings = storage.getSync("settings");
+  console.log("🚀 ~ file: app.module.ts ~ line 30 ~ initPixoworCore ~ settings", settings);
 
-  return new PixoworCore(pkg.version, env);
+  storage.set("settings", Object.assign(settings, Environment, { version: pkg.version }), () => {});
+
+  return new PixoworCore(Object.assign(settings, Environment) as Settings);
 }
 
 @NgModule({

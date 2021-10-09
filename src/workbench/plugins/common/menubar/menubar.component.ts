@@ -96,12 +96,12 @@ export class MenubarComponent implements OnInit, AfterViewInit {
         items: [
           { label: this.transloco.translate("menubar.gettingstarted") },
           { label: this.transloco.translate("menubar.luadoc") },
-          {
-            label: "测试单窗口打开",
-            command: () => {
-              ipcRenderer.send("openSubWindow");
-            },
-          },
+          // {
+          //   label: "测试单窗口打开",
+          //   command: () => {
+          //     ipcRenderer.send("openSubWindow", {component: ""});
+          //   },
+          // },
         ],
       },
       {
@@ -173,12 +173,23 @@ export class MenubarComponent implements OnInit, AfterViewInit {
 
     // TODO: 参数应该是插件名称，menubar给插件分配col和insertIndex
     this.pixoworCore.workspace.on(UIEvents.INJECT_PLUGIN_MENU, (args) => {
-      const { pid, label, command } = args;
-      this.menuItems[3].items.push({
-        id: pid,
-        label,
-        command,
-      });
+      const { pid, label, type, command } = args;
+
+      if (type === "subwindow") {
+        this.menuItems[3].items.push({
+          id: pid,
+          label,
+          command: () => {
+            ipcRenderer.send("openSubWindow", { pluginId: pid, name: label });
+          },
+        });
+      } else {
+        this.menuItems[3].items.push({
+          id: pid,
+          label,
+          command,
+        });
+      }
 
       // 更新UI
       this.cd.detectChanges();
@@ -187,10 +198,6 @@ export class MenubarComponent implements OnInit, AfterViewInit {
     this.pixoworCore.workspace.on(UIEvents.UNINJECT_PLUGIN_MENU, (args) => {
       const { pid } = args;
       const idx = this.menuItems[3].items.findIndex((item) => item.id === pid);
-      console.log(
-        "🚀 ~ file: menubar.component.ts ~ line 181 ~ MenubarComponent ~ this.pixoworCore.workspace.on ~ idx",
-        idx
-      );
       this.menuItems[3].items.splice(idx, 1);
 
       // 更新UI

@@ -10,10 +10,12 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "target": "ES5",
+    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types",
       "node_modules/pixowor-core/dist/types/src",
-      "node_modules/electron-updater/out"
+      "node_modules/electron-updater/out",
+      "node_modules/@PixelPai/game-core/typings"
     ],
     "types": ["node", "jest", "long"],
     "baseUrl": ".",

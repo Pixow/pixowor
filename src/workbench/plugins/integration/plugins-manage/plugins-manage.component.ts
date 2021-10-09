@@ -218,8 +218,8 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
     }
     const zipFileName = `${pid}_${version}.zip`;
 
-    const uri = new url.URL(zipFileName, this.pixoworCore.environment.WEB_RESOURCE_URI);
-    const output = path.join(this.pixoworCore.environment.USER_DATA_PATH, zipFileName);
+    const uri = new url.URL(zipFileName, this.pixoworCore.settings.WEB_RESOURCE_URI);
+    const output = path.join(this.pixoworCore.settings.USER_DATA_PATH, zipFileName);
 
     msgc.send(IO_SERVICE, "download-install-plugin", {
       plugin,
