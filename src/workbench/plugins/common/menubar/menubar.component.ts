@@ -180,7 +180,12 @@ export class MenubarComponent implements OnInit, AfterViewInit {
           id: pid,
           label,
           command: () => {
-            ipcRenderer.send("openSubWindow", { pluginId: pid, name: label });
+            ipcRenderer.send("openSubWindow", {
+              pluginId: pid,
+              name: label,
+              width: args.width,
+              height: args.height,
+            });
           },
         });
       } else {

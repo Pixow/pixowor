@@ -229,6 +229,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
     });
   }
 
+  // TODO: 选择目录进行上传 avatar-manage-plugin 有assets目录，这里没有读子目录中的文件
   // 上传到PluginServer进行本地开发调试
   public uploadPluginForDevelop(event) {
     const files = event.files;

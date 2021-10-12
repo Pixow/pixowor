@@ -9,6 +9,7 @@ export function getWindowDefinition(
   name: string,
   port: number,
   options: Electron.BrowserWindowConstructorOptions = {},
+  menubarVisibility: boolean,
   setup?: WindowConfigFunction,
   onClosed?: WindowConfigFunction
 ): WindowDefinition {
@@ -29,6 +30,7 @@ export function getWindowDefinition(
     config: {
       url: entry,
       options,
+      menubarVisibility,
       ...(setup && { setup }),
       ...(onClosed && { onClosed }),
     },
@@ -73,6 +75,7 @@ export default function Startup() {
     "workbench",
     4301,
     workbenchOptions,
+    true,
     (window: Electron.BrowserWindow) => {
       console.log("run window setup");
       if (serve) {

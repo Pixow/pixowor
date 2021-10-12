@@ -6038,6 +6038,11 @@ get-stream@^6.0.0:
   resolved "https://registry.nlark.com/get-stream/download/get-stream-6.0.1.tgz#a262d8eef67aced57c2852ad6167526a43cbf7b7"
   integrity sha1-omLY7vZ6ztV8KFKtYWdSakPL97c=
 
+get-them-args@1.3.2:
+  version "1.3.2"
+  resolved "https://registry.nlark.com/get-them-args/download/get-them-args-1.3.2.tgz#74a20ba8a4abece5ae199ad03f2bcc68fdfc9ba5"
+  integrity sha1-dKILqKSr7OWuGZrQPyvMaP38m6U=
+
 get-uri@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/get-uri/-/get-uri-2.0.4.tgz#d4937ab819e218d4cb5ae18e4f5962bef169cc6a"
@@ -7472,6 +7477,14 @@ keyv@^3.0.0:
   integrity sha1-7MIoSG9pmR5J6UdkhaW+Ho/FxNk=
   dependencies:
     json-buffer "3.0.0"
+
+kill-port@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.npm.taobao.org/kill-port/download/kill-port-1.6.1.tgz#560fe79484583bdf3a5e908557dae614447618aa"
+  integrity sha1-Vg/nlIRYO986XpCFV9rmFER2GKo=
+  dependencies:
+    get-them-args "1.3.2"
+    shell-exec "1.0.2"
 
 killable@^1.0.1:
   version "1.0.1"
@@ -11194,6 +11207,11 @@ shebang-regex@^3.0.0:
   version "3.0.0"
   resolved "https://registry.nlark.com/shebang-regex/download/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha1-rhbxZE2HPsrYQ7AwexQzYtTEIXI=
+
+shell-exec@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npm.taobao.org/shell-exec/download/shell-exec-1.0.2.tgz#2e9361b0fde1d73f476c4b6671fa17785f696756"
+  integrity sha1-LpNhsP3h1z9HbEtmcfoXeF9pZ1Y=
 
 shell-quote@^1.6.1:
   version "1.7.2"

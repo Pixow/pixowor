@@ -13,6 +13,7 @@ export type WindowConfigFunction = (window: Electron.BrowserWindow) => void;
 export interface WindowConfig {
   url: string;
   options: Electron.BrowserWindowConstructorOptions;
+  menubarVisibility: boolean;
   setup?: WindowConfigFunction;
   onClosed?: WindowConfigFunction;
 }
@@ -63,6 +64,8 @@ export default class WindowService {
 
     let window = this.createWindow(config);
     if (window === null) return null;
+
+    window.setMenuBarVisibility(config.menubarVisibility);
 
     this.addWindow(windowName, window.id);
     return window;

@@ -85,6 +85,15 @@ export function checkEnvFiles() {
       _path: path.join(pathRuntime, "settings.json"),
       isDir: false,
       exec: function () {
+        console.log("------------------init settings--------------------");
+        console.log({
+          lang: "zh-CN",
+          APP_PATH: app.getAppPath(),
+          APP_DATA_PATH: app.getPath("appData"),
+          USER_DATA_PATH: app.getPath("userData"),
+          TEMP_PATH: app.getPath("temp"),
+        });
+
         fsa.writeJsonSync(path.join(pathRuntime, "settings.json"), {
           lang: "zh-CN",
           APP_PATH: app.getAppPath(),

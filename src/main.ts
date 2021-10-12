@@ -23,6 +23,7 @@ import { checkEnvFiles } from "@launcher/utils/utils";
 import ViewConf from "@launcher/lib/view-conf";
 import { BrowserService, ChildProcessPool } from "electron-re";
 const { fork } = require("child_process");
+const kill = require("kill-port");
 
 // import { CustomNodeJsGlobal } from "global";
 // declare var global: CustomNodeJsGlobal;
@@ -47,6 +48,8 @@ function StartUserDataServer() {
 
 function StopUserDataServer() {
   global.userDataStaticServiceProcess.kill();
+
+  kill(45326, "tcp").then(() => {});
 }
 
 export default class AppUpdater {
@@ -151,7 +154,9 @@ app.whenReady().then(async () => {
   });
 
   ipcMain.on("openSubWindow", (e, args) => {
-    const { pluginId, name } = args;
+    console.log("e: ", e);
+    console.log("args: ", args);
+    const { pluginId, name, width, height } = args;
     const windowDefinition = {
       name,
       config: {
@@ -161,9 +166,12 @@ app.whenReady().then(async () => {
           slashes: true,
         }),
         options: {
-          width: 800,
-          height: 600,
+          width: width || 800,
+          height: height || 600,
           show: true,
+          title: name,
+          resizable: false,
+          fullscreenable: false,
           webPreferences: {
             webSecurity: false,
             nodeIntegration: true,
@@ -172,6 +180,7 @@ app.whenReady().then(async () => {
             webviewTag: true,
           },
         },
+        menubarVisibility: false,
       },
     };
     windowService.processWindows([windowDefinition]);
