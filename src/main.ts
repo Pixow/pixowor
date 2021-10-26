@@ -180,7 +180,8 @@ app.whenReady().then(async () => {
             webviewTag: true,
           },
         },
-        menubarVisibility: false,
+        menubarVisibility: true,
+        // menubarVisibility: false,
       },
     };
     windowService.processWindows([windowDefinition]);

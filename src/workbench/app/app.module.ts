@@ -18,7 +18,6 @@ import { Environment } from "@workbench/environments/environment";
 import { SharedModule } from "@workbench/app/shared/shared.module";
 import { DialogService } from "primeng/dynamicdialog";
 import { PixoworCore, Settings } from "pixowor-core";
-import { Area } from "pixow-api";
 import { PLUGIN_CONF_FILE, PLUGIN_DIR, PLUGIN_SERVER } from "./app.config";
 import { PluginsManageModule } from "@workbench/plugins/integration/plugins-manage/plugins-manage.module";
 import { TranslocoRootModule } from "./transloco/transloco-root.module";

@@ -37,6 +37,7 @@ import * as primengContextmenu from "primeng/contextmenu";
 import * as gameCapsule from "game-capsule";
 import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
 import * as Transloco from "@ngneat/transloco";
+import * as gameCore from "@PixelPai/game-core";
 
 export const COMMON_DEPS = {
   rxjs,
@@ -54,6 +55,7 @@ export const COMMON_DEPS = {
   "game-capsule": gameCapsule,
   "@materia-ui/ngx-monaco-editor": ngxMonacoEditor,
   "@ngneat/transloco": Transloco,
+  "@PixelPai/game-core": gameCore,
 };
 
 Object.keys(COMMON_DEPS).forEach((dep) => (window as any).define(dep, [], () => COMMON_DEPS[dep]));

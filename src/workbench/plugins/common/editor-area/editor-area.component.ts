@@ -18,6 +18,8 @@ export class EditorAreaComponent implements OnInit {
 
   public items: { [k: string]: TabviewItem } = {};
 
+  component: any;
+
   constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) {}
 
   ngOnInit() {
@@ -48,11 +50,13 @@ export class EditorAreaComponent implements OnInit {
 
       const component = this.pixoworCore.stateManager.getComponent(componentName);
 
-      this.items[id] = {
-        id,
-        header,
-        component,
-      };
+      this.component = component;
+
+      // this.items[id] = {
+      //   id,
+      //   header,
+      //   component,
+      // };
     });
   }
 

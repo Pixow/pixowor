@@ -1,5 +1,5 @@
-<div class="stage">
-  <p-tabView [styleClass]="'TQ-tabview'" [controlClose]="true" [activeIndex]="activeIndex">
+<div class="container">
+  <!-- <p-tabView [styleClass]="'TQ-tabview'" [controlClose]="true" [activeIndex]="activeIndex">
     <p-tabPanel
       [cache]="false"
       [header]="item.header"
@@ -8,5 +8,6 @@
     >
       <ng-container *ngComponentOutlet="item.component; injector: item.injector"></ng-container>
     </p-tabPanel>
-  </p-tabView>
+  </p-tabView> -->
+  <ng-container *ngComponentOutlet="component"></ng-container>
 </div>
