@@ -2,7 +2,7 @@
   "pid": "pixowor-menubar",
   "name": "Pixowor Menubar Plugin",
   "author": "moJiXiang",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Menubar plugin for pixowor",
   "minAppVersion": "1.0.0",
   "dependencies": {

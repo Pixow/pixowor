@@ -4,6 +4,7 @@ import manifest from "./manifest.json";
 import en from "./i18n/en.json";
 import zhCN from "./i18n/zh-CN.json";
 import { Component, Type } from "@angular/core";
+import { NewGameProjectComponent } from "./new-game-project.component";
 export class MenubarPlugin extends Plugin {
   constructor(pixoworCore: PixoworCore) {
     super(pixoworCore, manifest);
@@ -29,6 +30,11 @@ export class MenubarPlugin extends Plugin {
     this.pixoworCore.workspace.registerSlotComponent(
       Placements.MENUBAR,
       <Type<Component>>MenubarComponent
+    );
+
+    this.pixoworCore.stateManager.registerComponent(
+      "NewGameProject",
+      <Component>NewGameProjectComponent
     );
 
     this.pixoworCore.workspace.emit(UIEvents.INJECT_SLOT, Placements.MENUBAR);

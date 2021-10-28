@@ -33,27 +33,22 @@ export class MenubarComponent implements OnInit, AfterViewInit {
           {
             label: this.transloco.translate("menubar.signout"),
           },
-          {
-            label: this.transloco.translate("menubar.savegame"),
-            command: () => {},
-          },
-          {
-            label: this.transloco.translate("menubar.buildsetting"),
-            command: () => {},
-          },
+
           {
             separator: true,
           },
           {
-            label: this.transloco.translate("menubar.newproject"),
+            label: this.transloco.translate("menubar.new_game_project"),
+            command: () => {
+              this.newGameProject();
+            },
+          },
+          {
+            label: this.transloco.translate("menubar.open_game_project"),
             command: () => {},
           },
           {
-            label: this.transloco.translate("menubar.openproject"),
-            command: () => {},
-          },
-          {
-            label: this.transloco.translate("menubar.saveproject"),
+            label: this.transloco.translate("menubar.save_game_project"),
             command: () => {},
           },
           {
@@ -207,6 +202,13 @@ export class MenubarComponent implements OnInit, AfterViewInit {
 
       // 更新UI
       this.cd.detectChanges();
+    });
+  }
+
+  public newGameProject() {
+    this.pixoworCore.workspace.openDialog("NewGameProject", {
+      header: "New Game Project",
+      width: "20%",
     });
   }
 

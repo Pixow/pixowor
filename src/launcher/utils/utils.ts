@@ -30,9 +30,10 @@ export function notifySend({ title, body, icon, delay }: INotify) {
 export function checkEnvFiles() {
   const env = process.env.NODE_ENV;
   const userDataPath = path.join(app.getPath("userData"));
-  const pathRuntime = path.join(userDataPath, "runtime");
-  const pluginsDir = path.join(userDataPath, "plugins");
-  const i18Dir = path.join(userDataPath, "i18n");
+  const pathRuntime = path.join(userDataPath, "Runtime");
+  const pluginsDir = path.join(userDataPath, "Plugins");
+  const gameProjectsDir = path.join(userDataPath, "Games");
+  const i18nDir = path.join(userDataPath, "i18n");
 
   const check = function ({
     _path,
@@ -43,6 +44,7 @@ export function checkEnvFiles() {
     isDir: boolean;
     exec?: Function;
   }) {
+    // 只有当用户环境 UserData 中不存在初始化配置，才会写文件，不然会把用户的生产配置给覆盖掉
     if (!fsa.existsSync(_path)) {
       if (isDir) {
         fsa.mkdirSync(_path);
@@ -57,7 +59,8 @@ export function checkEnvFiles() {
   [
     { _path: pathRuntime, isDir: true },
     { _path: pluginsDir, isDir: true },
-    { _path: i18Dir, isDir: true },
+    { _path: gameProjectsDir, isDir: true },
+    { _path: i18nDir, isDir: true },
     { _path: path.join(pathRuntime, "view-conf.json"), isDir: false },
     {
       _path: path.join(pluginsDir, "plugin-conf.json"),
@@ -67,17 +70,17 @@ export function checkEnvFiles() {
       },
     },
     {
-      _path: path.join(i18Dir, "zh-CN.json"),
+      _path: path.join(i18nDir, "zh-CN.json"),
       isDir: false,
       exec: function () {
-        fsa.writeJsonSync(path.join(i18Dir, "zh-CN.json"), { login: "登录" });
+        fsa.writeJsonSync(path.join(i18nDir, "zh-CN.json"), { login: "登录" });
       },
     },
     {
-      _path: path.join(i18Dir, "en.json"),
+      _path: path.join(i18nDir, "en.json"),
       isDir: false,
       exec: function () {
-        fsa.writeJsonSync(path.join(i18Dir, "en.json"), { login: "Login" });
+        fsa.writeJsonSync(path.join(i18nDir, "en.json"), { login: "Login" });
       },
     },
     { _path: path.join(pathRuntime, "error.log"), isDir: false },
@@ -92,6 +95,7 @@ export function checkEnvFiles() {
           APP_DATA_PATH: app.getPath("appData"),
           USER_DATA_PATH: app.getPath("userData"),
           TEMP_PATH: app.getPath("temp"),
+          GAME_PROJECTS_PATH: gameProjectsDir,
         });
 
         fsa.writeJsonSync(path.join(pathRuntime, "settings.json"), {
@@ -100,6 +104,7 @@ export function checkEnvFiles() {
           APP_DATA_PATH: app.getPath("appData"),
           USER_DATA_PATH: app.getPath("userData"),
           TEMP_PATH: app.getPath("temp"),
+          GAME_PROJECTS_PATH: gameProjectsDir,
         });
       },
     },

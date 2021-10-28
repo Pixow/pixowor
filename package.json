@@ -71,7 +71,7 @@
     "cross-env": "^7.0.3",
     "electron": "^11.2.1",
     "electron-builder": "^22.11.7",
-    "game-capsule": "git+ssh://git@code.apowo.com:PixelPai/game-capsule.git#feature/new-avatar",
+    "game-capsule": "git+ssh://git@code.apowo.com:PixelPai/game-capsule.git#v2",
     "jasmine-core": "^3.6.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.15",

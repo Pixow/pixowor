@@ -25,13 +25,15 @@ import { TranslocoRootModule } from "./transloco/transloco-root.module";
 import pkg from "../../../package.json";
 
 function initPixoworCore() {
-  storage.setDataPath(path.join(remote.app.getPath("userData"), "runtime"));
-  const settings = storage.getSync("settings");
+  storage.setDataPath(path.join(remote.app.getPath("userData"), "Runtime"));
+  let settings = storage.getSync("settings");
   console.log("🚀 ~ file: app.module.ts ~ line 30 ~ initPixoworCore ~ settings", settings);
 
-  storage.set("settings", Object.assign(settings, Environment, { version: pkg.version }), () => {});
+  settings = Object.assign(settings, Environment, { version: pkg.version });
 
-  return new PixoworCore(Object.assign(settings, Environment) as Settings);
+  storage.set("settings", settings, () => {});
+
+  return new PixoworCore(settings as Settings);
 }
 
 @NgModule({

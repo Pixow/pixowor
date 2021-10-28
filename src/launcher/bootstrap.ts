@@ -45,11 +45,6 @@ export default function Startup() {
 
   const windowService = Container.get(WindowService);
 
-  console.log("appPath: ", app.getAppPath());
-  console.log("appData: ", app.getPath("appData"));
-  console.log("userData: ", app.getPath("userData"));
-  console.log("temp: ", app.getPath("temp"));
-
   const { width, height } = windowService.getViewConf();
   const workbenchOptions: Electron.BrowserWindowConstructorOptions = {
     width,

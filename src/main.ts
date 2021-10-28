@@ -147,15 +147,11 @@ app.whenReady().then(async () => {
     .then((name) => console.log(`Added Extension:  ${name}`))
     .catch((err) => console.log("An error occurred: ", err));
 
-  console.log("WindowService: ", windowService);
-
   ipcMain.on("relaunch", (e) => {
     confirmAndRelaunch(e);
   });
 
   ipcMain.on("openSubWindow", (e, args) => {
-    console.log("e: ", e);
-    console.log("args: ", args);
     const { pluginId, name, width, height } = args;
     const windowDefinition = {
       name,

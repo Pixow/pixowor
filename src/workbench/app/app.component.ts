@@ -119,7 +119,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // 必须等待语言load完成，才能激活插件
+    // 必须等待语言load完成，才能激活插件，否则插件的i18功能不能正常加载多语言文件
     this.translocoService.load(lang).subscribe(() => {
       this.translocoService.setDefaultLang(lang);
       this.translocoService.setActiveLang(lang);
@@ -144,8 +144,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   activatePlugins() {
-    this.pixoworCore.activatePlugins(this.getCorePlugins());
+    this.activeCorePlugins();
     this.activeCommunityPlugins();
+  }
+
+  private activeCorePlugins() {
+    const corePlugins = this.getCorePlugins();
+    this.pixoworCore.activatePlugins(corePlugins);
   }
 
   private getInstalledCorePlugins() {

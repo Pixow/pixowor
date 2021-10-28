@@ -18,17 +18,18 @@
 
   // TODO: 从qing-core中导入，但是qing-core打包为umd方式导入有问题
   const IOEvents = {
-    LISTDIR: "list-dir",
-    REMOVEDIR: "remove-dir",
-    READFILE: "read-file",
-    WRITEFILE: "write-file",
-    REMOVEFILE: "remove-file",
-    READJSON: "read-json",
-    WRITEJSON: "write-json",
-    DOWNLOADFILE: "download-file",
-    UPLOADFILE: "upload-file",
-    COPYFILES: "copy-files",
-    ZIPFILES: "zip-files",
+    MKDIR: "mkdir",
+    LISTDIR: "listdir",
+    REMOVEDIR: "removedir",
+    READFILE: "readfile",
+    WRITEFILE: "writefile",
+    REMOVEFILE: "removefile",
+    READJSON: "readjson",
+    WRITEJSON: "writejson",
+    DOWNLOADFILE: "downloadfile",
+    UPLOADFILE: "uploadfile",
+    COPYFILES: "copyfiles",
+    ZIPFILES: "zipfiles",
     UNZIP: "unzip",
 
     UPLOAD_PLUGIN: "upload-plugin",
@@ -39,11 +40,27 @@
 
     UPLOADFILE_REPLY: "upload-file_reply",
     DOWNLOADFILE_REPLY: "download-file_reply",
-    INSTALLI_18N: "install-i18n",
+    INSTALL_18N: "install-i18n",
 
     SET_DEFAULT_LANG: "set-default-lang",
     GET_DEFAULT_LANG: "get-default-lang",
   };
+
+  msgc.handle(IOEvents.MKDIR, (event, args) => {
+    const { dir } = args;
+
+    fs.mkdirSync(dir);
+
+    return { error: null, data: "success" };
+  });
+
+  msgc.handle(IOEvents.LISTDIR, (event, args) => {
+    const { dir } = args;
+
+    const files = listDir(dir);
+
+    return { error: null, data: files };
+  });
 
   msgc.on("test", (event, args) => {
     console.log("app service: ", event, args);
@@ -74,14 +91,6 @@
     } catch (error) {
       return { error, data: null };
     }
-  });
-
-  msgc.handle(IOEvents.LISTDIR, (event, args) => {
-    const { dir } = args;
-
-    const files = listDir(dir);
-
-    return { error: null, data: files };
   });
 
   msgc.handle(IOEvents.COPYFILES, async (event, args) => {
@@ -281,7 +290,7 @@
   });
 
   // 注入插件的 i18n 值
-  msgc.handle(IOEvents.INSTALLI_18N, (event, args) => {
+  msgc.handle(IOEvents.INSTALL_18N, (event, args) => {
     const { translateObjs } = args;
 
     for (const lang of Object.keys(translateObjs)) {
