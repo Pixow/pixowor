@@ -74,6 +74,23 @@
     return { error: null, data };
   });
 
+  msgc.handle(IOEvents.WRITEFILE, (event, args) => {
+    const { file, data } = args;
+
+    console.log("args: ", args);
+
+    try {
+      if (!fs.pathExistsSync(file)) {
+        fs.ensureFileSync(file);
+      }
+
+      fs.writeFileSync(file, data);
+      return { error: null, data: "success" };
+    } catch (error) {
+      return { error, data: null };
+    }
+  });
+
   msgc.handle(IOEvents.READJSON, (event, args) => {
     const { path } = args;
     const rawdata = fs.readFileSync(path);
@@ -86,6 +103,10 @@
     const { path, data } = args;
 
     try {
+      if (!fs.pathExistsSync(path)) {
+        fs.ensureFileSync(path);
+      }
+
       fs.writeFileSync(path, JSON.stringify(data));
       return { error: null, data: "success" };
     } catch (error) {

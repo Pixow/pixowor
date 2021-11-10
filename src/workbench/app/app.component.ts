@@ -14,6 +14,7 @@ import { ToastPlugin } from "@workbench/plugins/common/toast/toast.plugin";
 import { DialogPlugin } from "@workbench/plugins/common/dialog/dialog.plugin";
 import { MenubarPlugin } from "@workbench/plugins/common/menubar/menubar.plugin";
 import { EditorAreaPlugin } from "@workbench/plugins/common/editor-area/editor-area.plugin";
+import { SidebarPlugin } from "@workbench/plugins/common/sidebar/sidebar.plugin";
 import { StatusbarPlugin } from "@workbench/plugins/common/statusbar/statusbar.plugin";
 import { SigninPlugin } from "@workbench/plugins/integration/signin/signin.plugin";
 import { RendererPlugin } from "@workbench/plugins/common/renderer/renderer.plugin";
@@ -34,6 +35,7 @@ import * as primengMenu from "primeng/menu";
 import * as primengTree from "primeng/tree";
 import * as primengAccordion from "primeng/accordion";
 import * as primengContextmenu from "primeng/contextmenu";
+import * as dynamicdialog from "primeng/dynamicdialog";
 import * as gameCapsule from "game-capsule";
 import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
 import * as Transloco from "@ngneat/transloco";
@@ -41,6 +43,7 @@ import * as gameCore from "@PixelPai/game-core";
 
 export const COMMON_DEPS = {
   rxjs,
+  path: path,
   "pixowor-core": pixoworCore,
   "@angular/core": core,
   "@angular/common": common,
@@ -52,6 +55,7 @@ export const COMMON_DEPS = {
   "primeng/accordion": primengAccordion,
   "primeng/contextmenu": primengContextmenu,
   "primeng/menu": primengMenu,
+  "primeng/dynamicdialog": dynamicdialog,
   "game-capsule": gameCapsule,
   "@materia-ui/ngx-monaco-editor": ngxMonacoEditor,
   "@ngneat/transloco": Transloco,
@@ -137,6 +141,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       new DialogPlugin(ctx),
       new MenubarPlugin(ctx),
       new EditorAreaPlugin(ctx),
+      new SidebarPlugin(ctx),
       new SigninPlugin(ctx),
       new StatusbarPlugin(ctx),
       new PluginsManagePlugin(ctx),
@@ -162,7 +167,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pixoworCore.fileSystemManager
         .readJson(this.pluginConf)
         .then((data) => {
-          const plugins = data as PluginLike[];
+          const plugins = (data as PluginLike[]).filter((plugin) => plugin.active);
 
           for (const plugin of plugins) {
             const pluginEntry = `${this.pluginServer}/${plugin.pid}/index.js`;
