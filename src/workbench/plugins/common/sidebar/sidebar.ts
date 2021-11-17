@@ -23,10 +23,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.pixoworCore.workspace.on(UIEvents.LOAD_IN_SIDEBAR, (args) => {
       const { componentName } = args;
-      console.log(
-        "🚀 ~ file: sidebar.ts ~ line 26 ~ SidebarComponent ~ this.pixoworCore.workspace.on ~ componentName",
-        componentName
-      );
 
       const component = this.pixoworCore.stateManager.getComponent(componentName);
 

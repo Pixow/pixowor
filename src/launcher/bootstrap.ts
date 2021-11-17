@@ -1,7 +1,7 @@
 import * as url from "url";
 import * as path from "path";
 import { Container } from "typedi";
-import { app } from "electron";
+import { app, protocol } from "electron";
 import WindowService, { WindowConfigFunction, WindowDefinition } from "./services/main/windows";
 
 export function getWindowDefinition(
@@ -51,9 +51,8 @@ export default function Startup() {
     height,
     show: true,
     center: true,
-    minWidth: 800,
-    minHeight: 600,
-    title: "轻宇宙",
+    minWidth: 1400,
+    minHeight: 900,
     autoHideMenuBar: true,
     icon: path.join(app.getAppPath(), "resources/icon.png"),
     webPreferences: {
@@ -78,6 +77,11 @@ export default function Startup() {
       }
     }
   );
+
+  protocol.interceptFileProtocol("file", (req, callback) => {
+    const url = req.url.substr(8);
+    callback(decodeURI(url));
+  });
 
   // TODO:  先打开游戏管理面板，通过该面板打开编辑器主体
   windowService.processWindows([workbenchWindowDefinition]);

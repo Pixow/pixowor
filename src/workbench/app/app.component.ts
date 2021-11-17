@@ -6,7 +6,6 @@ import { PixoworCore, Severity, Plugin } from "pixowor-core";
 import { User } from "pixow-api";
 import { remote } from "electron";
 import storage from "electron-json-storage";
-import * as path from "path";
 import compareVersions from "compare-version";
 
 import { AlertPlugin } from "@workbench/plugins/common/alert/alert.plugin";
@@ -23,6 +22,8 @@ import { PLUGIN_CONF_FILE, PLUGIN_SERVER } from "./app.config";
 import { PluginLike } from "@workbench/plugins/integration/plugins-manage/plugins-manage.component";
 
 // regist module for plugin
+import * as path from "path";
+import * as fs from "fs";
 import * as pixoworCore from "pixowor-core";
 import * as core from "@angular/core";
 import * as common from "@angular/common";
@@ -37,13 +38,13 @@ import * as primengAccordion from "primeng/accordion";
 import * as primengContextmenu from "primeng/contextmenu";
 import * as dynamicdialog from "primeng/dynamicdialog";
 import * as gameCapsule from "game-capsule";
-import * as ngxMonacoEditor from "@materia-ui/ngx-monaco-editor";
 import * as Transloco from "@ngneat/transloco";
 import * as gameCore from "@PixelPai/game-core";
 
 export const COMMON_DEPS = {
   rxjs,
   path: path,
+  fs: fs,
   "pixowor-core": pixoworCore,
   "@angular/core": core,
   "@angular/common": common,
@@ -57,7 +58,6 @@ export const COMMON_DEPS = {
   "primeng/menu": primengMenu,
   "primeng/dynamicdialog": dynamicdialog,
   "game-capsule": gameCapsule,
-  "@materia-ui/ngx-monaco-editor": ngxMonacoEditor,
   "@ngneat/transloco": Transloco,
   "@PixelPai/game-core": gameCore,
 };
@@ -92,6 +92,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   initPixoworCore() {
     this.pixoworCore.serviceManager.injectService(DialogService, this.dialogService);
     this.pixoworCore.serviceManager.injectService(TranslocoService, this.translocoService);
+
+    this.pixoworCore.stateManager.registerVariable("GameCapsule");
+    this.pixoworCore.stateManager.registerVariable("SceneCapsule");
 
     const user: User = this.pixoworCore.storageManager.get("user");
 

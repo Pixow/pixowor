@@ -4,7 +4,7 @@ import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgxsModule } from "@ngxs/store";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { remote } from "electron";
+import { remote, ipcMain, ipcRenderer } from "electron";
 import * as path from "path";
 import storage from "electron-json-storage";
 
@@ -33,7 +33,13 @@ function initPixoworCore() {
 
   storage.set("settings", settings, () => {});
 
-  return new PixoworCore(settings as Settings);
+  const pixoworCore = new PixoworCore(settings as Settings);
+
+  pixoworCore.storage = storage;
+  pixoworCore.ipcMain = ipcMain;
+  pixoworCore.ipcRenderer = ipcRenderer;
+
+  return pixoworCore;
 }
 
 @NgModule({

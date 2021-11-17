@@ -133,7 +133,7 @@ export class MenubarComponent implements OnInit, AfterViewInit {
       },
     ];
 
-    this.pixoworCore.stateManager.getVariable("user").subscribe((user: User) => {
+    this.pixoworCore.stateManager.getVariable<User>("user").subscribe((user: User) => {
       let item: MenuItem;
 
       let signoutItem: MenuItem = {

@@ -85,6 +85,13 @@ export function checkEnvFiles() {
     },
     { _path: path.join(pathRuntime, "error.log"), isDir: false },
     {
+      _path: path.join(pathRuntime, "editing.json"),
+      isDir: false,
+      exec: function () {
+        fsa.writeJSONSync(path.join(path.join(pathRuntime, "editing.json")), {});
+      },
+    },
+    {
       _path: path.join(pathRuntime, "settings.json"),
       isDir: false,
       exec: function () {

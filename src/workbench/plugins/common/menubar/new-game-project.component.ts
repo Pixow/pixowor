@@ -36,7 +36,7 @@ export class NewGameProjectComponent {
         this.pixoworCore.workspace.toast(Severity.SUCCESS, "Create Success!");
 
         //TODO: Open Game Project
-        this.pixoworCore.setEditingGameName(this.name);
+        this.pixoworCore.setEditingGame({ file: this.name, filePath: gameDir });
         this.ref.close();
       })
       .catch((err) => {
