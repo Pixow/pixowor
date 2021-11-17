@@ -116,7 +116,6 @@
     "kill-port": "^1.6.1",
     "module-alias": "^2.2.2",
     "node-static": "^0.7.11",
-    "pixow-api": "git+ssh://git@github.com:Pixow/pixow-api.git#develop",
     "pixowor-core": "git+ssh://git@github.com:Pixow/pixowor-core.git#develop",
     "primeng": "12.2.2",
     "qiniu": "^7.3.2",

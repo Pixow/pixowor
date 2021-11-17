@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
 import { QEvent, PixoworCore, Severity, UIEvents } from "pixowor-core";
-import { User } from "pixow-api";
+import { User } from "pixowor-core";
 import { MenuItem } from "primeng/api";
 import { TranslocoService } from "@ngneat/transloco";
 import { ipcRenderer, remote } from "electron";

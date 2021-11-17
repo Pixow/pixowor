@@ -3,7 +3,7 @@ import { TranslocoService } from "@ngneat/transloco";
 import { ContextService } from "./core/services";
 import { DialogService } from "primeng/dynamicdialog";
 import { PixoworCore, Severity, Plugin } from "pixowor-core";
-import { User } from "pixow-api";
+import { User } from "pixowor-core";
 import { remote } from "electron";
 import storage from "electron-json-storage";
 import compareVersions from "compare-version";

@@ -1,4 +1,4 @@
-import { Area } from "pixow-api";
+import { Area } from "pixowor-core";
 export const Environment = {
   area: Area.CNDEV,
   production: true,
