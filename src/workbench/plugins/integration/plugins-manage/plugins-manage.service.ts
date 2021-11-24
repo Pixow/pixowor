@@ -16,7 +16,7 @@ export class PluginsManageService {
   constructor(
     private pixoworCore: PixoworCore,
     @Inject(PLUGIN_CONF_FILE) private pluginConfFile: string
-  ) {}
+  ) { }
 
   public populate() {
     forkJoin({
@@ -57,6 +57,6 @@ export class PluginsManageService {
   }
 
   public listInstalledPlugins() {
-    return from(this.pixoworCore.fileSystemManager.readJson(this.pluginConfFile));
+    return from(this.pixoworCore.fileSystem.readJson(this.pluginConfFile));
   }
 }

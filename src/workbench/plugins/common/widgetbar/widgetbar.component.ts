@@ -4,16 +4,15 @@ import { ChangeDetectorRef, Component, NgModule, Inject, OnInit, OnDestroy } fro
 import { TooltipModule } from "primeng/tooltip";
 
 interface ComponentItem {
-  sequence: number;
-  component: Component;
+  component;
 }
 
 @Component({
-  selector: "sidebar",
-  templateUrl: "./sidebar.component.html",
-  styleUrls: ["./sidebar.component.scss"],
+  selector: "widgetbar",
+  templateUrl: "./widgetbar.component.html",
+  styleUrls: ["./widgetbar.component.scss"],
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class WidgetbarComponent implements OnInit, OnDestroy {
   items: ComponentItem[] = [];
 
   constructor(
@@ -22,17 +21,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.pixoworCore.workspace.on(UIEvents.LOAD_IN_SIDEBAR, (args) => {
-      const { componentName, sequence } = args;
+    this.pixoworCore.workspace.on(UIEvents.LOAD_IN_WIDGETBAR, (args) => {
+      console.log(
+        "🚀 ~ file: widgetbar.component.ts ~ line 25 ~ WidgetbarComponent ~ this.pixoworCore.workspace.on ~ args",
+        args
+      );
+      const { componentName } = args;
 
       const component = this.pixoworCore.state.getComponent(componentName);
 
       this.items.push({
-        sequence,
         component,
       });
-
-      this.items.sort((a, b) => a.sequence - b.sequence);
 
       // 更新UI
       this.cd.detectChanges();
@@ -43,7 +43,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 }
 
 @NgModule({
-  declarations: [SidebarComponent],
+  declarations: [WidgetbarComponent],
   imports: [CommonModule, TooltipModule],
 })
 export class SidebarModule { }

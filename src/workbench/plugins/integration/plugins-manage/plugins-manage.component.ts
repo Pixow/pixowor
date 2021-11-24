@@ -52,7 +52,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
     @Inject(PLUGIN_CONF_FILE) private pluginConfFile: string,
     @Inject(PLUGIN_DIR) private pluginDir: string,
     @Inject(PixoworCore) private pixoworCore: PixoworCore
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.pluginsManageService.populate();
@@ -75,7 +75,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
       .asObservable()
       .pipe(filter((data) => data.length > 0))
       .subscribe((data) => {
-        this.pixoworCore.fileSystemManager
+        this.pixoworCore.fileSystem
           .writeJson(this.pluginConfFile, data)
           .then((data) => {
             this.pixoworCore.workspace.toast(Severity.SUCCESS, "更新插件配置成功！");
@@ -237,7 +237,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
     const manifestFile = event.files.find((file) => file.name === "manifest.json");
 
     this.zone.runOutsideAngular(() => {
-      this.pixoworCore.fileSystemManager.readJson(manifestFile.path).then((manifest: any) => {
+      this.pixoworCore.fileSystem.readJson(manifestFile.path).then((manifest: any) => {
         const plugin: PluginLike = {
           ...manifest,
           isDevelop: true,
@@ -246,7 +246,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
         const dest = path.join(this.pluginDir, plugin.pid);
         const source = files.map((f) => ({ path: f.path, name: f.name }));
 
-        this.pixoworCore.fileSystemManager.copyFiles(source, dest).then((data) => {
+        this.pixoworCore.fileSystem.copyFiles(source, dest).then((data) => {
           this.installPlugin(plugin);
         });
       });
@@ -281,7 +281,7 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
 
     const folderName = plugin.pid + "_" + plugin.version;
 
-    this.pixoworCore.fileSystemManager
+    this.pixoworCore.fileSystem
       .listDir(`${this.pluginDir}/${plugin.pid}`)
       .then(async (files: FileStat[]) => {
         console.log("ListDir: ", files);
@@ -313,6 +313,6 @@ export class PluginsManageComponent implements OnInit, OnDestroy {
     this.updatePluginConf$.next(installedPlugins);
 
     const pluginFolder = path.join(this.pluginDir, plugin.pid);
-    await this.pixoworCore.fileSystemManager.removeDir(pluginFolder);
+    await this.pixoworCore.fileSystem.removeDir(pluginFolder);
   }
 }

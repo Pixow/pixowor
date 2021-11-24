@@ -18,7 +18,7 @@ export class EditorAreaPlugin extends Plugin {
     // );
     // this.pixoworCore.Emit(new RenderderEvent(RendererEvents.UPDATE_SLOT_VIEW, "editor-area-slot"));
 
-    // this.pixoworCore.stateManager.registerVariable("EditorAreaComponents", []);
+    // this.pixoworCore.state.registerVariable("EditorAreaComponents", []);
     this.pixoworCore.workspace.registerSlotComponent(
       Placements.EDITORAREA,
       <Type<Component>>EditorAreaComponent
@@ -27,5 +27,5 @@ export class EditorAreaPlugin extends Plugin {
     this.pixoworCore.workspace.emit(UIEvents.INJECT_SLOT, Placements.EDITORAREA);
   }
 
-  deactivate(): void {}
+  deactivate(): void { }
 }

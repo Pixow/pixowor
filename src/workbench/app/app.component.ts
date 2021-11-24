@@ -40,6 +40,7 @@ import * as dynamicdialog from "primeng/dynamicdialog";
 import * as gameCapsule from "game-capsule";
 import * as Transloco from "@ngneat/transloco";
 import * as gameCore from "@PixelPai/game-core";
+import { WidgetbarPlugin } from "@workbench/plugins/common/widgetbar/widgetbar.plugin";
 
 export const COMMON_DEPS = {
   rxjs,
@@ -78,7 +79,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     @Inject(PLUGIN_CONF_FILE) private pluginConf: string,
     private translocoService: TranslocoService,
     @Inject(PixoworCore) private pixoworCore: PixoworCore
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initialize();
@@ -90,13 +91,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initPixoworCore() {
-    this.pixoworCore.serviceManager.injectService(DialogService, this.dialogService);
-    this.pixoworCore.serviceManager.injectService(TranslocoService, this.translocoService);
+    this.pixoworCore.service.injectService(DialogService, this.dialogService);
+    this.pixoworCore.service.injectService(TranslocoService, this.translocoService);
 
-    this.pixoworCore.stateManager.registerVariable("GameCapsule");
-    this.pixoworCore.stateManager.registerVariable("SceneCapsule");
+    this.pixoworCore.state.registerVariable("GameCapsule");
+    this.pixoworCore.state.registerVariable("SceneCapsule");
+    this.pixoworCore.state.registerVariable("SelectedGameObject");
 
-    const user: User = this.pixoworCore.storageManager.get("user");
+    const user: User = this.pixoworCore.storage.get("user");
 
     if (user) {
       this.pixoworCore.setPixowApiToken(user.token);
@@ -105,32 +107,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async ngAfterViewInit() {
     const settings = storage.getSync("settings");
-
     const lang = (settings as any).lang || "zh-CN";
-
     // Check core plugin version and install
     const installedCorePlugins = this.getInstalledCorePlugins();
     const corePlugins = this.getCorePlugins();
-
     for (const corePlugin of corePlugins) {
       const installedPlugin: PluginLike = installedCorePlugins[corePlugin.pid];
-
       if (!installedPlugin || compareVersions(installedPlugin.version, corePlugin.version) < 0) {
         await corePlugin.install();
-
         storage.set(
           "core-plugins",
           Object.assign(installedCorePlugins, { [corePlugin.pid]: corePlugin.version }),
-          () => {}
+          () => { }
         );
       }
     }
-
     // 必须等待语言load完成，才能激活插件，否则插件的i18功能不能正常加载多语言文件
     this.translocoService.load(lang).subscribe(() => {
       this.translocoService.setDefaultLang(lang);
       this.translocoService.setActiveLang(lang);
-
       this.activatePlugins();
     });
   }
@@ -145,6 +140,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       new MenubarPlugin(ctx),
       new EditorAreaPlugin(ctx),
       new SidebarPlugin(ctx),
+      new WidgetbarPlugin(ctx),
       new SigninPlugin(ctx),
       new StatusbarPlugin(ctx),
       new PluginsManagePlugin(ctx),
@@ -167,7 +163,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private activeCommunityPlugins() {
     this.zone.runOutsideAngular(() => {
-      this.pixoworCore.fileSystemManager
+      this.pixoworCore.fileSystem
         .readJson(this.pluginConf)
         .then((data) => {
           const plugins = (data as PluginLike[]).filter((plugin) => plugin.active);
@@ -176,10 +172,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const pluginEntry = `${this.pluginServer}/${plugin.pid}/index.js`;
             (window as any).System.import(pluginEntry).then((module) => {
               // 重新触发变更检测
-              this.zone.run(() => {
+              this.zone.run(async () => {
                 // TODO: wait for activate
                 const plugin: Plugin = new module.default(this.pixoworCore);
-
+                await plugin.install();
                 this.pixoworCore.activatePlugins([plugin]);
               });
             });
@@ -191,5 +187,5 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 }

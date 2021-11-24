@@ -13,11 +13,11 @@ export class PluginsManagePlugin extends Plugin {
 
   activate(): void {
     this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
-    this.pixoworCore.stateManager.registerComponent(
+    this.pixoworCore.state.registerComponent(
       "PluginsManage",
       <Component>PluginsManageComponent
     );
   }
 
-  deactivate(): void {}
+  deactivate(): void { }
 }

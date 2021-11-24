@@ -31,11 +31,11 @@ function initPixoworCore() {
 
   settings = Object.assign(settings, Environment, { version: pkg.version });
 
-  storage.set("settings", settings, () => {});
+  storage.set("settings", settings, () => { });
 
   const pixoworCore = new PixoworCore(settings as Settings);
 
-  pixoworCore.storage = storage;
+  pixoworCore.fileStorage = storage;
   pixoworCore.ipcMain = ipcMain;
   pixoworCore.ipcRenderer = ipcRenderer;
 
@@ -88,4 +88,4 @@ function initPixoworCore() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

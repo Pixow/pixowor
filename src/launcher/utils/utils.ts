@@ -29,7 +29,7 @@ export function notifySend({ title, body, icon, delay }: INotify) {
  */
 export function checkEnvFiles() {
   const env = process.env.NODE_ENV;
-  const userDataPath = path.join(app.getPath("userData"));
+  const userDataPath = app.getPath("userData");
   const pathRuntime = path.join(userDataPath, "Runtime");
   const pluginsDir = path.join(userDataPath, "Plugins");
   const gameProjectsDir = path.join(userDataPath, "Games");

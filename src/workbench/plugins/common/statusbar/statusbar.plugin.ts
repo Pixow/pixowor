@@ -17,9 +17,9 @@ export class StatusbarPlugin extends Plugin {
 
   activate(): void {
     this.colorLog(`${this.name} activate, Pid: ${this.pid}`);
-    this.pixoworCore.stateManager.registerVariable("statusbar", {});
-    this.pixoworCore.stateManager.registerComponent("statusbar", <Component>StatusbarComponent);
+    this.pixoworCore.state.registerVariable("statusbar", {});
+    this.pixoworCore.state.registerComponent("statusbar", <Component>StatusbarComponent);
   }
 
-  deactivate(): void {}
+  deactivate(): void { }
 }

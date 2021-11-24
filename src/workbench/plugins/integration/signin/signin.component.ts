@@ -68,8 +68,8 @@ export class SigninComponent {
         console.log("signin :", res);
         this.isSubmitted = false;
         const { data } = res;
-        this.pixoworCore.storageManager.set("user", data);
-        this.pixoworCore.stateManager.getVariable("user").next(data);
+        this.pixoworCore.storage.set("user", data);
+        this.pixoworCore.state.getVariable("user").next(data);
 
         const settings = storage.getSync("settings");
         storage.set("settings", Object.assign(settings, { token: data.token }), (error) => {

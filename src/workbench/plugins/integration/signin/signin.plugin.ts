@@ -17,7 +17,7 @@ export class SigninPlugin extends Plugin {
   }
 
   deactivate(): void {
-    this.unRrgisterComponent("Signin");
+    this.destroyComponent("Signin");
     this.unRegisterVariable("user");
   }
 }

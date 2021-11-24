@@ -20,7 +20,7 @@ export class EditorAreaComponent implements OnInit {
 
   component: any;
 
-  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) {}
+  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) { }
 
   ngOnInit() {
     // this.pluginStore.getObserver("stage").subscribe(items => {
@@ -41,14 +41,14 @@ export class EditorAreaComponent implements OnInit {
     //     this.activeIndex = index;
     //   }
     // });
-    // this.pixoworCore.stateManager.getVariable("EditorAreaComponents").subscribe((data) => {
+    // this.pixoworCore.state.getVariable("EditorAreaComponents").subscribe((data) => {
     //   this.items = this.items.concat(data.component);
     // });
 
     this.pixoworCore.workspace.on(UIEvents.INJECT_EDITOR_AREA, (args) => {
       const { id, componentName, header } = args;
 
-      const component = this.pixoworCore.stateManager.getComponent(componentName);
+      const component = this.pixoworCore.state.getComponent(componentName);
 
       this.component = component;
 

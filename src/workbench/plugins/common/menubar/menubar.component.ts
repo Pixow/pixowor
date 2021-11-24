@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
-import { QEvent, PixoworCore, Severity, UIEvents } from "pixowor-core";
+import { QEvent, PixoworCore, Severity, UIEvents, EDITING_SCENE } from "pixowor-core";
 import { User } from "pixowor-core";
-import { MenuItem } from "primeng/api";
+import { MenuItem, MessageService } from "primeng/api";
 import { TranslocoService } from "@ngneat/transloco";
 import { ipcRenderer, remote } from "electron";
 import storage from "electron-json-storage";
+import { Capsule } from "game-capsule";
 
 @Component({
   selector: "menubar",
@@ -19,7 +20,7 @@ export class MenubarComponent implements OnInit, AfterViewInit {
     @Inject(PixoworCore) private pixoworCore: PixoworCore,
     private cd: ChangeDetectorRef
   ) {
-    this.transloco = pixoworCore.serviceManager.getService<TranslocoService>(TranslocoService);
+    this.transloco = pixoworCore.service.getService<TranslocoService>(TranslocoService);
   }
 
   ngOnInit() {
@@ -45,11 +46,13 @@ export class MenubarComponent implements OnInit, AfterViewInit {
           },
           {
             label: this.transloco.translate("menubar.open_game_project"),
-            command: () => {},
+            command: () => { },
           },
           {
             label: this.transloco.translate("menubar.save_game_project"),
-            command: () => {},
+            command: () => {
+              this.saveGameProject();
+            },
           },
           {
             separator: true,
@@ -60,12 +63,12 @@ export class MenubarComponent implements OnInit, AfterViewInit {
       {
         label: this.transloco.translate("menubar.game"),
         items: [
-          { label: this.transloco.translate("menubar.newscene"), command: () => {} },
-          { label: this.transloco.translate("menubar.gamesetting"), command: () => {} },
-          { label: this.transloco.translate("menubar.runtobrowser"), command: () => {} },
+          { label: this.transloco.translate("menubar.newscene"), command: () => { } },
+          { label: this.transloco.translate("menubar.gamesetting"), command: () => { } },
+          { label: this.transloco.translate("menubar.runtobrowser"), command: () => { } },
           {
             label: this.transloco.translate("menubar.runtophoneemulator"),
-            command: () => {},
+            command: () => { },
           },
         ],
       },
@@ -133,14 +136,14 @@ export class MenubarComponent implements OnInit, AfterViewInit {
       },
     ];
 
-    this.pixoworCore.stateManager.getVariable<User>("user").subscribe((user: User) => {
+    this.pixoworCore.state.getVariable<User>("user").subscribe((user: User) => {
       let item: MenuItem;
 
       let signoutItem: MenuItem = {
         label: this.transloco.translate("menubar.signout"),
         command: () => {
-          this.pixoworCore.storageManager.remove("user");
-          this.pixoworCore.stateManager.getVariable("user").next(null);
+          this.pixoworCore.storage.remove("user");
+          this.pixoworCore.state.getVariable("user").next(null);
         },
         disabled: true,
       };
@@ -212,5 +215,21 @@ export class MenubarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {}
+  public saveGameProject() {
+    const sceneCapsule = this.pixoworCore.state
+      .getVariable<Capsule>("SceneCapsule")
+      .getValue();
+    const editScene = this.pixoworCore.getEditingObject(EDITING_SCENE);
+
+    this.pixoworCore.fileSystem
+      .writeFile(editScene.filePath, sceneCapsule.serialize())
+      .then(() => {
+        this.pixoworCore.workspace.toast(Severity.SUCCESS, "Save Scene Successfully!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  ngAfterViewInit() { }
 }

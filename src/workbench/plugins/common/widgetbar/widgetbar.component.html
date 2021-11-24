@@ -1,0 +1,5 @@
+<div class="widgetbar">
+  <ng-container *ngFor="let item of items">
+    <ng-container *ngComponentOutlet="item.component; injector: item.injector"></ng-container>
+  </ng-container>
+</div>

@@ -10,12 +10,12 @@ import { PixoworCore, UIEvents } from "pixowor-core";
 export class StatusbarComponent implements OnInit {
   public statusItems;
 
-  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) {}
+  constructor(@Inject(PixoworCore) private pixoworCore: PixoworCore) { }
 
   ngOnInit() {
     this.pixoworCore.workspace.on(UIEvents.ADD_STATUS, (args) => {
       const { pluginName, message } = args;
-      let status = this.pixoworCore.stateManager.getVariable("statusbar");
+      let status = this.pixoworCore.state.getVariable("statusbar");
       status[pluginName] = message;
     });
   }
@@ -26,4 +26,4 @@ export class StatusbarComponent implements OnInit {
   imports: [CommonModule],
   providers: [PixoworCore],
 })
-export class StatusModule {}
+export class StatusModule { }

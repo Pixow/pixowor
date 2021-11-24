@@ -19,8 +19,8 @@ export class DialogPlugin extends Plugin {
       );
       const { componentName, config } = args;
 
-      const component = this.pixoworCore.stateManager.getComponent(componentName);
-      this.ref = this.pixoworCore.serviceManager
+      const component = this.pixoworCore.state.getComponent(componentName);
+      this.ref = this.pixoworCore.service
         .getService<DialogService>(DialogService)
         .open(<Type<Component>>component, config || {});
     });

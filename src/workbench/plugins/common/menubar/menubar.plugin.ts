@@ -12,7 +12,7 @@ export class MenubarPlugin extends Plugin {
 
   async install(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.pixoworCore.fileSystemManager
+      this.pixoworCore.fileSystem
         .installI18n({
           en: en,
           "zh-CN": zhCN,
@@ -32,7 +32,7 @@ export class MenubarPlugin extends Plugin {
       <Type<Component>>MenubarComponent
     );
 
-    this.pixoworCore.stateManager.registerComponent(
+    this.pixoworCore.state.registerComponent(
       "NewGameProject",
       <Component>NewGameProjectComponent
     );
@@ -40,5 +40,5 @@ export class MenubarPlugin extends Plugin {
     this.pixoworCore.workspace.emit(UIEvents.INJECT_SLOT, Placements.MENUBAR);
   }
 
-  deactivate(): void {}
+  deactivate(): void { }
 }
