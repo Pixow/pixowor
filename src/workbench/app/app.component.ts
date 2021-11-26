@@ -20,6 +20,7 @@ import { RendererPlugin } from "@workbench/plugins/common/renderer/renderer.plug
 import { PluginsManagePlugin } from "@workbench/plugins/integration/plugins-manage/plugins-manage.plugin";
 import { PLUGIN_CONF_FILE, PLUGIN_SERVER } from "./app.config";
 import { PluginLike } from "@workbench/plugins/integration/plugins-manage/plugins-manage.component";
+import { WidgetbarPlugin } from "@workbench/plugins/common/widgetbar/widgetbar.plugin";
 
 // regist module for plugin
 import * as path from "path";
@@ -40,7 +41,7 @@ import * as dynamicdialog from "primeng/dynamicdialog";
 import * as gameCapsule from "game-capsule";
 import * as Transloco from "@ngneat/transloco";
 import * as gameCore from "@PixelPai/game-core";
-import { WidgetbarPlugin } from "@workbench/plugins/common/widgetbar/widgetbar.plugin";
+import * as ngxTippyWrapper from "ngx-tippy-wrapper";
 
 export const COMMON_DEPS = {
   rxjs,
@@ -61,6 +62,7 @@ export const COMMON_DEPS = {
   "game-capsule": gameCapsule,
   "@ngneat/transloco": Transloco,
   "@PixelPai/game-core": gameCore,
+  "ngx-tippy-wrapper": ngxTippyWrapper
 };
 
 Object.keys(COMMON_DEPS).forEach((dep) => (window as any).define(dep, [], () => COMMON_DEPS[dep]));

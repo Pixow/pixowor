@@ -49,7 +49,7 @@ function StartUserDataServer() {
 function StopUserDataServer() {
   global.userDataStaticServiceProcess.kill();
 
-  kill(45326, "tcp").then(() => {});
+  kill(45326, "tcp").then(() => { });
 }
 
 export default class AppUpdater {
@@ -152,9 +152,13 @@ app.whenReady().then(async () => {
   });
 
   ipcMain.on("openSubWindow", (e, args) => {
-    const { pluginId, name, width, height } = args;
+    const { pluginId } = args;
+
+    const rawData = fs.readFileSync(path.resolve(app.getPath("userData"), `plugins/${pluginId}/manifest.json`), "utf8")
+    const pluginManifest = JSON.parse(rawData);
+
     const windowDefinition = {
-      name,
+      name: pluginId,
       config: {
         url: url.format({
           pathname: path.resolve(app.getPath("userData"), `plugins/${pluginId}/index.html`),
@@ -162,10 +166,10 @@ app.whenReady().then(async () => {
           slashes: true,
         }),
         options: {
-          width: width || 800,
-          height: height || 600,
+          width: pluginManifest.settings.width || 800,
+          height: pluginManifest.settings.height || 600,
           show: true,
-          title: name,
+          title: "",
           resizable: false,
           fullscreenable: false,
           webPreferences: {
@@ -181,7 +185,7 @@ app.whenReady().then(async () => {
       },
     };
     windowService.processWindows([windowDefinition]);
-    windowService.openWindow({ windowName: name });
+    windowService.openWindow({ windowName: pluginId });
   });
 
   // const mainWin = windowService.getCurrentWindow();

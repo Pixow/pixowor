@@ -2,11 +2,10 @@ import { ErrorHandler, InjectionToken, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
-import { NgxsModule } from "@ngxs/store";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { remote, ipcMain, ipcRenderer } from "electron";
 import * as path from "path";
-import storage from "electron-json-storage";
+import * as fileStorage from "electron-json-storage";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -21,21 +20,22 @@ import { PixoworCore, Settings } from "pixowor-core";
 import { PLUGIN_CONF_FILE, PLUGIN_DIR, PLUGIN_SERVER } from "./app.config";
 import { PluginsManageModule } from "@workbench/plugins/integration/plugins-manage/plugins-manage.module";
 import { TranslocoRootModule } from "./transloco/transloco-root.module";
+import { NgxTippyModule } from 'ngx-tippy-wrapper';
 
 import pkg from "../../../package.json";
 
 function initPixoworCore() {
-  storage.setDataPath(path.join(remote.app.getPath("userData"), "Runtime"));
-  let settings = storage.getSync("settings");
+  fileStorage.setDataPath(path.join(remote.app.getPath("userData"), "Runtime"));
+  let settings = fileStorage.getSync("settings");
   console.log("🚀 ~ file: app.module.ts ~ line 30 ~ initPixoworCore ~ settings", settings);
 
   settings = Object.assign(settings, Environment, { version: pkg.version });
 
-  storage.set("settings", settings, () => { });
+  fileStorage.set("settings", settings, () => { });
 
   const pixoworCore = new PixoworCore(settings as Settings);
 
-  pixoworCore.fileStorage = storage;
+  pixoworCore.fileStorage = fileStorage;
   pixoworCore.ipcMain = ipcMain;
   pixoworCore.ipcRenderer = ipcRenderer;
 
@@ -58,8 +58,8 @@ function initPixoworCore() {
     // TODO: 思考到底是导入module之后再使用componentFactory，还是直接使用 componentFactory
     // 参考：https://github.com/paucls/angular-pluggable-architecture/blob/master/dashboard/src/app/dashboard/dashboard/dashboard.component.ts
     PluginsManageModule,
-    NgxsModule.forRoot([]),
     TranslocoRootModule,
+    NgxTippyModule
   ],
   providers: [
     {

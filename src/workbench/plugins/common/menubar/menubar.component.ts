@@ -171,7 +171,7 @@ export class MenubarComponent implements OnInit, AfterViewInit {
 
     // TODO: 参数应该是插件名称，menubar给插件分配col和insertIndex
     this.pixoworCore.workspace.on(UIEvents.INJECT_PLUGIN_MENU, (args) => {
-      const { pid, label, type, command, width, height } = args;
+      const { pid, label, type, command } = args;
 
       if (type === "subwindow") {
         this.menuItems[3].items.push({
@@ -180,9 +180,6 @@ export class MenubarComponent implements OnInit, AfterViewInit {
           command: () => {
             ipcRenderer.send("openSubWindow", {
               pluginId: pid,
-              name: label,
-              width: width,
-              height: height,
             });
           },
         });
