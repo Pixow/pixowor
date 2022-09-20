@@ -9,8 +9,6 @@ const yaml = require("yaml");
 console.log(">> env: ", env);
 
 const setting = {
-  accessKey: "STAZhJPIs1A3DRyQO4YeWWUIfWDB0MQpULTpad4T",
-  secretKey: "5FVoLrGnQ4qTyoqT7DLR6aBMGm4OPMlxqAEG2YBt",
   develop: {
     name: "TooqingStudioDEV",
     output: "develop",
